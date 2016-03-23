@@ -29,6 +29,9 @@ type
     procedure TestAdd10_50Equals15_50;
     procedure TestAddMinus8_25EqualsMinus3_25;
     procedure TestAdd0Equals5;
+    procedure TestSub2_60Equals2_40;
+    procedure TestSubMinus1_12EqualsMinus6_12;
+    procedure TestSub0Equals5;
     procedure TestResetEquals0;
   end;
 
@@ -98,6 +101,36 @@ var
 begin
      ExpectedValue := 0;
      ReturnValue   := FICurrency.Reset.AsCurrency;
+     CheckEquals(ExpectedValue, ReturnValue);
+end;
+
+procedure TestICurrency.TestSub0Equals5;
+var
+   ExpectedValue, ReturnValue, Value: Currency;
+begin
+     Value         := 0;
+     ExpectedValue := 5;
+     ReturnValue   := FICurrency.Sub(Value).AsCurrency;
+     CheckEquals(ExpectedValue, ReturnValue);
+end;
+
+procedure TestICurrency.TestSub2_60Equals2_40;
+var
+   ExpectedValue, ReturnValue, Value: Currency;
+begin
+     Value         := 2.60;
+     ExpectedValue := 2.40;
+     ReturnValue   := FICurrency.Sub(Value).AsCurrency;
+     CheckEquals(ExpectedValue, ReturnValue);
+end;
+
+procedure TestICurrency.TestSubMinus1_12EqualsMinus6_12;
+var
+   ExpectedValue, ReturnValue, Value: Currency;
+begin
+     Value         := -1.12;
+     ExpectedValue := 6.12;
+     ReturnValue   := FICurrency.Sub(Value).AsCurrency;
      CheckEquals(ExpectedValue, ReturnValue);
 end;
 

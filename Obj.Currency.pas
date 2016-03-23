@@ -7,6 +7,7 @@ type
       function AsCurrency: Currency;
       function AsString: String;
       function Add(Value: Currency): ICurrency;
+      function Sub(Value: Currency): ICurrency;
       function Reset: ICurrency;
     End;
 
@@ -19,6 +20,7 @@ type
       function AsCurrency: Currency;
       function AsString: String;
       function Add(Value: Currency): ICurrency;
+      function Sub(Value: Currency): ICurrency;
       function Reset: ICurrency;
     End;
 
@@ -60,6 +62,12 @@ end;
 function TCurrency.Reset: ICurrency;
 begin
      FValue := 0;
+     Result := Self;
+end;
+
+function TCurrency.Sub(Value: Currency): ICurrency;
+begin
+     FValue := FValue - Value;
      Result := Self;
 end;
 
