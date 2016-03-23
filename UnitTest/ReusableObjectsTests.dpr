@@ -20,6 +20,8 @@ uses
   TestObj.ICurrency in 'TestObj.ICurrency.pas',
   TestObj.ITax in 'TestObj.ITax.pas',
   Obj.Tax in '..\Obj.Tax.pas',
+  Obj.Discount in '..\Obj.Discount.pas',
+  TestObj.IDiscount in 'TestObj.IDiscount.pas';
 
 {$R *.RES}
 
