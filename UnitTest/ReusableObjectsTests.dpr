@@ -17,7 +17,9 @@ program ReusableObjectsTests;
 uses
   DUnitTestRunner,
   Obj.Currency in '..\Obj.Currency.pas',
-  TestObj.ICurrency in 'TestObj.ICurrency.pas';
+  TestObj.ICurrency in 'TestObj.ICurrency.pas',
+  TestObj.ITax in 'TestObj.ITax.pas',
+  Obj.Tax in '..\Obj.Tax.pas',
 
 {$R *.RES}
 

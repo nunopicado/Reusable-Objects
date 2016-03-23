@@ -92,6 +92,8 @@
         </DelphiCompile>
         <DCCReference Include="..\Obj.Currency.pas"/>
         <DCCReference Include="TestObj.ICurrency.pas"/>
+        <DCCReference Include="TestObj.ITax.pas"/>
+        <DCCReference Include="..\Obj.Tax.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
