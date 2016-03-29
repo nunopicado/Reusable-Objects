@@ -7,6 +7,11 @@ uses
 
 type
     TNotifyReference = Reference to procedure (Sender: TObject);
+    
+    I<T> = Interface (Obj.SSI.GenericIntf.I<T>) ['{6B665225-2600-4611-A4C5-41B95FE6AA39}']
+      function Click(ButtonClick: TNotifyReference): I<TButton>;
+    End;
+    
     TIButton = Class(TButton, I<TButton>)
     private
       FClick: TNotifyReference;
