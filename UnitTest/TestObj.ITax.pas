@@ -12,7 +12,7 @@ unit TestObj.ITax;
 interface
 
 uses
-  TestFramework, Obj.Tax;
+  TestFramework, Obj.SSI.Tax;
 
 type
   // Test methods for class ICurrency
@@ -40,7 +40,7 @@ type
 implementation
 
 uses
-    Obj.Currency;
+    Obj.SSI.Currency;
 
 procedure TestITax.SetUp;
 begin

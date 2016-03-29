@@ -1,9 +1,9 @@
-unit Obj.Discount;
+unit Obj.SSI.Discount;
 
 interface
 
 uses
-    Obj.Currency;
+    Obj.SSI.Currency;
 
 type
     IDiscount = Interface             ['{CB98B202-D9F2-48B0-8376-F3144336C56F}']

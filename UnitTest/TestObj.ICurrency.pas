@@ -12,7 +12,7 @@ unit TestObj.ICurrency;
 interface
 
 uses
-  TestFramework, Obj.Currency;
+  TestFramework, Obj.SSI.Currency;
 
 type
   // Test methods for class ICurrency

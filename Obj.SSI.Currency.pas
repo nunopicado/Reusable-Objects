@@ -1,4 +1,4 @@
-unit Obj.Currency;
+unit Obj.SSI.Currency;
 
 interface
 

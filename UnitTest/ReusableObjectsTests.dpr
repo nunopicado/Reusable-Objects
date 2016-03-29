@@ -16,12 +16,12 @@ program ReusableObjectsTests;
 
 uses
   DUnitTestRunner,
-  Obj.Currency in '..\Obj.Currency.pas',
   TestObj.ICurrency in 'TestObj.ICurrency.pas',
   TestObj.ITax in 'TestObj.ITax.pas',
-  Obj.Tax in '..\Obj.Tax.pas',
-  Obj.Discount in '..\Obj.Discount.pas',
-  TestObj.IDiscount in 'TestObj.IDiscount.pas';
+  TestObj.IDiscount in 'TestObj.IDiscount.pas',
+  Obj.SSI.Currency in '..\Obj.SSI.Currency.pas',
+  Obj.SSI.Discount in '..\Obj.SSI.Discount.pas',
+  Obj.SSI.Tax in '..\Obj.SSI.Tax.pas';
 
 {$R *.RES}
 

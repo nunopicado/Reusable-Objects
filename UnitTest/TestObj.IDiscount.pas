@@ -12,7 +12,7 @@ unit TestObj.IDiscount;
 interface
 
 uses
-  TestFramework, Obj.Discount;
+  TestFramework, Obj.SSI.Discount;
 
 type
   // Test methods for class IDiscount
@@ -40,7 +40,7 @@ type
 implementation
 
 uses
-    Obj.Currency;
+    Obj.SSI.Currency;
 
 procedure TestIDiscount.SetUp;
 begin

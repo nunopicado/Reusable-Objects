@@ -1,9 +1,9 @@
-unit Obj.Tax;
+unit Obj.SSI.Tax;
 
 interface
 
 uses
-    Obj.Currency;
+    Obj.SSI.Currency;
 
 type
     ITax = Interface                  ['{C5E0F3F9-8804-46FD-B03F-D75DE3EC1EB2}']
