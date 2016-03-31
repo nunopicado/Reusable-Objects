@@ -6,8 +6,9 @@ uses
     Obj.SSI.GenericIntf, Uni;
 
 type
-    TIUniQuery = Class(TUniQuery, I<TUniQuery>)
+    TIUniQuery = Class(TInterfacedObject, I<TUniQuery>)
     private
+      FObj: TUniQuery;
     public
       constructor Create(aConnection: TUniConnection; SQL: String; Params: Array of Variant); Overload;
       class function New(aConnection: TUniConnection; SQL: String; Params: Array of Variant): I<TUniQuery>; Overload;
@@ -26,10 +27,10 @@ begin
      if (not Assigned(aConnection)) or (not aConnection.Connected) or (SQL='')
         then Exit;
 
-     inherited Create(nil);
-     Self.Connection            := aConnection;
-     Self.SQL.Text              := SQL;
-     Self.Options.QueryRecCount := True;
+     inherited Create;
+     FObj                       := TUniQuery.Create(nil);
+     FObj.Connection            := aConnection;
+     FObj.Options.QueryRecCount := True;
 
      if Length(Params)>0
         then begin
@@ -40,6 +41,10 @@ begin
                   until p >= High(Params)-1;
              end;
      Self.Open;
+destructor TIUniQuery.Destroy;
+begin
+     FObj.Free;
+     inherited;
 end;
 
 class function TIUniQuery.New(aConnection: TUniConnection; SQL: String; Params: Array of Variant): I<TUniQuery>;
@@ -54,6 +59,9 @@ end;
 
 function TIUniQuery.Obj: TUniQuery;
 begin
+     Result := FObj;
+end;
+
      Result := Self;
 end;
 
