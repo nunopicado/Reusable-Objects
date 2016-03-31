@@ -6,6 +6,9 @@ uses
     Obj.SSI.GenericIntf, Uni;
 
 type
+    I<T> = Interface (Obj.SSI.GenericIntf.I<T>) ['{F7928CA1-6E47-400E-9BC4-DEAEB1E72AC6}']
+    End;
+
     TIUniQuery = Class(TInterfacedObject, I<TUniQuery>)
     private
       FObj: TUniQuery;
