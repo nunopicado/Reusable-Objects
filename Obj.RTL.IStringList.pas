@@ -10,7 +10,7 @@ type
     private
       FObj: TStringList;
     public
-      constructor Create;
+      constructor Create; Overload;
       destructor Destroy; Override;
       class function New: I<TStringList>;
       function Obj: TStringList;
@@ -22,6 +22,7 @@ implementation
 
 constructor TIStringList.Create;
 begin
+     inherited Create;
      FObj := TStringList.Create;
 end;
 
