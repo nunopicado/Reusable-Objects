@@ -21,7 +21,11 @@ uses
   TestObj.IDiscount in 'TestObj.IDiscount.pas',
   Obj.SSI.Currency in '..\Obj.SSI.Currency.pas',
   Obj.SSI.Discount in '..\Obj.SSI.Discount.pas',
-  Obj.SSI.Tax in '..\Obj.SSI.Tax.pas';
+  Obj.SSI.Tax in '..\Obj.SSI.Tax.pas',
+  Obj.SSI.IBase64 in '..\Obj.SSI.IBase64.pas',
+  Obj.SSI.ICryptString in '..\Obj.SSI.ICryptString.pas',
+  TestObj.SSI.IBase64 in 'TestObj.SSI.IBase64.pas',
+  TestObj.SSI.ICryptString in 'TestObj.SSI.ICryptString.pas';
 
 {$R *.RES}
 
