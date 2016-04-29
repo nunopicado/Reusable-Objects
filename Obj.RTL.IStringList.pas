@@ -10,9 +10,9 @@ type
     private
       FObj: TStringList;
     public
-      constructor Create; Overload;
+      constructor Create(Text: String); Overload;
       destructor Destroy; Override;
-      class function New: I<TStringList>;
+      class function New(Text: String): I<TStringList>;
       function Obj: TStringList;
     End;
 
@@ -20,10 +20,11 @@ implementation
 
 { TIStringList }
 
-constructor TIStringList.Create;
+constructor TIStringList.Create(Text: String);
 begin
      inherited Create;
-     FObj := TStringList.Create;
+     FObj      := TStringList.Create;
+     FObj.Text := Text;
 end;
 
 destructor TIStringList.Destroy;
@@ -32,9 +33,9 @@ begin
      inherited;
 end;
 
-class function TIStringList.New: I<TStringList>;
+class function TIStringList.New(Text: String): I<TStringList>;
 begin
-     Result := Create;
+     Result := Create(Text);
 end;
 
 function TIStringList.Obj: TStringList;
