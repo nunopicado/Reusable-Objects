@@ -8,6 +8,7 @@ uses
 type
     I<T> = Interface (Obj.SSI.GenericIntf.I<T>)           ['{D6A7F28C-56D5-4D59-8C58-41489D9A3098}']
       function Add(s: String): I<TStringList>;
+      function AddNewLine: I<TStringList>;
     End;
 
     TIStringList = Class(TInterfacedObject, I<TStringList>)
@@ -18,6 +19,7 @@ type
       destructor Destroy; Override;
       class function New(Text: String): I<TStringList>;
       function Add(s: String): I<TStringList>;
+      function AddNewLine: I<TStringList>;
       function Obj: TStringList;
     End;
 
@@ -29,6 +31,11 @@ function TIStringList.Add(s: String): I<TStringList>;
 begin
      Result := Self;
      FObj.Add(s);
+end;
+
+function TIStringList.AddNewLine: I<TStringList>;
+begin
+     Result := Add('');
 end;
 
 constructor TIStringList.Create(Text: String);
