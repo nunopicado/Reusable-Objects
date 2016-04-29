@@ -45,20 +45,45 @@ Each object will have its own how-to documentation. There is however some
 guidelines that will be usefull for every one of them.
 
 All these objects are interface based, which means object memory is always
-managed and freed automatically. You don't ever have to call Free or FreeAndNil 
+managed and freed automatically. You don't ever have to call `Free` or `FreeAndNil`
 on any of these objects.
 
 Another important issue is that you don't ever instantiate any of them with its 
 constructors. Any constructor you may find are for self-use only.
-Every object has one (or more) class functions named New that act in fact as a 
+Every object has one (or more) class functions named `New` that act in fact as a 
 constructor.
 The idea behind this approach is to force an interface instance, instead of a 
 implementation class instance, thus avoiding memory leaks even when you don't 
 have a variable to hold that instance.
 This method and all its advantages I owe to **Marco Douglas Santos**, a great 
-Object Pascal developer which came up with this elegant approach.
+**Object Pascal** developer which came up with this elegant approach.
 
 Seldom will you find procedures or properties in these objects.
 All methods will tend to be functions, and most of these will return the object
 itself, which means you will be able to chain method calls in one single 
 statement.
+
+Some objects are merely interfaced versions of existing components, and aim to
+allow a more streamlined runtime creation, without the need to free it's memory
+when it stops being needed. Of these, some will have a special function, `Obj`, 
+which will expose the object itself to allow compatibility use with other 
+components.
+
+
+Licence Agreement
+-----------------
+
+All the code in this object collection falls under the GNU LGPLv3, which you
+can read here: http://www.gnu.org/licenses/lgpl-3.0.html
+
+
+Contributions
+-------------
+
+You may contribute for this project if you feel so inclined, either with bug 
+fixes, enhancements or completely new obejcts.
+It is required however that the code you submit complies with the guidelines.
+Always interfaced, no constructors required, using the `New` class function to
+instantiate, no destructors needed, functions return the object itself whenever
+possible, etc.
+Just create a pull request on the main repository whenever you want to submit.
