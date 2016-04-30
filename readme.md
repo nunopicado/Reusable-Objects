@@ -76,6 +76,10 @@ Licence Agreement
 All the code in this object collection falls under the GNU LGPLv3, which you
 can read here: http://www.gnu.org/licenses/lgpl-3.0.html
 
+The licence agreement applies to the code in this collection of components.
+It does not apply to any of its dependencies, which have their own licence 
+agreement and to which you must comply in their terms.
+
 
 Contributions
 -------------
