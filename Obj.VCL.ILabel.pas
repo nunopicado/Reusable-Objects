@@ -34,7 +34,7 @@ uses
 type
     TILabel = Class(TLabel, I<TLabel>)
     public
-      class function New(Parent: TWinControl; Left, Top: Integer): I<TLabel>;
+      class function New(Parent: TWinControl; Caption: String; Left, Top: Integer): I<TLabel>;
       function Obj: TLabel;
     End;
 
@@ -42,12 +42,13 @@ implementation
 
 { TLabel }
 
-class function TILabel.New(Parent: TWinControl; Left, Top: Integer): I<TLabel>;
+class function TILabel.New(Parent: TWinControl; Caption: String; Left, Top: Integer): I<TLabel>;
 begin
-     Result            := inherited Create(nil);
-     Result.Obj.Parent := Parent;
-     Result.Obj.Left   := Left;
-     Result.Obj.Top    := Top;
+     Result             := inherited Create(nil);
+     Result.Obj.Parent  := Parent;
+     Result.Obj.Left    := Left;
+     Result.Obj.Top     := Top;
+     Result.Obj.Caption := Caption;
 end;
 
 function TILabel.Obj: TLabel;
