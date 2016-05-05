@@ -34,7 +34,7 @@ uses
 type
     TILabel = Class(TLabel, I<TLabel>)
     public
-      class function New(Parent: TFMXObject; Left, Top: Integer): I<TLabel>;
+      class function New(Parent: TFMXObject; Caption: String; Left, Top: Integer): I<TLabel>;
       function Obj: TLabel;
     End;
 
@@ -42,12 +42,13 @@ implementation
 
 { TLabel }
 
-class function TILabel.New(Parent: TFMXObject; Left, Top: Integer): I<TLabel>;
+class function TILabel.New(Parent: TFMXObject; Caption: String; Left, Top: Integer): I<TLabel>;
 begin
      Result                := inherited Create(nil);
      Result.Obj.Parent     := Parent;
      Result.Obj.Position.X := Left;
      Result.Obj.Position.Y := Top;
+     Result.Obj.Text       := Caption;
 end;
 
 function TILabel.Obj: TLabel;
