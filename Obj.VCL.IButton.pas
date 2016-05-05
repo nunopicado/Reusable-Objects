@@ -56,7 +56,8 @@ implementation
 
 procedure TIButton.ButtonClick(Sender: TObject);
 begin
-     FClick(Sender);
+     if Assigned(FClick)
+        then FClick(Sender);
 end;
 
 function TIButton.Click(ButtonClick: TNotifyReference): I<TButton>;
