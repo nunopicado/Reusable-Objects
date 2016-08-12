@@ -47,7 +47,7 @@ type
     IMailMessage = interface;
 
     IMailServer = interface ['{DCA8E8BA-5765-4591-816A-FD442F4E6384}']
-      function UssAuthentication(UserName, Password: String): IMailServer;
+      function UseAuthentication(UserName, Password: String): IMailServer;
       function UseSSL: IMailServer;
       function Connect: IMailServer;
       function OnAfterConnect(Action: TAfterConnect): IMailServer;
@@ -74,7 +74,7 @@ type
       constructor Create(HostName: String; HostPort: Word); Overload;
       destructor Destroy; Override;
       class function New(HostName: String; HostPort: Word): IMailServer;
-      function UssAuthentication(UserName, Password: String): IMailServer;
+      function UseAuthentication(UserName, Password: String): IMailServer;
       function UseSSL: IMailServer;
       function Connect: IMailServer;
       function OnAfterConnect(Action: TAfterConnect): IMailServer;
@@ -189,7 +189,7 @@ begin
         else mail.UseTLS := utUseExplicitTLS;
 end;
 
-function TMailServer.UssAuthentication(UserName, Password: String): IMailServer;
+function TMailServer.UseAuthentication(UserName, Password: String): IMailServer;
 begin
      Result        := Self;
      mail.AuthType := satDefault;
