@@ -29,16 +29,17 @@ interface
 type
     IEmailAddress = interface ['{C3F80B3B-D3F0-47B7-BE90-B6EBD0505E8C}']
       function ToString: String;
+      function IsValid: Boolean;
     end;
 
     TEmailAddress = class(TInterfacedObject, IEmailAddress)
     private
       FEmailAddress: String;
-      function IsValid: Boolean;
     public
       constructor Create(EmailAddress: String); Overload;
       class function New(EmailAddress: String): IEMailAddress;
       function ToString: String;
+      function IsValid: Boolean;
     end;
 
 implementation
