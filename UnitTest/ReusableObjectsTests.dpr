@@ -26,6 +26,8 @@ uses
   Obj.SSI.ICryptString in '..\Obj.SSI.ICryptString.pas',
   TestObj.SSI.IBase64 in 'TestObj.SSI.IBase64.pas',
   TestObj.SSI.ICryptString in 'TestObj.SSI.ICryptString.pas';
+  Obj.SSI.IString in '..\Obj.SSI.IString.pas',
+  TestObj.SSI.IString in 'TestObj.SSI.IString.pas';
 
 {$R *.RES}
 

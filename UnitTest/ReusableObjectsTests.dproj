@@ -100,6 +100,7 @@
         <DCCReference Include="..\Obj.SSI.ICryptString.pas"/>
         <DCCReference Include="TestObj.SSI.IBase64.pas"/>
         <DCCReference Include="TestObj.SSI.ICryptString.pas"/>
+        <DCCReference Include="..\Obj.SSI.IString.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
