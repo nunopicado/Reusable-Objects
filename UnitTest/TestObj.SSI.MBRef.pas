@@ -12,7 +12,11 @@ unit TestObj.SSI.MBRef;
 interface
 
 uses
-  TestFramework, Obj.SSI.MBRef, Obj.SSI.IString, Delphi.Mocks;
+    TestFramework
+  , Obj.SSI.MBRef
+  , Obj.SSI.IString
+  , Delphi.Mocks
+  ;
 
 type
   // Test methods for class TMBRef
