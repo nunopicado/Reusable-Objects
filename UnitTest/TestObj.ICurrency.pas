@@ -20,26 +20,33 @@ type
   TestICurrency = class(TTestCase)
   strict private
     FICurrency: ICurrency;
+  private
+    const
+      cValue = 5000;
   public
     procedure SetUp; override;
     procedure TearDown; override;
   published
-    procedure TestAsCurrencyEquals5;
-    procedure TestAsStringEqualsFormated5;
-    procedure TestAdd10_50Equals15_50;
-    procedure TestAddMinus8_25EqualsMinus3_25;
-    procedure TestAdd0Equals5;
-    procedure TestSub2_60Equals2_40;
-    procedure TestSubMinus1_12EqualsMinus6_12;
-    procedure TestSub0Equals5;
+    procedure TestAsCurrencyEquals5000;
+    procedure TestAsStringEqualsFormated5000;
+    procedure TestAdd10_50Equals5010_50;
+    procedure TestAddMinus5003_25EqualsMinus3_25;
+    procedure TestAdd0Equals5000;
+    procedure TestSub2_60Equals4997_40;
+    procedure TestSubMinus1_12EqualsMinus5001_12;
+    procedure TestSub0Equals5000;
     procedure TestResetEquals0;
   end;
 
 implementation
 
+uses
+    SysUtils
+  ;
+
 procedure TestICurrency.SetUp;
 begin
-     FICurrency := TCurrency.New(5);
+     FICurrency := TCurrency.New(cValue);
 end;
 
 procedure TestICurrency.TearDown;
@@ -47,49 +54,49 @@ begin
      FICurrency := nil;
 end;
 
-procedure TestICurrency.TestAsCurrencyEquals5;
+procedure TestICurrency.TestAsCurrencyEquals5000;
 var
    ExpectedValue, ReturnValue: Currency;
 begin
-     ExpectedValue := 5;
+     ExpectedValue := cValue;
      ReturnValue   := FICurrency.AsCurrency;
      CheckEquals(ExpectedValue, ReturnValue);
 end;
 
-procedure TestICurrency.TestAsStringEqualsFormated5;
+procedure TestICurrency.TestAsStringEqualsFormated5000;
 var
    ExpectedValue, ReturnValue: string;
 begin
-     ExpectedValue := '5.00 €';
+     ExpectedValue := Format('5%s000%s00 €', [FormatSettings.ThousandSeparator, FormatSettings.DecimalSeparator]);
      ReturnValue   := FICurrency.AsString;
      CheckEquals(ExpectedValue, ReturnValue);
 end;
 
-procedure TestICurrency.TestAdd0Equals5;
+procedure TestICurrency.TestAdd0Equals5000;
 var
    ExpectedValue, ReturnValue, Value: Currency;
 begin
      Value         := 0;
-     ExpectedValue := 5;
+     ExpectedValue := cValue;
      ReturnValue   := FICurrency.Add(Value).AsCurrency;
      CheckEquals(ExpectedValue, ReturnValue);
 end;
 
-procedure TestICurrency.TestAdd10_50Equals15_50;
+procedure TestICurrency.TestAdd10_50Equals5010_50;
 var
    ExpectedValue, ReturnValue, Value: Currency;
 begin
      Value         := 10.50;
-     ExpectedValue := 15.50;
+     ExpectedValue := 5010.50;
      ReturnValue   := FICurrency.Add(Value).AsCurrency;
      CheckEquals(ExpectedValue, ReturnValue);
 end;
 
-procedure TestICurrency.TestAddMinus8_25EqualsMinus3_25;
+procedure TestICurrency.TestAddMinus5003_25EqualsMinus3_25;
 var
    ExpectedValue, ReturnValue, Value: Currency;
 begin
-     Value         := -8.25;
+     Value         := -5003.25;
      ExpectedValue := -3.25;
      ReturnValue   := FICurrency.Add(Value).AsCurrency;
      CheckEquals(ExpectedValue, ReturnValue);
@@ -104,32 +111,32 @@ begin
      CheckEquals(ExpectedValue, ReturnValue);
 end;
 
-procedure TestICurrency.TestSub0Equals5;
+procedure TestICurrency.TestSub0Equals5000;
 var
    ExpectedValue, ReturnValue, Value: Currency;
 begin
      Value         := 0;
-     ExpectedValue := 5;
+     ExpectedValue := cValue;
      ReturnValue   := FICurrency.Sub(Value).AsCurrency;
      CheckEquals(ExpectedValue, ReturnValue);
 end;
 
-procedure TestICurrency.TestSub2_60Equals2_40;
+procedure TestICurrency.TestSub2_60Equals4997_40;
 var
    ExpectedValue, ReturnValue, Value: Currency;
 begin
      Value         := 2.60;
-     ExpectedValue := 2.40;
+     ExpectedValue := 4997.40;
      ReturnValue   := FICurrency.Sub(Value).AsCurrency;
      CheckEquals(ExpectedValue, ReturnValue);
 end;
 
-procedure TestICurrency.TestSubMinus1_12EqualsMinus6_12;
+procedure TestICurrency.TestSubMinus1_12EqualsMinus5001_12;
 var
    ExpectedValue, ReturnValue, Value: Currency;
 begin
      Value         := -1.12;
-     ExpectedValue := 6.12;
+     ExpectedValue := 5001.12;
      ReturnValue   := FICurrency.Sub(Value).AsCurrency;
      CheckEquals(ExpectedValue, ReturnValue);
 end;
