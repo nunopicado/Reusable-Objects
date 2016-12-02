@@ -96,9 +96,7 @@ function TMBRef.Generate: IMBReference;
        for i := 1 to Tmp.Length do
            Inc(Valor, Multiplier[i] * StrToInt(Tmp[i]));
        Valor := 98 - (Valor mod 97);
-       Result := Valor.ToString;
-       if Result.Length<2
-          then Result := '0'+Result;
+       Result := Valor.ToString.PadLeft(2, '0');
   end;
 begin
      Result     := Self;
