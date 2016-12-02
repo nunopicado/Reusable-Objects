@@ -25,11 +25,15 @@ uses
   Obj.SSI.IBase64 in '..\Obj.SSI.IBase64.pas',
   Obj.SSI.ICryptString in '..\Obj.SSI.ICryptString.pas',
   TestObj.SSI.IBase64 in 'TestObj.SSI.IBase64.pas',
-  TestObj.SSI.ICryptString in 'TestObj.SSI.ICryptString.pas';
+  TestObj.SSI.ICryptString in 'TestObj.SSI.ICryptString.pas',
+  Obj.RTL.IStringList in '..\Obj.RTL.IStringList.pas',
+  Obj.SSI.GenericIntf in '..\Obj.SSI.GenericIntf.pas',
+  Obj.SSI.IDataStream in '..\Obj.SSI.IDataStream.pas',
   Obj.SSI.IString in '..\Obj.SSI.IString.pas',
   Obj.SSI.MBRef in '..\Obj.SSI.MBRef.pas',
   TestObj.SSI.IString in 'TestObj.SSI.IString.pas',
-  TestObj.SSI.MBRef in 'TestObj.SSI.MBRef.pas';
+  TestObj.SSI.MBRef in 'TestObj.SSI.MBRef.pas',
+  TestObj.SSI.IDataStream in 'TestObj.SSI.IDataStream.pas';
 
 {$R *.RES}
 
