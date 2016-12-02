@@ -1,4 +1,4 @@
-unit TestObj.ITax;
+﻿unit TestObj.ITax;
 {
 
   Delphi DUnit Test Case
@@ -12,7 +12,9 @@ unit TestObj.ITax;
 interface
 
 uses
-  TestFramework, Obj.SSI.Tax;
+    TestFramework
+  , Obj.SSI.Tax
+  ;
 
 type
   // Test methods for class ICurrency
@@ -40,7 +42,9 @@ type
 implementation
 
 uses
-    Obj.SSI.Currency;
+    SysUtils
+  , Obj.SSI.Currency
+  ;
 
 procedure TestITax.SetUp;
 begin
@@ -74,7 +78,7 @@ procedure TestITax.TestAsStringEqualsFormated1000;
 var
    ExpectedValue, ReturnValue: string;
 begin
-     ExpectedValue := '1,000.00 �';
+     ExpectedValue := Format('1%s000%s00 €', [FormatSettings.ThousandSeparator, FormatSettings.DecimalSeparator]);
      ReturnValue   := FITax.AsString;
      CheckEquals(ExpectedValue, ReturnValue);
 end;
