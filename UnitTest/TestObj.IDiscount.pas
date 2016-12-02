@@ -40,7 +40,9 @@ type
 implementation
 
 uses
-    Obj.SSI.Currency;
+    SysUtils
+  , Obj.SSI.Currency
+  ;
 
 procedure TestIDiscount.SetUp;
 begin
@@ -74,7 +76,7 @@ procedure TestIDiscount.TestAsStringEqualsFormated100;
 var
    ExpectedValue, ReturnValue: string;
 begin
-     ExpectedValue := '100.00 €';
+     ExpectedValue := Format('100%s00 €', [FormatSettings.DecimalSeparator]);
      ReturnValue   := FIDiscount.AsString;
      CheckEquals(ExpectedValue, ReturnValue);
 end;
