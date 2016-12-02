@@ -118,14 +118,10 @@ var
    PadString: String;
 begin
      Result := Copy(FOrigin.AsString, 1, FNewSize);
-     if Result.Length<FNewSize
-        then begin
-                  PadString := StringOfChar(FPadChar, FNewSize-Result.Length);
-                  case FPadSide of
-                       psLeft  : Result := PadString + Result;
-                       psRight : Result := Result + PadString;
-                  end;
-             end;
+     case FPadSide of
+          psLeft  : Result := Result.PadLeft(FNewSize, FPadChar);
+          psRight : Result := Result.PadRight(FNewSize, FPadChar);
+     end;
 end;
 
 constructor TPadded.Create(Origin: IString; NewSize: Integer; PadChar: Char = '0'; PadSide: TPadSide = psLeft);
