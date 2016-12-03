@@ -25,7 +25,6 @@ type
   strict private
     FMBRef: IMBReference;
     MockEntidade: TMock<IString>;
-    MockSubEnt: TMock<IString>;
     MockID: TMock<IString>;
     MockValor: TMock<IString>;
   public
@@ -51,15 +50,13 @@ implementation
 procedure TestTMBRef.SetUp;
 begin
      MockEntidade := TMock<IString>.Create;
-     MockSubEnt   := TMock<IString>.Create;
      MockID       := TMock<IString>.Create;
      MockValor    := TMock<IString>.Create;
      MockEntidade.Setup.WillReturn('11604').When.AsString;
-     MockSubEnt.Setup.WillReturn('999').When.AsString;
-     MockID.Setup.WillReturn('1234').When.AsString;
+     MockID.Setup.WillReturn('9991234').When.AsString;
      MockValor.Setup.WillReturn('00002586').When.AsString;
 
-     FMBRef := TMBRef.New(MockEntidade, MockSubEnt, MockID, MockValor);
+     FMBRef := TMBRef.New(MockEntidade, MockID, MockValor);
 end;
 
 procedure TestTMBRef.TearDown;
@@ -77,7 +74,7 @@ end;
 
 procedure TestTMBRefFactory.SetUp;
 begin
-  FMBRefFactory := TMBRefFactory.New('11604', '999', '1234', '25.86');
+  FMBRefFactory := TMBRefFactory.New('11604', '9991234', '25.86');
 end;
 
 procedure TestTMBRefFactory.TearDown;
