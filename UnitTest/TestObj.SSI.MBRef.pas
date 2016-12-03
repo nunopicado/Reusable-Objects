@@ -74,7 +74,11 @@ end;
 
 procedure TestTMBRefFactory.SetUp;
 begin
-  FMBRefFactory := TMBRefFactory.New('11604', '9991234', '25.86');
+  FMBRefFactory := TMBRefFactory.New(
+                                     TString.New('11604'),
+                                     TMBRefIfThen.New('999', '1234'),
+                                     TString.New('25.86')
+                                    );
 end;
 
 procedure TestTMBRefFactory.TearDown;

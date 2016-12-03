@@ -58,8 +58,8 @@ type
     private
       FProduct: IMBReference;
     public
-      constructor Create(Entidade, ID, Valor: String);
-      class function New(Entidade, ID, Valor: String): IString;
+      constructor Create(Entidade, ID, Valor: IString);
+      class function New(Entidade, ID, Valor: IString): IString;
       function AsString: String;
     End;
 
@@ -129,17 +129,17 @@ begin
      Result := FProduct.AsString;
 end;
 
-constructor TMBRefFactory.Create(Entidade, ID, Valor: String);
+constructor TMBRefFactory.Create(Entidade, ID, Valor: IString);
 begin
      FProduct := TMBRef.New(
-                            TPadded.New(TNumbersOnly.New(TString.New(Entidade)), 5),
-                            TMBRefIfThen.New('999', '1234'),
-                            TPadded.New(TNumbersOnly.New(TString.New(Valor)), 8)
+                            TPadded.New(TNumbersOnly.New(Entidade), 5),
+                            TPadded.New(TNumbersOnly.New(ID), 7),
+                            TPadded.New(TNumbersOnly.New(Valor), 8)
                            )
                        .Generate;
 end;
 
-class function TMBRefFactory.New(Entidade, ID, Valor: String): IString;
+class function TMBRefFactory.New(Entidade, ID, Valor: IString): IString;
 begin
      Result := Create(Entidade, ID, Valor);
 end;
