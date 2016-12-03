@@ -44,13 +44,12 @@ type
     TMBRef = Class(TInterfacedObject, IMBReference)
     private
       FEntidade: String;
-      FSubEnt: String;
       FID: String;
       FValor: String;
       FReference: String;
     public
-      constructor Create(Entidade, SubEntidade, ID, Valor: IString);
-      class function New(Entidade, SubEntidade, ID, Valor: IString): IMBReference;
+      constructor Create(Entidade, ID, Valor: IString);
+      class function New(Entidade, ID, Valor: IString): IMBReference;
       function Generate: IMBReference;
       function AsString: String;
     End;
@@ -59,8 +58,17 @@ type
     private
       FProduct: IMBReference;
     public
-      constructor Create(Entidade, SubEntidade, ID, Valor: String);
-      class function New(Entidade, SubEntidade, ID, Valor: String): IString;
+      constructor Create(Entidade, ID, Valor: String);
+      class function New(Entidade, ID, Valor: String): IString;
+      function AsString: String;
+    End;
+
+    TMBRefIfThen = Class(TInterfacedObject, IString)
+    private
+      FID: String;
+    public
+      constructor Create(SubEnt, ID: String);
+      class function New(SubEnt, ID: String): IString;
       function AsString: String;
     End;
 
@@ -73,10 +81,9 @@ uses
 
 { TMBRef }
 
-constructor TMBRef.Create(Entidade, SubEntidade, ID, Valor: IString);
+constructor TMBRef.Create(Entidade, ID, Valor: IString);
 begin
      FEntidade := Entidade.AsString;
-     FSubEnt   := SubEntidade.AsString;
      FID       := ID.AsString;
      FValor    := Valor.AsString;
 end;
@@ -91,7 +98,7 @@ function TMBRef.Generate: IMBReference;
      Valor: Integer;
      Tmp: String;
   begin
-       Tmp   := Format('%s%s%s%s', [FEntidade, FSubEnt, FID, FValor]);
+       Tmp   := Format('%s%s%s', [FEntidade, FID, FValor]);
        Valor := 0;
        for i := 1 to Tmp.Length do
            Inc(Valor, Multiplier[i] * StrToInt(Tmp[i]));
@@ -100,12 +107,12 @@ function TMBRef.Generate: IMBReference;
   end;
 begin
      Result     := Self;
-     FReference := Format('%s%s%s', [FSubEnt, FID, CalcCheckDigits]);
+     FReference := Format('%s%s', [FID, CalcCheckDigits]);
 end;
 
-class function TMBRef.New(Entidade, SubEntidade, ID, Valor: IString): IMBReference;
+class function TMBRef.New(Entidade, ID, Valor: IString): IMBReference;
 begin
-     Result := Create(Entidade, SubEntidade, ID, Valor);
+     Result := Create(Entidade, ID, Valor);
 end;
 
 function TMBRef.AsString: String;
@@ -122,20 +129,40 @@ begin
      Result := FProduct.AsString;
 end;
 
-constructor TMBRefFactory.Create(Entidade, SubEntidade, ID, Valor: String);
+constructor TMBRefFactory.Create(Entidade, ID, Valor: String);
 begin
      FProduct := TMBRef.New(
                             TPadded.New(TNumbersOnly.New(TString.New(Entidade)), 5),
-                            TPadded.New(TNumbersOnly.New(TString.New(SubEntidade)), 3),
-                            TPadded.New(TNumbersOnly.New(TString.New(ID)), 4),
+                            TMBRefIfThen.New('999', '1234'),
                             TPadded.New(TNumbersOnly.New(TString.New(Valor)), 8)
                            )
                        .Generate;
 end;
 
-class function TMBRefFactory.New(Entidade, SubEntidade, ID, Valor: String): IString;
+class function TMBRefFactory.New(Entidade, ID, Valor: String): IString;
 begin
-     Result := Create(Entidade, SubEntidade, ID, Valor);
+     Result := Create(Entidade, ID, Valor);
+end;
+
+{ TMBRefIfThen }
+
+function TMBRefIfThen.AsString: String;
+begin
+     Result := FID;
+end;
+
+constructor TMBRefIfThen.Create(SubEnt, ID: String);
+begin
+     FID := Format('%s%s', [
+                            TPadded.New(TNumbersOnly.New(TString.New(SubEnt)), 3).AsString,
+                            TPadded.New(TNumbersOnly.New(TString.New(ID)), 4).AsString
+                           ]
+                  );
+end;
+
+class function TMBRefIfThen.New(SubEnt, ID: String): IString;
+begin
+     Result := Create(SubEnt, ID);
 end;
 
 end.
