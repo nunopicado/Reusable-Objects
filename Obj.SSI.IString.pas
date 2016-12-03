@@ -64,6 +64,16 @@ type
       class function New(Origin: IString; NewSize: Integer; PadChar: Char = '0'; PadSide: TPadSide = psLeft): IString;
       function AsString: String;
     End;
+
+    TGroupDigits = Class(TInterfacedObject, IString)
+    private
+      FOrigin: IString;
+      FDigitsPerGroup: Byte;
+    public
+      constructor Create(Origin: IString; DigitsPerGroup: Byte);
+      class function New(Origin: IString; DigitsPerGroup: Byte): IString;
+      function AsString: String;
+    End;
     {$M-}
 
 implementation
@@ -135,6 +145,29 @@ end;
 class function TPadded.New(Origin: IString; NewSize: Integer; PadChar: Char = '0'; PadSide: TPadSide = psLeft): IString;
 begin
      Result := Create(Origin, NewSize, PadChar, PadSide);
+end;
+
+{ TGroupDigits }
+
+function TGroupDigits.AsString: String;
+var
+  i: Integer;
+begin
+     Result := FOrigin.AsString;
+     for i := Result.Length downto 1 do
+         if (i mod 3 = 1) and (i<Result.Length)
+            then Result.Insert(i, ' ');
+end;
+
+constructor TGroupDigits.Create(Origin: IString; DigitsPerGroup: Byte);
+begin
+     FOrigin         := Origin;
+     FDigitsPerGroup := DigitsPerGroup;
+end;
+
+class function TGroupDigits.New(Origin: IString; DigitsPerGroup: Byte): IString;
+begin
+     Result := Create(Origin, DigitsPerGroup);
 end;
 
 end.
