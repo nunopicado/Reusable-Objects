@@ -58,6 +58,18 @@ type
     procedure TestAsStringRight;
     procedure TestAsStringLarger;
   end;
+  // Test methods for class TGroupDigits
+
+  TestTGroupDigits = class(TTestCase)
+  strict private
+    FGroupDigits: IString;
+    Mock: TMock<IString>;
+  public
+    procedure SetUp; override;
+    procedure TearDown; override;
+  published
+    procedure TestAsString;
+  end;
 
 implementation
 
@@ -152,10 +164,31 @@ begin
      CheckEquals('ABCDE', ReturnValue);
 end;
 
+procedure TestTGroupDigits.SetUp;
+begin
+     Mock := TMock<IString>.Create;
+     Mock.Setup.WillReturn('0123456789').When.AsString;
+     FGroupDigits := TGroupDigits.New(Mock, 3);
+end;
+
+procedure TestTGroupDigits.TearDown;
+begin
+     FGroupDigits := nil;
+end;
+
+procedure TestTGroupDigits.TestAsString;
+var
+   ReturnValue: string;
+begin
+     ReturnValue := FGroupDigits.AsString;
+     CheckEquals('0 123 456 789', ReturnValue);
+end;
+
 initialization
   // Register any test cases with the test runner
   RegisterTest(TestTString.Suite);
   RegisterTest(TestTNumbersOnly.Suite);
   RegisterTest(TestTPadded.Suite);
+  RegisterTest(TestTGroupDigits.Suite);
 end.
 
