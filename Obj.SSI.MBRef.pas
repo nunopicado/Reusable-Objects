@@ -89,25 +89,16 @@ begin
 end;
 
 function TMBRef.Generate: IMBReference;
-  function CalcCheckDigits: String;
-  const
-       Multiplier: Array [1..20] of Integer = (51, 73, 17, 89, 38, 62, 45, 53, 15, 50,
-                                                5, 49, 34, 81, 76, 27, 90,  9, 30,  3);
-  var
-     i: Integer;
-     Valor: Integer;
-     Tmp: String;
-  begin
-       Tmp   := Format('%s%s%s', [FEntidade, FID, FValor]);
-       Valor := 0;
-       for i := 1 to Tmp.Length do
-           Inc(Valor, Multiplier[i] * StrToInt(Tmp[i]));
-       Valor := 98 - (Valor mod 97);
-       Result := Valor.ToString.PadLeft(2, '0');
-  end;
+var
+  Valor   : Integer;
+  Ch      : Char;
 begin
-     Result     := Self;
-     FReference := Format('%s%s', [FID, CalcCheckDigits]);
+     Result  := Self;
+     Valor   := 0;
+     for Ch in (FEntidade + FID + FValor) do
+         Valor := ((Valor + StrToInt(Ch)) * 10) mod 97;
+     Valor      := 98 - ((Valor * 10) mod 97);
+     FReference := FID + Valor.ToString.PadLeft(2, '0');
 end;
 
 class function TMBRef.New(Entidade, ID, Valor: IString): IMBReference;
