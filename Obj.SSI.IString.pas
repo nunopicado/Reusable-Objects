@@ -74,6 +74,26 @@ type
       class function New(Origin: IString; DigitsPerGroup: Byte): IString;
       function AsString: String;
     End;
+
+    TCut = Class(TInterfacedObject, IString)
+    private
+      FOrigin: IString;
+      FCharacters: Integer;
+    public
+      constructor Create(Origin: IString; Characters: Integer);
+      class function New(Origin: IString; Characters: Integer): IString;
+      function AsString: String;
+    End;
+
+    TDefault = Class(TInterfacedObject, IString)
+    private
+      FOrigin: IString;
+      FDefault: String;
+    public
+      constructor Create(Origin: IString; Default: String);
+      class function New(Origin: IString; Default: String): IString;
+      function AsString: String;
+    End;
     {$M-}
 
 implementation
@@ -168,6 +188,44 @@ end;
 class function TGroupDigits.New(Origin: IString; DigitsPerGroup: Byte): IString;
 begin
      Result := Create(Origin, DigitsPerGroup);
+end;
+
+{ TCut }
+
+function TCut.AsString: String;
+begin
+     Result := Copy(FOrigin.AsString, 1, FCharacters);
+end;
+
+constructor TCut.Create(Origin: IString; Characters: Integer);
+begin
+     FOrigin     := Origin;
+     FCharacters := Characters;
+end;
+
+class function TCut.New(Origin: IString; Characters: Integer): IString;
+begin
+     Result := Create(Origin, Characters);
+end;
+
+{ TDefault }
+
+function TDefault.AsString: String;
+begin
+     if FOrigin.AsString.IsEmpty
+        then Result := FDefault
+        else Result := FOrigin.AsString;
+end;
+
+constructor TDefault.Create(Origin: IString; Default: String);
+begin
+     FOrigin  := Origin;
+     FDefault := Default;
+end;
+
+class function TDefault.New(Origin: IString; Default: String): IString;
+begin
+     Result := Create(Origin, Default);
 end;
 
 end.
