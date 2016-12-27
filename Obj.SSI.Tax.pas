@@ -1,5 +1,5 @@
 ﻿(******************************************************************************)
-(** Suite         : Reusable Objects                                         **)   
+(** Suite         : Reusable Objects                                         **)
 (** Object        : ITax                                                     **)
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)

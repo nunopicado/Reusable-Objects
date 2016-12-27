@@ -1,5 +1,5 @@
 (******************************************************************************)
-(** Suite         : Reusable Objects                                         **)   
+(** Suite         : Reusable Objects                                         **)
 (** Object        : IButton                                                  **)
 (** Framework     : FMX                                                      **)
 (** Developed by  : Nuno Picado                                              **)
@@ -22,7 +22,7 @@
 (** Disclaimer    : The licence agreement applies to the code in this unit   **)
 (**                 and not to any of its dependencies, which have their own **)
 (**                 licence agreement and to which you must comply in their  **)
-(**					terms													 **)
+(**                 terms                                                    **)
 (******************************************************************************)
 
 unit Obj.FMX.IButton;
