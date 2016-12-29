@@ -3,6 +3,7 @@
 (** Object        : IMaybe                                                   **)
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
+(** Forked by     : Igor Nunes                                               **)
 (******************************************************************************)
 (** Interfaces    : IMaybe                                                   **)
 (** Classes       : TMaybe, Implements IMaybe                                **)
@@ -27,62 +28,52 @@ unit Obj.SSI.IMaybe;
 interface
 
 type
-    IMaybe<T> = Interface
-      function Define(Value: T) : IMaybe<T>;
-      function IsDefined        : Boolean;
-      function Value            : T;
-      function Silent           : IMaybe<T>;
-    End;
+  TMaybeEnum = (Nothing, JustT);
 
-    TMaybe<T> = Class(TInterfacedObject, IMaybe<T>)
-    private
-      FValue   : T;
-      FDefined : Boolean;
-      FSilent  : Boolean;
-    public
-      class function New        : IMaybe<T>;
-      function Define(Value: T) : IMaybe<T>;
-      function Silent           : IMaybe<T>;
-      function IsDefined        : Boolean;
-      function Value            : T;
-    End;
+  IMaybe<T> = Interface
+    function Define(value : T) : IMaybe<T>;
+    function LookUp : TMaybeEnum;
+    function Value : T;
+  End;
+
+  TMaybe<T> = Class(TInterfacedObject, IMaybe<T>)
+  private
+    FValue : T;
+    FResult : TMaybeEnum;
+  public
+    class function New : IMaybe<T>;
+    function Define(value : T) : IMaybe<T>;
+    function LookUp : TMaybeEnum;
+    function Value : T;
+  End;
 
 implementation
-
 uses
-    SysUtils
-  ;
+  SysUtils;
 
-{ TMaybe<T> }
-
-function TMaybe<T>.Define(Value: T): IMaybe<T>;
+function TMaybe<T>.Define(value : T) : IMaybe<T>;
 begin
-     Result   := Self;
-     FValue   := Value;
-     FDefined := True;
+  Result   := self;
+  FValue   := value;
+  FResult  := JustT;
 end;
 
-function TMaybe<T>.IsDefined: Boolean;
+function TMaybe<T>.LookUp : TMaybeEnum;
 begin
-     Result := FDefined;
+  LookUp := FResult;
 end;
 
-class function TMaybe<T>.New: IMaybe<T>;
+class function TMaybe<T>.New : IMaybe<T>;
 begin
-     Result := Create;
+  New := Create;
 end;
 
-function TMaybe<T>.Silent: IMaybe<T>;
+function TMaybe<T>.value : T;
 begin
-     Result  := Self;
-     FSilent := True;
-end;
-
-function TMaybe<T>.Value: T;
-begin
-     if (not FSilent) and (not FDefined)
-        then raise Exception.Create('Value not defined.');
-     Result := FValue;
+  case self.FResult of
+    JustT   : value := FValue;
+    nothing : raise Exception.Create('Maybe<T>: there is literally nothing here!');
+  end;
 end;
 
 end.
