@@ -85,9 +85,8 @@ end;
 
 function TPTVATNumber.IsValid: Boolean;
 begin
-     Result := False;
-     if TRegEx.IsMatch(FPTVATNumber, '^(?!\s*$)[0-9]{9}$')
-        then Result := RightStr(FPTVATNumber, 1).ToInteger = CalcCheckDigit;
+     Result := TRegEx.IsMatch(FPTVATNumber, '^(?!\s*$)[0-9]{9}$') and
+               (RightStr(FPTVATNumber, 1).ToInteger = CalcCheckDigit);
 end;
 
 class function TPTVATNumber.New(PTVATNumber: String): IPTVATNumber;
