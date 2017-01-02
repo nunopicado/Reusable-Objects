@@ -91,7 +91,7 @@ end;
 
 class function TPTVATNumber.New(PTVATNumber: String): IPTVATNumber;
 begin
-     Result := Create(PTVATNumber);
+     Result := Create(StringReplace(PTVATNumber, ' ', '', [rfReplaceAll]));
 end;
 
 end.
