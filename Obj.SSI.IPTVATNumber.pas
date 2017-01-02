@@ -67,7 +67,7 @@ var
 begin
      Result := 0;
      for i := 1 to Pred(FPTVATNumber.Length) do
-         Result := Result + (10 - i) * Copy(FPTVATNumber, i, 1).ToInteger;
+         Inc(Result, (10 - i) * Copy(FPTVATNumber, i, 1).ToInteger);
      Result := 11 - (Result mod 11);
      if Result >= 10
         then Result := 0;
