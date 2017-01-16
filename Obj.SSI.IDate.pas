@@ -30,7 +30,7 @@ type
     IDate = Interface ['{26A4BD5E-9220-4687-B246-87A8060A277E}']
       function Value    : TDateTime;
       function AsString : String;
-      function AsFormatedString(Mask: String): String;
+      function AsFormattedString(Mask: String): String;
       function Days     : LongWord;
       function Weeks    : LongWord;
       function Months   : LongWord;
@@ -46,7 +46,7 @@ type
       class function New(aDate: String): IDate; Overload;
       function Value    : TDateTime;
       function AsString : String;
-      function AsFormatedString(DateFormat: String): String;
+      function AsFormattedString(DateFormat: String): String;
       function Days     : LongWord;
       function Weeks    : LongWord;
       function Months   : LongWord;
@@ -63,7 +63,7 @@ uses
 
 { TDate }
 
-function TDate.AsFormatedString(DateFormat: String): String;
+function TDate.AsFormattedString(DateFormat: String): String;
 begin
      Result := FormatDateTime(DateFormat, FDate);
 end;
