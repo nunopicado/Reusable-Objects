@@ -22,13 +22,13 @@
 (**                 terms                                                    **)
 (******************************************************************************)
 
-unit Obj.SSI.ICurrency;
+unit Obj.SSI.Currency;
 
 interface
 
 type
     ICurrency = Interface             ['{EF61CB53-7281-4645-B3C5-C5EE860FC2C5}']
-      function Value: Currency;
+      function AsCurrency: Currency;
       function AsString: String;
       function Add(Value: Currency): ICurrency;
       function Sub(Value: Currency): ICurrency;
@@ -41,7 +41,7 @@ type
       constructor Create(InitialValue: Currency); Overload;
     public
       class function New(InitialValue: Currency): ICurrency;
-      function Value: Currency;
+      function AsCurrency: Currency;
       function AsString: String;
       function Add(Value: Currency): ICurrency;
       function Sub(Value: Currency): ICurrency;
@@ -58,10 +58,11 @@ uses
 
 function TCurrency.Add(Value: Currency): ICurrency;
 begin
-     Result := New(FValue + Value);
+     FValue := FValue + Value;
+     Result := Self;
 end;
 
-function TCurrency.Value: Currency;
+function TCurrency.AsCurrency: Currency;
 begin
      Result := FValue;
 end;
@@ -84,12 +85,14 @@ end;
 
 function TCurrency.Reset: ICurrency;
 begin
-     Result := New(0);
+     FValue := 0;
+     Result := Self;
 end;
 
 function TCurrency.Sub(Value: Currency): ICurrency;
 begin
-     Result := New(FValue - Value);
+     FValue := FValue - Value;
+     Result := Self;
 end;
 
 end.

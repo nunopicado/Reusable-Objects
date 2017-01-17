@@ -33,17 +33,16 @@ uses
 type
     IClipboard = interface
     ['{A047D2F2-A1CD-4611-8503-73C536AB5D47}']
-      function Copy(Value: String): IClipboard;
       function Paste: String;
     end;
 
     TClipboard = Class(TInterfacedObject, IClipboard)
     private
       FClipboard: IFMXClipboardService;
-      constructor Create;
+      constructor Create(Value: String);
     public
-      class function New: IClipboard;
-      function Copy(Value: String): IClipboard;
+      class function New(Value: String): IClipboard;
+      class function Copy(Value: String): IClipboard;
       function Paste: String;
     End;
 
@@ -55,15 +54,16 @@ uses
 
 { TClipboard }
 
-constructor TClipboard.Create;
+constructor TClipboard.Create(Value: String);
 begin
      if not TPlatformServices.Current.SupportsPlatformService(IFMXClipboardService, IInterface(FClipboard))
         then raise Exception.Create('Clipboard could not be accessed.');
+     FClipBoard.SetClipboard(Value);
 end;
 
-class function TClipboard.New: IClipboard;
+class function TClipboard.New(Value: String): IClipboard;
 begin
-     Result := Create;
+     Result := Create(Value);
 end;
 
 function TClipboard.Paste: String;
@@ -71,11 +71,9 @@ begin
      Result := FClipboard.GetClipboard.ToString;
 end;
 
-function TClipboard.Copy(Value: String): IClipboard;
+class function TClipboard.Copy(Value: String): IClipboard;
 begin
-     Result := Self;
-     FClipboard.SetClipboard(Value);
+     Result := New(Value);
 end;
-
 
 end.
