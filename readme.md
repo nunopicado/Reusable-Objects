@@ -85,7 +85,7 @@ Contributions
 -------------
 
 You may contribute for this project if you feel so inclined, either with bug 
-fixes, enhancements or completely new obejcts.
+fixes, enhancements or completely new objects.
 It is required however that the code you submit complies with the guidelines.
 Always interfaced, no constructors required, using the `New` class function to
 instantiate, no destructors needed, functions return the object itself whenever
