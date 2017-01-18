@@ -48,6 +48,19 @@ type
       function Reset: ICurrency;
     End;
 
+    TDiscount = Class(TInterfacedObject, ICurrency)
+    private
+      FOrigin   : ICurrency;
+      constructor Create(Origin: ICurrency; const Discount: Single);
+    public
+      class function New(Origin: ICurrency; const Discount: Single): ICurrency;
+      function Value: Currency;
+      function AsString: String;
+      function Add(Value: Currency): ICurrency;
+      function Sub(Value: Currency): ICurrency;
+      function Reset: ICurrency;
+    End;
+
 implementation
 
 uses
@@ -90,6 +103,43 @@ end;
 function TCurrency.Sub(Value: Currency): ICurrency;
 begin
      Result := New(FValue - Value);
+end;
+
+{ TDiscount }
+
+function TDiscount.Add(Value: Currency): ICurrency;
+begin
+     Result := FOrigin.Add(Value);
+end;
+
+function TDiscount.AsString: String;
+begin
+     Result := FOrigin.AsString;
+end;
+
+constructor TDiscount.Create(Origin: ICurrency; const Discount: Single);
+begin
+     FOrigin := Origin.Sub(Origin.Value * (Discount/100));
+end;
+
+class function TDiscount.New(Origin: ICurrency; const Discount: Single): ICurrency;
+begin
+     Result := Create(Origin, Discount);
+end;
+
+function TDiscount.Reset: ICurrency;
+begin
+     Result := FOrigin.Reset;
+end;
+
+function TDiscount.Sub(Value: Currency): ICurrency;
+begin
+     Result := FOrigin.Sub(Value);
+end;
+
+function TDiscount.Value: Currency;
+begin
+     Result := FOrigin.Value;
 end;
 
 end.
