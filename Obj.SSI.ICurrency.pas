@@ -35,10 +35,21 @@ type
       function Reset: ICurrency;
     End;
 
+    TDecorableCurrency = Class(TInterfacedObject, ICurrency)
+    protected
+      FOrigin: ICurrency;
+    public
+      function Value: Currency;
+      function AsString: String;
+      function Add(Value: Currency): ICurrency;
+      function Sub(Value: Currency): ICurrency;
+      function Reset: ICurrency;
+    End;
+
     TCurrency = Class(TInterfacedObject, ICurrency)
     private
       FValue: Currency;
-      constructor Create(InitialValue: Currency); Overload;
+      constructor Create(InitialValue: Currency);
     public
       class function New(InitialValue: Currency): ICurrency;
       function Value: Currency;
@@ -48,23 +59,27 @@ type
       function Reset: ICurrency;
     End;
 
-    TDiscount = Class(TInterfacedObject, ICurrency)
+    TDiscount = Class(TDecorableCurrency, ICurrency)
     private
-      FOrigin   : ICurrency;
       constructor Create(Origin: ICurrency; const Discount: Single);
     public
       class function New(Origin: ICurrency; const Discount: Single): ICurrency;
-      function Value: Currency;
-      function AsString: String;
-      function Add(Value: Currency): ICurrency;
-      function Sub(Value: Currency): ICurrency;
-      function Reset: ICurrency;
+    End;
+
+    TTax = Class(TDecorableCurrency, ICurrency)
+    private
+      constructor Create(Origin: ICurrency; const Tax: Single);
+      function CalcTax(const BaseValue: Currency; const Tax: Single): Currency;
+    public
+      class function New(Origin: ICurrency; const Tax: Single): ICurrency;
     End;
 
 implementation
 
 uses
-    SysUtils;
+    SysUtils
+  , Obj.SSI.IIF
+  ;
 
 
 { TCurrency }
@@ -105,17 +120,34 @@ begin
      Result := New(FValue - Value);
 end;
 
-{ TDiscount }
+{ TDecorableCurrency }
 
-function TDiscount.Add(Value: Currency): ICurrency;
+function TDecorableCurrency.Add(Value: Currency): ICurrency;
 begin
      Result := FOrigin.Add(Value);
 end;
 
-function TDiscount.AsString: String;
+function TDecorableCurrency.AsString: String;
 begin
      Result := FOrigin.AsString;
 end;
+
+function TDecorableCurrency.Reset: ICurrency;
+begin
+     Result := FOrigin.Reset;
+end;
+
+function TDecorableCurrency.Sub(Value: Currency): ICurrency;
+begin
+     Result := FOrigin.Sub(Value);
+end;
+
+function TDecorableCurrency.Value: Currency;
+begin
+     Result := FOrigin.Value;
+end;
+
+{ TDiscount }
 
 constructor TDiscount.Create(Origin: ICurrency; const Discount: Single);
 begin
@@ -127,19 +159,26 @@ begin
      Result := Create(Origin, Discount);
 end;
 
-function TDiscount.Reset: ICurrency;
+{ TTax }
+
+function TTax.CalcTax(const BaseValue: Currency; const Tax: Single): Currency;
+var
+   Control: Single;
 begin
-     Result := FOrigin.Reset;
+     Control := 1 + Abs(Tax) / 100;
+     if Tax >= 0
+        then Result := BaseValue * Control
+        else Result := BaseValue / Control;
 end;
 
-function TDiscount.Sub(Value: Currency): ICurrency;
+constructor TTax.Create(Origin: ICurrency; const Tax: Single);
 begin
-     Result := FOrigin.Sub(Value);
+     FOrigin := Origin.Reset.Add(CalcTax(Origin.Value, Tax));
 end;
 
-function TDiscount.Value: Currency;
+class function TTax.New(Origin: ICurrency; const Tax: Single): ICurrency;
 begin
-     Result := FOrigin.Value;
+     Result := Create(Origin, Tax);
 end;
 
 end.
