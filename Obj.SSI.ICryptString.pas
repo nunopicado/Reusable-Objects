@@ -29,10 +29,8 @@ interface
 
 type
     ICryptString = interface ['{98C9E3C7-230A-4718-9BB8-0E0B1B40BBE5}']
-      function Crypt: ICryptString;
-      function Decrypt: ICryptString;
-      function Reset: ICryptString;
-      function ToString: String;
+      function Crypt: String;
+      function Decrypt: String;
     end;
 
     TCryptString = Class(TInterfacedObject, ICryptString)
@@ -41,20 +39,15 @@ type
            BufferSize = 1024 * 1024;
            DefaultPassword = '98C9E3C7';
       var
-         FPassword: AnsiString;
          FText: String;
-         FResult: String;
-      procedure CryptString(var Text: String);
-      procedure DecryptString(var Text: String);
+         FPassword: AnsiString;
     public
       constructor Create(Text: String; Password: AnsiString); Overload;
       constructor Create(Text: String); Overload;
       class function New(Text: String): ICryptString; Overload;
       class function New(Text: String; Password: AnsiString): ICryptString; Overload;
-      function Crypt: ICryptString;
-      function Decrypt: ICryptString;
-      function Reset: ICryptString;
-      function ToString: String;
+      function Crypt: String;
+      function Decrypt: String;
     End;
 
 implementation
@@ -74,10 +67,9 @@ type
 
     TCryptKey = Class(TInterfacedObject, ICryptKey)
     private
-      FPassword: AnsiString;
-      FProv: HCryptProv;
-      FHash: HCryptHash;
-      FKey: HCryptKey;
+      FProv : HCryptProv;
+      FHash : HCryptHash;
+      FKey  : HCryptKey;
     public
       constructor Create(Password: AnsiString); Overload;
       destructor Destroy; Override;
@@ -90,8 +82,6 @@ type
 constructor TCryptString.Create(Text: String);
 begin
      Create(Text, DefaultPassword);
-     FText := Text;
-     Reset;
 end;
 
 constructor TCryptString.Create(Text: String; Password: AnsiString);
@@ -99,38 +89,9 @@ begin
      inherited Create;
      FText     := Text;
      FPassword := Password;
-     Reset;
 end;
 
-function TCryptString.Crypt: ICryptString;
-begin
-     Result := Self;
-     CryptString(FResult);
-end;
-
-function TCryptString.Decrypt: ICryptString;
-begin
-     Result := Self;
-     DecryptString(FResult);
-end;
-
-class function TCryptString.New(Text: String): ICryptString;
-begin
-     Result := Create(Text);
-end;
-
-function TCryptString.Reset: ICryptString;
-begin
-     Result  := Self;
-     FResult := FText;
-end;
-
-function TCryptString.ToString: String;
-begin
-     Result := FResult;
-end;
-
-procedure TCryptString.CryptString(var Text: String);
+function TCryptString.Crypt: String;
 var
    Source    : TStringStream;
    Target    : TStringStream;
@@ -140,7 +101,7 @@ var
    FCryptKey : ICryptKey;
 begin
      FCryptKey       := TCryptKey.New(FPassword);
-     Source          := TStringStream.Create(Text);
+     Source          := TStringStream.Create(FText);
      Source.Position := 0;
      Target          := TStringStream.Create;
      try
@@ -153,9 +114,7 @@ begin
                     then RaiseLastOSError;
                  Target.Write(Buffer^, BytesIn);
            until Last;
-
-           // encode the string using base64
-           Text := TBase64.New(Target.DataString).Encode.ToString;
+           Result := TBase64.New(Target.DataString).Encode;
         finally
            FreeMem(Buffer, BufferSize);
         end;
@@ -165,7 +124,7 @@ begin
      end;
 end;
 
-procedure TCryptString.DecryptString(var Text: String);
+function TCryptString.Decrypt: String;
 var
    Source    : TStringStream;
    Target    : TStringStream;
@@ -175,7 +134,7 @@ var
    FCryptKey : ICryptKey;
 begin
      FCryptKey       := TCryptKey.New(FPassword);
-     Source          := TStringStream.Create(TBase64.New(Text).Decode.ToString);
+     Source          := TStringStream.Create(TBase64.New(FText).Decode);
      Source.Position := 0;
      Target          := TStringStream.Create;
      try
@@ -188,7 +147,7 @@ begin
                     then RaiseLastOSError;
                  Target.Write(Buffer^, BytesIn);
            until Last;
-           Text := Target.DataString;
+           Result := Target.DataString;
         finally
            FreeMem(Buffer, BufferSize);
         end;
@@ -196,6 +155,11 @@ begin
         Source.Free;
         Target.Free;
      end;
+end;
+
+class function TCryptString.New(Text: String): ICryptString;
+begin
+     Result := Create(Text);
 end;
 
 class function TCryptString.New(Text: String;
@@ -209,13 +173,11 @@ end;
 constructor TCryptKey.Create(Password: AnsiString);
 begin
      inherited Create;
-     FPassword := Password;
-
      CryptAcquireContext(FProv, nil, nil, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT);
      if not CryptCreateHash(FProv, CALG_SHA1, 0, 0, FHash)
         then RaiseLastOSError;
      try
-        if not CryptHashData(FHash, @FPassword[1], Length(FPassword), 0)
+        if not CryptHashData(FHash, @Password[1], Length(Password), 0)
            then RaiseLastOSError;
         if not CryptDeriveKey(FProv,  CALG_RC4, FHash, 0, FKey)
            then RaiseLastOSError;
