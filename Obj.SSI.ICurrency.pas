@@ -39,11 +39,11 @@ type
     protected
       FOrigin: ICurrency;
     public
-      function Value: Currency;
-      function AsString: String;
-      function Add(Value: Currency): ICurrency;
-      function Sub(Value: Currency): ICurrency;
-      function Reset: ICurrency;
+      function Value: Currency; Virtual;
+      function AsString: String; Virtual;
+      function Add(Value: Currency): ICurrency; Virtual;
+      function Sub(Value: Currency): ICurrency; Virtual;
+      function Reset: ICurrency; Virtual;
     End;
 
     TCurrency = Class(TInterfacedObject, ICurrency)
@@ -78,7 +78,6 @@ implementation
 
 uses
     SysUtils
-  , Obj.SSI.IIF
   ;
 
 
