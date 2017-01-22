@@ -29,6 +29,7 @@ interface
 type
     IDate = Interface ['{26A4BD5E-9220-4687-B246-87A8060A277E}']
       function Value    : TDateTime;
+      function AsUTC    : TDateTime;
       function AsString : String;
       function AsFormattedString(Mask: String): String;
       function Days     : LongWord;
@@ -45,6 +46,7 @@ type
       class function New(aDate: TDateTime): IDate; Overload;
       class function New(aDate: String): IDate; Overload;
       function Value    : TDateTime;
+      function AsUTC    : TDateTime;
       function AsString : String;
       function AsFormattedString(DateFormat: String): String;
       function Days     : LongWord;
@@ -71,6 +73,11 @@ end;
 function TDate.AsString: String;
 begin
      Result := DateToStr(FDate);
+end;
+
+function TDate.AsUTC: TDateTime;
+begin
+     Result := TTimeZone.Local.ToUniversalTime(FDate);
 end;
 
 constructor TDate.Create(aDate: TDateTime);
