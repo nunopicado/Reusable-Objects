@@ -50,10 +50,22 @@ type
       function AsEnum    : TEnumerator;
     End;
 
+    TSkipPreffix<TEnumerator: Record> = Class(TInterfacedObject, IEnum<TEnumerator>)
+    private
+      FOrigin : IEnum<TEnumerator>;
+      constructor Create(Origin: IEnum<TEnumerator>);
+    public
+      class function New(Origin: IEnum<TEnumerator>): IEnum<TEnumerator>;
+      function AsString  : String;
+      function AsInteger : Integer;
+      function AsEnum    : TEnumerator;
+    End;
+
 implementation
 
 uses
     TypInfo
+  , SysUtils
   , Variants
   ;
 
@@ -91,6 +103,38 @@ end;
 class function TEnum<TEnumerator>.New(Value: Variant): IEnum<TEnumerator>;
 begin
      Result := Create(Value);
+end;
+
+{ TSkipPreffix<TEnumerator> }
+
+function TSkipPreffix<TEnumerator>.AsEnum: TEnumerator;
+begin
+     Result := FOrigin.AsEnum;
+end;
+
+function TSkipPreffix<TEnumerator>.AsInteger: Integer;
+begin
+     Result := FOrigin.AsInteger;
+end;
+
+function TSkipPreffix<TEnumerator>.AsString: String;
+var
+   Name: String;
+begin
+     Name := FOrigin.AsString;
+     while CharInSet(Name[1], ['a'..'z']) do
+           Delete(Name, 1, 1);
+     Result := Name;
+end;
+
+constructor TSkipPreffix<TEnumerator>.Create(Origin: IEnum<TEnumerator>);
+begin
+     FOrigin := Origin;
+end;
+
+class function TSkipPreffix<TEnumerator>.New(Origin: IEnum<TEnumerator>): IEnum<TEnumerator>;
+begin
+     Result := Create(Origin);
 end;
 
 end.
