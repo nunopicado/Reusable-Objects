@@ -32,6 +32,10 @@ unit Obj.SSI.IEnum;
 
 interface
 
+uses
+    Generics.Collections
+  ;
+
 type
     IEnum<TEnumerator: Record> = Interface
       function AsString  : String;
@@ -45,6 +49,19 @@ type
       constructor Create(Value: Variant);
     public
       class function New(Value: Variant): IEnum<TEnumerator>;
+      function AsString  : String;
+      function AsInteger : Integer;
+      function AsEnum    : TEnumerator;
+    End;
+
+    TNamedEnum<TEnumerator: Record> = Class(TInterfacedObject, IEnum<TEnumerator>)
+    private
+      FOrigin : IEnum<TEnumerator>;
+      FNames  : TList<String>;
+      constructor Create(Origin: IEnum<TEnumerator>; Names: Array of String);
+      destructor Destroy; Override;
+    public
+      class function New(Origin: IEnum<TEnumerator>; Names: Array of String): IEnum<TEnumerator>;
       function AsString  : String;
       function AsInteger : Integer;
       function AsEnum    : TEnumerator;
@@ -103,6 +120,41 @@ end;
 class function TEnum<TEnumerator>.New(Value: Variant): IEnum<TEnumerator>;
 begin
      Result := Create(Value);
+end;
+
+{ TNamedEnum<TEnumerator> }
+
+function TNamedEnum<TEnumerator>.AsEnum: TEnumerator;
+begin
+     Result := FOrigin.AsEnum;
+end;
+
+function TNamedEnum<TEnumerator>.AsInteger: Integer;
+begin
+     Result := FOrigin.AsInteger;
+end;
+
+function TNamedEnum<TEnumerator>.AsString: String;
+begin
+     Result := FNames[FOrigin.AsInteger];
+end;
+
+constructor TNamedEnum<TEnumerator>.Create(Origin: IEnum<TEnumerator>; Names: Array of String);
+begin
+     FOrigin := Origin;
+     FNames  := TList<String>.Create;
+     FNames.AddRange(Names);
+end;
+
+destructor TNamedEnum<TEnumerator>.Destroy;
+begin
+     FNames.Free;
+     inherited;
+end;
+
+class function TNamedEnum<TEnumerator>.New(Origin: IEnum<TEnumerator>; Names: Array of String): IEnum<TEnumerator>;
+begin
+     Result := Create(Origin, Names);
 end;
 
 { TSkipPreffix<TEnumerator> }
