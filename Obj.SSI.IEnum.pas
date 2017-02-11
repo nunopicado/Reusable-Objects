@@ -67,7 +67,7 @@ end;
 
 function TEnum<TEnumerator>.AsInteger: Integer;
 begin
-     if VarType(FValue) = varByte
+     if VarType(FValue) in [varSmallint, varInteger, varSingle, varDouble, varShortInt, varByte, varWord, varLongWord]
         then Result := FValue
         else Result := GetEnumValue(TypeInfo(TEnumerator), FValue);
 end;
