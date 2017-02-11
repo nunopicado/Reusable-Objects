@@ -26,6 +26,10 @@ unit Obj.SSI.ISNTPTime;
 
 interface
 
+uses
+    Generics.Collections
+  ;
+
 type
     ISNTPTime = Interface ['{BFE1C861-89E5-4F8C-B0B1-3CEA18845737}']
       function Now: TDateTime;
@@ -40,10 +44,23 @@ type
       function Now: TDateTime;
     End;
 
+    TSPBehavior   = (spThrowException, spReturnCurrentDate);
+    TSNTPTimePool = Class(TInterfacedObject, ISNTPTime)
+    private
+      FServerList : TList<String>;
+      FIfFail     : TSPBehavior;
+      constructor Create(ServerList: Array of String; IfFail: TSPBehavior);
+      destructor Destroy; Override;
+    public
+      class function New(ServerList: Array of String; IfFail: TSPBehavior): ISNTPTime;
+      function Now: TDateTime;
+    End;
+
 implementation
 
 uses
     idSNTP
+  , SysUtils
   ;
 
 { TNTPTime }
@@ -70,6 +87,46 @@ begin
      finally
         NTP.Free;
      end;
+end;
+
+{ TSNTPTimePool }
+
+constructor TSNTPTimePool.Create(ServerList: Array of String; IfFail: TSPBehavior);
+begin
+     FServerList := TList<String>.Create;
+     FServerList.AddRange(ServerList);
+     FIfFail     := IfFail;
+end;
+
+destructor TSNTPTimePool.Destroy;
+begin
+     FServerList.Free;
+     inherited;
+end;
+
+class function TSNTPTimePool.New(ServerList: Array of String; IfFail: TSPBehavior): ISNTPTime;
+begin
+     Result := Create(ServerList, IfFail);
+end;
+
+function TSNTPTimePool.Now: TDateTime;
+  function ValidDate(aDate: TDateTime): Boolean; Inline;
+  begin
+       Result := FormatDateTime('yyyy', aDate) <> '1899';
+  end;
+var
+  i: Integer;
+begin
+     i := 0;
+     repeat
+           Result := TSNTPTime.New(FServerList[i]).Now;
+           Inc(i);
+     until (i > FServerList.Count) or ValidDate(Result);
+     if not ValidDate(Result)
+        then case FIfFail of
+                  spReturnCurrentDate : Result := SysUtils.Now;
+                  spThrowException    : Raise Exception.Create('Could not retrieve current date from any server in the list.');
+             end;
 end;
 
 end.
