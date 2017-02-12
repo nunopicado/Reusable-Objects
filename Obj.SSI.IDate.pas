@@ -57,6 +57,11 @@ type
       function Age       : LongWord;  Virtual;
     End;
 
+    TUTC = Class(TDecorableDate, IDate)
+    public
+      function Value: TDateTime; Override;
+    End;
+
 implementation
 
 uses
@@ -122,6 +127,13 @@ end;
 function TDecorableDate.Value: TDateTime;
 begin
      Result := FOrigin.Value;
+end;
+
+{ TUTC }
+
+function TUTC.Value: TDateTime;
+begin
+     Result := TTimeZone.Local.ToUniversalTime(inherited);
 end;
 
 end.
