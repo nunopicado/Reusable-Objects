@@ -76,6 +76,21 @@ type
       function AsString: String; Override;
     End;
 
+    TMonthsAge = Class(TDecorableDate, IDate)
+    public
+      function Age: LongWord; Override;
+    End;
+
+    TWeeksAge = Class(TDecorableDate, IDate)
+    public
+      function Age: LongWord; Override;
+    End;
+
+    TDaysAge = Class(TDecorableDate, IDate)
+    public
+      function Age: LongWord; Override;
+    End;
+
 implementation
 
 uses
@@ -173,6 +188,27 @@ end;
 class function TFormattedDate.New(Origin: IDate; Mask: String): IDate;
 begin
      Result := Create(Origin, Mask);
+end;
+
+{ TMonthsAge }
+
+function TMonthsAge.Age: LongWord;
+begin
+     Result := MonthsBetween(Now, FOrigin.Value);
+end;
+
+{ TWeeksAge }
+
+function TWeeksAge.Age: LongWord;
+begin
+     Result := WeeksBetween(Now, FOrigin.Value);
+end;
+
+{ TDaysAge }
+
+function TDaysAge.Age: LongWord;
+begin
+     Result := DaysBetween(Now, FOrigin.Value);
 end;
 
 end.
