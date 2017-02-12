@@ -62,6 +62,11 @@ type
       function Value: TDateTime; Override;
     End;
 
+    TXMLTime = Class(TDecorableDate, IDate)
+    public
+      function AsString: String; Override;
+    End;
+
 implementation
 
 uses
@@ -134,6 +139,13 @@ end;
 function TUTC.Value: TDateTime;
 begin
      Result := TTimeZone.Local.ToUniversalTime(inherited);
+end;
+
+{ TXMLTime }
+
+function TXMLTime.AsString: String;
+begin
+     Result := FormatDateTime('yyyy''-''mm''-''dd''T''hh'':''nn'':''ss''.''zzz''Z', FOrigin.Value);
 end;
 
 end.
