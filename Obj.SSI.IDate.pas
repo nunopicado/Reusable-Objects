@@ -29,13 +29,8 @@ interface
 type
     IDate = Interface ['{26A4BD5E-9220-4687-B246-87A8060A277E}']
       function Value    : TDateTime;
-      function AsUTC    : TDateTime;
       function AsString : String;
-      function AsFormattedString(Mask: String): String;
-      function Days     : LongWord;
-      function Weeks    : LongWord;
-      function Months   : LongWord;
-      function Years    : Word;
+      function Age      : LongWord;
     End;
 
     TDate = Class(TInterfacedObject, IDate)
@@ -43,16 +38,11 @@ type
       FDate: TDateTime;
       constructor Create(aDate: TDateTime);
     public
-      class function New(aDate: TDateTime): IDate; Overload;
-      class function New(aDate: String): IDate; Overload;
+      class function New(aDate: TDateTime) : IDate; Overload;
+      class function New(aDate: String)    : IDate; Overload;
       function Value    : TDateTime;
-      function AsUTC    : TDateTime;
       function AsString : String;
-      function AsFormattedString(DateFormat: String): String;
-      function Days     : LongWord;
-      function Weeks    : LongWord;
-      function Months   : LongWord;
-      function Years    : Word;
+      function Age      : LongWord;
     End;
 
 implementation
@@ -65,9 +55,9 @@ uses
 
 { TDate }
 
-function TDate.AsFormattedString(DateFormat: String): String;
+function TDate.Age: LongWord;
 begin
-     Result := FormatDateTime(DateFormat, FDate);
+      Result := YearsBetween(Date, FDate);
 end;
 
 function TDate.AsString: String;
@@ -75,24 +65,9 @@ begin
      Result := DateToStr(FDate);
 end;
 
-function TDate.AsUTC: TDateTime;
-begin
-     Result := TTimeZone.Local.ToUniversalTime(FDate);
-end;
-
 constructor TDate.Create(aDate: TDateTime);
 begin
      FDate := aDate;
-end;
-
-function TDate.Days: LongWord;
-begin
-     Result := DaysBetween(Date, FDate);
-end;
-
-function TDate.Months: LongWord;
-begin
-     Result := MonthsBetween(Date, FDate);
 end;
 
 class function TDate.New(aDate: TDateTime): IDate;
@@ -108,16 +83,6 @@ end;
 function TDate.Value: TDateTime;
 begin
      Result := FDate;
-end;
-
-function TDate.Weeks: LongWord;
-begin
-     Result := WeeksBetween(Date, FDate);
-end;
-
-function TDate.Years: Word;
-begin
-     Result := YearsBetween(Date, FDate);
 end;
 
 end.
