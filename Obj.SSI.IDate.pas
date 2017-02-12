@@ -67,6 +67,15 @@ type
       function AsString: String; Override;
     End;
 
+    TFormattedDate = Class(TDecorableDate, IDate)
+    private
+      FMask: String;
+      constructor Create(Origin: IDate; Mask: String); Overload;
+    public
+      class function New(Origin: IDate; Mask: String): IDate; Overload;
+      function AsString: String; Override;
+    End;
+
 implementation
 
 uses
@@ -146,6 +155,24 @@ end;
 function TXMLTime.AsString: String;
 begin
      Result := FormatDateTime('yyyy''-''mm''-''dd''T''hh'':''nn'':''ss''.''zzz''Z', FOrigin.Value);
+end;
+
+{ TFormattedDate }
+
+function TFormattedDate.AsString: String;
+begin
+     Result := FormatDateTime(FMask, FOrigin.Value);
+end;
+
+constructor TFormattedDate.Create(Origin: IDate; Mask: String);
+begin
+     FOrigin := Origin;
+     FMask   := Mask;
+end;
+
+class function TFormattedDate.New(Origin: IDate; Mask: String): IDate;
+begin
+     Result := Create(Origin, Mask);
 end;
 
 end.
