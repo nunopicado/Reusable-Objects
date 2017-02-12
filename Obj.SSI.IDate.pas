@@ -45,6 +45,18 @@ type
       function Age      : LongWord;
     End;
 
+    TDecorableDate = Class(TInterfacedObject, IDate)
+    protected
+      FOrigin: IDate;
+    private
+      constructor Create(Origin: IDate);
+    public
+      class function New(Origin: IDate): IDate; Virtual;
+      function Value     : TDateTime; Virtual;
+      function AsString  : String;    Virtual;
+      function Age       : LongWord;  Virtual;
+    End;
+
 implementation
 
 uses
@@ -83,6 +95,33 @@ end;
 function TDate.Value: TDateTime;
 begin
      Result := FDate;
+end;
+
+{ TDecorableDate }
+
+function TDecorableDate.AsString: String;
+begin
+     Result := FOrigin.AsString;
+end;
+
+constructor TDecorableDate.Create(Origin: IDate);
+begin
+     FOrigin := Origin;
+end;
+
+function TDecorableDate.Age: LongWord;
+begin
+     Result := FOrigin.Age;
+end;
+
+class function TDecorableDate.New(Origin: IDate): IDate;
+begin
+     Result := Create(Origin);
+end;
+
+function TDecorableDate.Value: TDateTime;
+begin
+     Result := FOrigin.Value;
 end;
 
 end.
