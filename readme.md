@@ -55,7 +55,7 @@ constructor.
 The idea behind this approach is to force an interface instance, instead of a 
 implementation class instance, thus avoiding memory leaks even when you don't 
 have a variable to hold that instance.
-This method and all its advantages I owe to **Marco Douglas Santos**, a great 
+This method and all its advantages I owe to **Marcos Douglas B. Santos**, a great 
 **Object Pascal** developer which came up with this elegant approach.
 
 Seldom will you find procedures or properties in these objects.
