@@ -27,7 +27,7 @@ type
   TReal     = TPrimitive<Real>;
   TSingle   = TPrimitive<Single>;
   TDouble   = TPrimitive<Double>;
-  ICurrency = IPrimitive<Currency>;
+  TCurrency = TPrimitive<Currency>;
 
 implementation
 
