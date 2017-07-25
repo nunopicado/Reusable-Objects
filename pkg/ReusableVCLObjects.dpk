@@ -1,0 +1,42 @@
+package ReusableVCLObjects;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl;
+
+contains
+  Obj.SSI.IPrimitive in '..\src\SSI\Data Types\Obj.SSI.IPrimitive.pas',
+  Obj.SSI.TPrimitive in '..\src\SSI\Data Types\Obj.SSI.TPrimitive.pas',
+  Obj.SSI.TIf in '..\src\SSI\Flow Control\Obj.SSI.TIf.pas',
+  Obj.SSI.IIf in '..\src\SSI\Flow Control\Obj.SSI.IIf.pas',
+  Obj.VCL.IPrinters in '..\src\VCL\Hardware\Obj.VCL.IPrinters.pas',
+  Obj.VCL.TPrinters in '..\src\VCL\Hardware\Obj.VCL.TPrinters.pas';
+
+end.

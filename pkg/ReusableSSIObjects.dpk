@@ -1,0 +1,90 @@
+package ReusableSSIObjects;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE Spring4D}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  dbrtl,
+  IndySystem,
+  IndyProtocols,
+  IndyCore;
+
+contains
+  Obj.SSI.IIf in '..\src\SSI\Flow Control\Obj.SSI.IIf.pas',
+  Obj.SSI.TIf in '..\src\SSI\Flow Control\Obj.SSI.TIf.pas',
+  Obj.SSI.IBase64 in '..\src\SSI\Encryption\Obj.SSI.IBase64.pas',
+  Obj.SSI.TCryptString in '..\src\SSI\Encryption\Obj.SSI.TCryptString.pas',
+  Obj.SSI.TBase64 in '..\src\SSI\Encryption\Obj.SSI.TBase64.pas',
+  Obj.SSI.ICryptString in '..\src\SSI\Encryption\Obj.SSI.ICryptString.pas',
+  Obj.SSI.IEmailAddress in '..\src\SSI\Validation\Obj.SSI.IEmailAddress.pas',
+  Obj.SSI.TEmailAddress in '..\src\SSI\Validation\Obj.SSI.TEmailAddress.pas',
+  Obj.SSI.IDate in '..\src\SSI\Data Types\Obj.SSI.IDate.pas',
+  Obj.SSI.IEnum in '..\src\SSI\Data Types\Obj.SSI.IEnum.pas',
+  Obj.SSI.ICached in '..\src\SSI\Data Types\Obj.SSI.ICached.pas',
+  Obj.SSI.IPrimitive in '..\src\SSI\Data Types\Obj.SSI.IPrimitive.pas',
+  Obj.SSI.TDate in '..\src\SSI\Data Types\Obj.SSI.TDate.pas',
+  Obj.SSI.TEnum in '..\src\SSI\Data Types\Obj.SSI.TEnum.pas',
+  Obj.SSI.TCached in '..\src\SSI\Data Types\Obj.SSI.TCached.pas',
+  Obj.SSI.TPrimitive in '..\src\SSI\Data Types\Obj.SSI.TPrimitive.pas',
+  Obj.SSI.TString in '..\src\SSI\Data Types\Obj.SSI.TString.pas',
+  Obj.SSI.IStringStat in '..\src\SSI\Data Types\Obj.SSI.IStringStat.pas',
+  Obj.SSI.TStringStat in '..\src\SSI\Data Types\Obj.SSI.TStringStat.pas',
+  Obj.SSI.ISNTPTime in '..\src\SSI\Communication\Obj.SSI.ISNTPTime.pas',
+  Obj.SSI.TSNTPTime in '..\src\SSI\Communication\Obj.SSI.TSNTPTime.pas',
+  Obj.SSI.IPTVATNumber in '..\src\SSI\Validation\Obj.SSI.IPTVATNumber.pas',
+  Obj.SSI.TPTVATNumber in '..\src\SSI\Validation\Obj.SSI.TPTVATNumber.pas',
+  Obj.SSI.IGeoCoordinate in '..\src\SSI\Validation\Obj.SSI.IGeoCoordinate.pas',
+  Obj.SSI.TGeoCoordinate in '..\src\SSI\Validation\Obj.SSI.TGeoCoordinate.pas',
+  Obj.SSI.IPostalAddress in '..\src\SSI\Validation\Obj.SSI.IPostalAddress.pas',
+  Obj.SSI.IPTPostalCode in '..\src\SSI\Validation\Obj.SSI.IPTPostalCode.pas',
+  Obj.SSI.TPTPostalCode in '..\src\SSI\Validation\Obj.SSI.TPTPostalCode.pas',
+  Obj.SSI.TPostalAddress in '..\src\SSI\Validation\Obj.SSI.TPostalAddress.pas',
+  Obj.SSI.IBMReference in '..\src\SSI\Business\Obj.SSI.IBMReference.pas',
+  Obj.SSI.TMBReference in '..\src\SSI\Business\Obj.SSI.TMBReference.pas',
+  Obj.SSI.IFactory in '..\src\SSI\Data Types\Obj.SSI.IFactory.pas',
+  Obj.SSI.TFactory in '..\src\SSI\Data Types\Obj.SSI.TFactory.pas',
+  Obj.SSI.INetworkNode in '..\src\SSI\Communication\Obj.SSI.INetworkNode.pas',
+  Obj.SSI.TNetworkNode in '..\src\SSI\Communication\Obj.SSI.TNetworkNode.pas',
+  Obj.SSI.IMatrix in '..\src\SSI\Data Constructs\Obj.SSI.IMatrix.pas',
+  Obj.SSI.TMatrix in '..\src\SSI\Data Constructs\Obj.SSI.TMatrix.pas',
+  Obj.SSI.IDataStream in '..\src\SSI\Data Constructs\Obj.SSI.IDataStream.pas',
+  Obj.SSI.TDataStream in '..\src\SSI\Data Constructs\Obj.SSI.TDataStream.pas',
+  Obj.SSI.IConstraints in '..\src\SSI\Flow Control\Obj.SSI.IConstraints.pas',
+  Obj.SSI.TConstraints in '..\src\SSI\Validation\Obj.SSI.TConstraints.pas',
+  Obj.SSI.ICurrency in '..\src\SSI\Data Types\Obj.SSI.ICurrency.pas',
+  Obj.SSI.TCurrency in '..\src\SSI\Data Types\Obj.SSI.TCurrency.pas',
+  Obj.SSI.IFile in '..\src\SSI\Data Constructs\Obj.SSI.IFile.pas',
+  Obj.SSI.TFile in '..\src\SSI\Data Constructs\Obj.SSI.TFile.pas',
+  Obj.SSI.IRange in '..\src\SSI\Data Constructs\Obj.SSI.IRange.pas',
+  Obj.SSI.TRange in '..\src\SSI\Data Constructs\Obj.SSI.TRange.pas',
+  Obj.SSI.IMail in '..\src\SSI\Communication\Obj.SSI.IMail.pas',
+  Obj.SSI.TMail in '..\src\SSI\Communication\Obj.SSI.TMail.pas',
+  Obj.SSI.Helpers in '..\src\SSI\Helpers\Obj.SSI.Helpers.pas';
+
+end.

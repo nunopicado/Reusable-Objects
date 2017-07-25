@@ -1,0 +1,44 @@
+package ReusableFMXObjects;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  fmx;
+
+contains
+  Obj.FMX.IClipboard in '..\src\FMX\OS\Obj.FMX.IClipboard.pas',
+  Obj.FMX.TClipboard in '..\src\FMX\OS\Obj.FMX.TClipboard.pas',
+  Obj.FMX.ISliderMsg in '..\src\FMX\GUI\Obj.FMX.ISliderMsg.pas',
+  Obj.FMX.TSliderMsg in '..\src\FMX\GUI\Obj.FMX.TSliderMsg.pas',
+  FMX.Ani.Ext in '..\src\FMX\Helpers\FMX.Ani.Ext.pas',
+  Obj.FMX.TLightBox in '..\src\FMX\GUI\Obj.FMX.TLightBox.pas',
+  Obj.FMX.TShadowRectangle in '..\src\FMX\GUI\Obj.FMX.TShadowRectangle.pas',
+  FMX.StdCtrls.Ext in '..\src\FMX\Helpers\FMX.StdCtrls.Ext.pas';
+
+end.
