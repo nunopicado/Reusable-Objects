@@ -15,6 +15,9 @@
         <Projects Include="pkg\ReusableDBObjects.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="test\ROTests.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -59,14 +62,23 @@
     <Target Name="ReusableDBObjects:Make">
         <MSBuild Projects="pkg\ReusableDBObjects.dproj" Targets="Make"/>
     </Target>
+    <Target Name="ROTests">
+        <MSBuild Projects="test\ROTests.dproj"/>
+    </Target>
+    <Target Name="ROTests:Clean">
+        <MSBuild Projects="test\ROTests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ROTests:Make">
+        <MSBuild Projects="test\ROTests.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ReusableFMXObjects;ReusableSSIObjects;ReusableVCLObjects;ReusableDBObjects"/>
+        <CallTarget Targets="ReusableFMXObjects;ReusableSSIObjects;ReusableVCLObjects;ReusableDBObjects;ROTests"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ReusableFMXObjects:Clean;ReusableSSIObjects:Clean;ReusableVCLObjects:Clean;ReusableDBObjects:Clean"/>
+        <CallTarget Targets="ReusableFMXObjects:Clean;ReusableSSIObjects:Clean;ReusableVCLObjects:Clean;ReusableDBObjects:Clean;ROTests:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ReusableFMXObjects:Make;ReusableSSIObjects:Make;ReusableVCLObjects:Make;ReusableDBObjects:Make"/>
+        <CallTarget Targets="ReusableFMXObjects:Make;ReusableSSIObjects:Make;ReusableVCLObjects:Make;ReusableDBObjects:Make;ROTests:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
