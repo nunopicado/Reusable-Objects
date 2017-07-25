@@ -1,0 +1,72 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{E689B781-91E8-4AF9-A16C-F38AA3673E64}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="pkg\ReusableFMXObjects.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="pkg\ReusableSSIObjects.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="pkg\ReusableVCLObjects.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="pkg\ReusableDBObjects.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ReusableFMXObjects">
+        <MSBuild Projects="pkg\ReusableFMXObjects.dproj"/>
+    </Target>
+    <Target Name="ReusableFMXObjects:Clean">
+        <MSBuild Projects="pkg\ReusableFMXObjects.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ReusableFMXObjects:Make">
+        <MSBuild Projects="pkg\ReusableFMXObjects.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ReusableSSIObjects">
+        <MSBuild Projects="pkg\ReusableSSIObjects.dproj"/>
+    </Target>
+    <Target Name="ReusableSSIObjects:Clean">
+        <MSBuild Projects="pkg\ReusableSSIObjects.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ReusableSSIObjects:Make">
+        <MSBuild Projects="pkg\ReusableSSIObjects.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ReusableVCLObjects">
+        <MSBuild Projects="pkg\ReusableVCLObjects.dproj"/>
+    </Target>
+    <Target Name="ReusableVCLObjects:Clean">
+        <MSBuild Projects="pkg\ReusableVCLObjects.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ReusableVCLObjects:Make">
+        <MSBuild Projects="pkg\ReusableVCLObjects.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ReusableDBObjects">
+        <MSBuild Projects="pkg\ReusableDBObjects.dproj"/>
+    </Target>
+    <Target Name="ReusableDBObjects:Clean">
+        <MSBuild Projects="pkg\ReusableDBObjects.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ReusableDBObjects:Make">
+        <MSBuild Projects="pkg\ReusableDBObjects.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ReusableFMXObjects;ReusableSSIObjects;ReusableVCLObjects;ReusableDBObjects"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ReusableFMXObjects:Clean;ReusableSSIObjects:Clean;ReusableVCLObjects:Clean;ReusableDBObjects:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ReusableFMXObjects:Make;ReusableSSIObjects:Make;ReusableVCLObjects:Make;ReusableDBObjects:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
