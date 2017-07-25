@@ -19,7 +19,8 @@ uses
   Obj.SSI.TPrimitive in '..\src\SSI\Data Types\Obj.SSI.TPrimitive.pas',
   Obj.SSI.TString in '..\src\SSI\Data Types\Obj.SSI.TString.pas',
   Obj.SSI.IIf in '..\src\SSI\Flow Control\Obj.SSI.IIf.pas',
-  Obj.SSI.TIf in '..\src\SSI\Flow Control\Obj.SSI.TIf.pas';
+  Obj.SSI.TIf in '..\src\SSI\Flow Control\Obj.SSI.TIf.pas',
+  uTMBReferenceTest in 'uTMBReferenceTest.pas';
 
 var
   runner : ITestRunner;
