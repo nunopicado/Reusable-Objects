@@ -3,7 +3,7 @@ unit Obj.VCL.IPrinters;
 interface
 
 uses
-    Obj.SSI.IPrimitive
+    Obj.SSI.IValue
   , Spring.Collections
   ;
 

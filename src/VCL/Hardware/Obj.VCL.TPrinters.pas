@@ -31,7 +31,7 @@ interface
 uses
     WinSpool
   , Spring.Collections
-  , Obj.SSI.IPrimitive
+  , Obj.SSI.IValue
   , Obj.VCL.IPrinters
   ;
 
