@@ -21,7 +21,8 @@ uses
   Obj.SSI.IIf in '..\src\SSI\Flow Control\Obj.SSI.IIf.pas',
   Obj.SSI.TIf in '..\src\SSI\Flow Control\Obj.SSI.TIf.pas',
   uTMBReferenceTest in 'uTMBReferenceTest.pas',
-  uTPrimitiveTest in 'uTPrimitiveTest.pas';
+  uTPrimitiveTest in 'uTPrimitiveTest.pas',
+  uTStringTest in 'uTStringTest.pas';
 
 var
   runner : ITestRunner;

@@ -143,6 +143,7 @@
         <DCCReference Include="..\src\SSI\Flow Control\Obj.SSI.TIf.pas"/>
         <DCCReference Include="uTMBReferenceTest.pas"/>
         <DCCReference Include="uTPrimitiveTest.pas"/>
+        <DCCReference Include="uTStringTest.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
