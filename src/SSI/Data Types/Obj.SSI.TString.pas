@@ -43,19 +43,6 @@ type
     function Value: string;
   end;
 
-  TPadSide = (psLeft, psRight);
-  TPadded = class(TInterfacedObject, IString)
-  private
-    FOrigin: IString;
-    FNewSize: Integer;
-    FPadChar: Char;
-    FPadSide: TPadSide;
-  public
-    constructor Create(Origin: IString; NewSize: Integer; PadChar: Char = '0'; PadSide: TPadSide = psLeft);
-    class function New(Origin: IString; NewSize: Integer; PadChar: Char = '0'; PadSide: TPadSide = psLeft): IString;
-    function Value: string;
-  end;
-
   TGroupDigits = class(TInterfacedObject, IString)
   private
     FOrigin: IString;
@@ -115,30 +102,6 @@ end;
 class function TNumbersOnly.New(Origin: IString): IString;
 begin
   Result := Create(Origin);
-end;
-
-{ TPaddedString }
-
-function TPadded.Value: string;
-begin
-  Result := Copy(FOrigin.Value, 1, FNewSize);
-  case FPadSide of
-    psLeft  : Result := Result.PadLeft(FNewSize, FPadChar);
-    psRight : Result := Result.PadRight(FNewSize, FPadChar);
-  end;
-end;
-
-constructor TPadded.Create(Origin: IString; NewSize: Integer; PadChar: Char = '0'; PadSide: TPadSide = psLeft);
-begin
-  FOrigin  := Origin;
-  FNewSize := NewSize;
-  FPadChar := PadChar;
-  FPadSide := PadSide;
-end;
-
-class function TPadded.New(Origin: IString; NewSize: Integer; PadChar: Char = '0'; PadSide: TPadSide = psLeft): IString;
-begin
-  Result := Create(Origin, NewSize, PadChar, PadSide);
 end;
 
 { TGroupDigits }
