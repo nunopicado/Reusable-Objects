@@ -32,7 +32,7 @@ uses
   ;
 
 type
-  IPostalAddress = interface
+  IPostalAddress = interface(IInvokable)
   ['{28E88EB6-F313-4D5D-9974-22C14F073D2C}']
     function ToIString: IString;
     function Address1: IString;

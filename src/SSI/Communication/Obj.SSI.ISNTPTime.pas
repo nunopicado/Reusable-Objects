@@ -30,9 +30,9 @@ uses
   ;
 
 type
-  TSPBehavior   = (spThrowException, spReturnCurrentDate);
+  TSPBehavior = (spThrowException, spReturnCurrentDate);
 
-  ISNTPTime = interface
+  ISNTPTime = interface(IInvokable)
   ['{BFE1C861-89E5-4F8C-B0B1-3CEA18845737}']
     function Now: IDate;
   end;

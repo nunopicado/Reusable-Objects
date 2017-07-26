@@ -27,10 +27,10 @@ unit Obj.SSI.Helpers;
 interface
 
 type
-    THString = record Helper for string
-      function ToInteger: Integer;
-      function Length: Integer;
-    end;
+  THString = record Helper for string
+    function ToInteger: Integer;
+    function Length: Integer;
+  end;
 
 implementation
 
@@ -42,7 +42,7 @@ uses
 
 function THString.Length: Integer;
 begin
-     Result := System.Length(Self);
+  Result := System.Length(Self);
 end;
 
 function THString.ToInteger: Integer;

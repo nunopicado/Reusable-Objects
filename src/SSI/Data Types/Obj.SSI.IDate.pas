@@ -30,7 +30,7 @@ uses
   ;
 
 type
-  IDate = interface
+  IDate = interface(IInvokable)
   ['{26A4BD5E-9220-4687-B246-87A8060A277E}']
     function Value     : TDateTime;
     function AsIString : IString;

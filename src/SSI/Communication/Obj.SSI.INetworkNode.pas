@@ -26,7 +26,8 @@ unit Obj.SSI.INetworkNode;
 interface
 
 type
-  INetworkNode = Interface
+  INetworkNode = interface(IInvokable)
+  ['{AF8E8BF2-426E-4FF2-86FE-F577F3B3442D}']
     function IsIPv4Address: Boolean;
     function AsIPv4Address: AnsiString;
     function AsHostname: AnsiString;

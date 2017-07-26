@@ -30,10 +30,10 @@ uses
   ;
 
 type
-  IMBReference = Interface
+  IMBReference = interface(IInvokable)
   ['{9D22DEC3-42A7-4D7D-A1E5-76F13D77938F}']
     function AsIString: IString;
-  End;
+  end;
 
 implementation
 

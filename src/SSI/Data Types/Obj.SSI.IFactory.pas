@@ -28,14 +28,15 @@ interface
 type
   TCreationMethod<IBaseClass> = Reference to Function: IBaseClass;
 
-  IFactory<TKey, IBaseClass> = Interface
+  IFactory<TKey, IBaseClass> = interface(IInvokable)
+  ['{3EE4C61C-4345-4ED1-94E8-CCB43FC0F9C4}']
     function RegClass      (const Key: TKey; const CreationMethod: TCreationMethod<IBaseClass>) : IFactory<TKey, IBaseClass>;
     function UnRegClass    (const Key: TKey) : IFactory<TKey, IBaseClass>;
     function IsRegistered  (const Key: TKey) : Boolean;
     function GetInstance   (const Key: TKey) : TCreationMethod<IBaseClass>;
     function Count                           : Word;
     function InstanceCount (const Key: TKey) : Word;
-  End;
+  end;
 
 implementation
 
