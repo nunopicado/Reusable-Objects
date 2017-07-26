@@ -32,7 +32,7 @@ requires
   vcl;
 
 contains
-  Obj.SSI.IPrimitive in '..\src\SSI\Data Types\Obj.SSI.IPrimitive.pas',
+  Obj.SSI.IValue in '..\src\SSI\Data Types\Obj.SSI.IValue.pas',
   Obj.SSI.TPrimitive in '..\src\SSI\Data Types\Obj.SSI.TPrimitive.pas',
   Obj.SSI.TIf in '..\src\SSI\Flow Control\Obj.SSI.TIf.pas',
   Obj.SSI.IIf in '..\src\SSI\Flow Control\Obj.SSI.IIf.pas',

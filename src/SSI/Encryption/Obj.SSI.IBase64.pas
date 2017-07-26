@@ -3,7 +3,7 @@ unit Obj.SSI.IBase64;
 interface
 
 uses
-    Obj.SSI.IPrimitive
+    Obj.SSI.IValue
   ;
 
 type

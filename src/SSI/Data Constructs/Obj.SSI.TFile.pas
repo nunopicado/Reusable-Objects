@@ -6,7 +6,7 @@ uses
     Windows
   , Obj.SSI.IDataStream
   , Obj.SSI.IFile
-  , Obj.SSI.IPrimitive
+  , Obj.SSI.IValue
   ;
 
 type

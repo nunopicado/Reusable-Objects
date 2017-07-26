@@ -28,7 +28,7 @@ interface
 
 uses
     Obj.SSI.IEmailAddress
-  , Obj.SSI.IPrimitive
+  , Obj.SSI.IValue
   ;
 
 type

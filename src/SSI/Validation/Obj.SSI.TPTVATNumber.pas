@@ -27,7 +27,7 @@ unit Obj.SSI.TPTVATNumber;
 interface
 
 uses
-    Obj.SSI.IPrimitive
+    Obj.SSI.IValue
   , Obj.SSI.IPTVATNumber
   ;
 

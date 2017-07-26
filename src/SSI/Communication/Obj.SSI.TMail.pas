@@ -35,7 +35,7 @@ uses
   , idSSLOpenSSL
   , idMessage
   , Obj.SSI.IEmailAddress
-  , Obj.SSI.IPrimitive
+  , Obj.SSI.IValue
   , Obj.SSI.IMail
   ;
 

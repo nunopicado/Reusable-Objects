@@ -47,7 +47,7 @@ contains
   Obj.SSI.IDate in '..\src\SSI\Data Types\Obj.SSI.IDate.pas',
   Obj.SSI.IEnum in '..\src\SSI\Data Types\Obj.SSI.IEnum.pas',
   Obj.SSI.ICached in '..\src\SSI\Data Types\Obj.SSI.ICached.pas',
-  Obj.SSI.IPrimitive in '..\src\SSI\Data Types\Obj.SSI.IPrimitive.pas',
+  Obj.SSI.IValue in '..\src\SSI\Data Types\Obj.SSI.IValue.pas',
   Obj.SSI.TDate in '..\src\SSI\Data Types\Obj.SSI.TDate.pas',
   Obj.SSI.TEnum in '..\src\SSI\Data Types\Obj.SSI.TEnum.pas',
   Obj.SSI.TCached in '..\src\SSI\Data Types\Obj.SSI.TCached.pas',

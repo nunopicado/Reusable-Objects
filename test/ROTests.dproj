@@ -135,7 +135,7 @@
         <DCCReference Include="..\src\SSI\Business\Obj.SSI.IBMReference.pas"/>
         <DCCReference Include="..\src\SSI\Business\Obj.SSI.TMBReference.pas"/>
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.ICached.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.IPrimitive.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.IValue.pas"/>
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TCached.pas"/>
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TPrimitive.pas"/>
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TString.pas"/>
@@ -192,7 +192,16 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                </DeployClass>
                 <DeployClass Name="ProjectOSXResource">
                     <Platform Name="OSX32">
                         <RemoteDir>Contents\Resources</RemoteDir>
@@ -506,16 +515,7 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="DependencyModule">
-                    <Platform Name="Win32">
-                        <Operation>0</Operation>
-                        <Extensions>.dll;.bpl</Extensions>
-                    </Platform>
-                    <Platform Name="OSX32">
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>

@@ -30,7 +30,7 @@ uses
     Obj.SSI.IPTPostalCode
   , Obj.SSI.IPostalAddress
   , Obj.SSI.IGeoCoordinate
-  , Obj.SSI.IPrimitive
+  , Obj.SSI.IValue
   ;
 
 type

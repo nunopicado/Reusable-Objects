@@ -3,7 +3,7 @@ unit Obj.SSI.IGeoCoordinate;
 interface
 
 uses
-    Obj.SSI.IPrimitive
+    Obj.SSI.IValue
   ;
 
 type

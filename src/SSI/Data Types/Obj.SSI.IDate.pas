@@ -3,7 +3,7 @@ unit Obj.SSI.IDate;
 interface
 
 uses
-    Obj.SSI.IPrimitive
+    Obj.SSI.IValue
   ;
 
 type

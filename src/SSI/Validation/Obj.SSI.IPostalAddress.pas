@@ -3,7 +3,7 @@ unit Obj.SSI.IPostalAddress;
 interface
 
 uses
-    Obj.SSI.IPrimitive
+    Obj.SSI.IValue
   , Obj.SSI.IPTPostalCode
   , Obj.SSI.IGeoCoordinate
   ;

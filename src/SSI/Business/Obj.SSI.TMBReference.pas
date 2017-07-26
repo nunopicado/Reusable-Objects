@@ -31,7 +31,7 @@ unit Obj.SSI.TMBReference;
 interface
 
 uses
-    Obj.SSI.IPrimitive
+    Obj.SSI.IValue
   , Obj.SSI.IBMReference
   , Obj.SSI.ICached
   ;

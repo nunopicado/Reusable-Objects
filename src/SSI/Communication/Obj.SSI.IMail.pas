@@ -3,7 +3,7 @@ unit Obj.SSI.IMail;
 interface
 
 uses
-    Obj.SSI.IPrimitive
+    Obj.SSI.IValue
   , idMessage
   ;
 

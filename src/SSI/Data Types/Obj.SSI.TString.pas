@@ -29,8 +29,8 @@ unit Obj.SSI.TString;
 interface
 
 uses
-    Obj.SSI.IPrimitive
   , Obj.SSI.ICached
+    Obj.SSI.IValue
   ;
 
 type

@@ -3,7 +3,7 @@ unit Obj.SSI.IEmailAddress;
 interface
 
 uses
-    Obj.SSI.IPrimitive
+    Obj.SSI.IValue
   ;
 
 type

@@ -4,7 +4,7 @@ interface
 
 uses
     Obj.SSI.IDataStream
-  , Obj.SSI.IPrimitive
+  , Obj.SSI.IValue
   ;
 
 type

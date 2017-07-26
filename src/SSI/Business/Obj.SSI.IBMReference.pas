@@ -3,7 +3,7 @@ unit Obj.SSI.IBMReference;
 interface
 
 uses
-    Obj.SSI.IPrimitive
+    Obj.SSI.IValue
   ;
 
 type

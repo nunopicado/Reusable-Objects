@@ -3,16 +3,16 @@
 interface
 
 uses
-    Obj.SSI.IPrimitive
+    Obj.SSI.IValue
   ;
 
 type
-  TPrimitive<T> = class(TInterfacedObject, IPrimitive<T>)
+  TPrimitive<T> = class(TInterfacedObject, IValue<T>)
   private
     FValue: T;
   public
     constructor Create(Value: T);
-    class function New(Value: T): IPrimitive<T>;
+    class function New(Value: T): IValue<T>;
     function Value: T;
   end;
 
@@ -38,7 +38,7 @@ begin
   FValue := Value;
 end;
 
-class function TPrimitive<T>.New(Value: T): IPrimitive<T>;
+class function TPrimitive<T>.New(Value: T): IValue<T>;
 begin
   Result := Create(Value);
 end;

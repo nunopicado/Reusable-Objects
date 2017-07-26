@@ -28,7 +28,7 @@ interface
 
 uses
     Obj.SSI.IBase64
-  , Obj.SSI.IPrimitive
+  , Obj.SSI.IValue
   ;
 
 type

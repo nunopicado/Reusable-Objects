@@ -28,7 +28,7 @@ interface
 
 uses
     Obj.SSI.IPTPostalCode
-  , Obj.SSI.IPrimitive
+  , Obj.SSI.IValue
   ;
 
 type

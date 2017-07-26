@@ -28,7 +28,7 @@ interface
 
 uses
     Obj.SSI.IGeoCoordinate
-  , Obj.SSI.IPrimitive
+  , Obj.SSI.IValue
   ;
 
 type
