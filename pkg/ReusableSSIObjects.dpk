@@ -74,7 +74,6 @@ contains
   Obj.SSI.IDataStream in '..\src\SSI\Data Constructs\Obj.SSI.IDataStream.pas',
   Obj.SSI.TDataStream in '..\src\SSI\Data Constructs\Obj.SSI.TDataStream.pas',
   Obj.SSI.IConstraints in '..\src\SSI\Flow Control\Obj.SSI.IConstraints.pas',
-  Obj.SSI.TConstraints in '..\src\SSI\Validation\Obj.SSI.TConstraints.pas',
   Obj.SSI.ICurrency in '..\src\SSI\Data Types\Obj.SSI.ICurrency.pas',
   Obj.SSI.TCurrency in '..\src\SSI\Data Types\Obj.SSI.TCurrency.pas',
   Obj.SSI.IFile in '..\src\SSI\Data Constructs\Obj.SSI.IFile.pas',
@@ -83,6 +82,7 @@ contains
   Obj.SSI.TRange in '..\src\SSI\Data Constructs\Obj.SSI.TRange.pas',
   Obj.SSI.IMail in '..\src\SSI\Communication\Obj.SSI.IMail.pas',
   Obj.SSI.TMail in '..\src\SSI\Communication\Obj.SSI.TMail.pas',
-  Obj.SSI.Helpers in '..\src\SSI\Helpers\Obj.SSI.Helpers.pas';
+  Obj.SSI.Helpers in '..\src\SSI\Helpers\Obj.SSI.Helpers.pas',
+  Obj.SSI.TConstraints in '..\src\SSI\Flow Control\Obj.SSI.TConstraints.pas';
 
 end.
