@@ -4,7 +4,6 @@
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : IPostalAddress                                           **)
 (** Classes       : TPostalAddress, implements IPostalAddress                **)
 (******************************************************************************)
 (** Dependencies  : RTL                                                      **)

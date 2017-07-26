@@ -4,7 +4,6 @@
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : IGeoCoordinates                                          **)
 (** Classes       : TGeoCoordinates, implements IGeoCoordinates              **)
 (******************************************************************************)
 (** Dependencies  : RTL                                                      **)

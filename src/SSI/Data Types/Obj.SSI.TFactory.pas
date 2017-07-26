@@ -4,7 +4,6 @@
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : IFactory                                                 **)
 (** Classes       : TFactory, implements IFactory                            **)
 (******************************************************************************)
 (** Dependencies  : RTL                                                      **)

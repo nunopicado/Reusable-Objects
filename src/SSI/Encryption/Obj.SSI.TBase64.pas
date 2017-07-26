@@ -4,7 +4,6 @@
 (** Framework     : Indy                                                     **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : IBase64                                                  **)
 (** Classes       : TBase64, implements IBase64                              **)
 (******************************************************************************)
 (** Dependencies  : RTL, Indy                                                **)

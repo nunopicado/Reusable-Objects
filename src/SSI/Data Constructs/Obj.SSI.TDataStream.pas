@@ -4,7 +4,6 @@
 (** Framework     :                                                          **)
 (** Developed by  : Marcos Douglas Santos, mild adaptation by Nuno Picado    **)
 (******************************************************************************)
-(** Interfaces    : IDataStream                                              **)
 (** Classes       : TDataStream, implements IDataStream                      **)
 (******************************************************************************)
 (** Dependencies  :                                                          **)

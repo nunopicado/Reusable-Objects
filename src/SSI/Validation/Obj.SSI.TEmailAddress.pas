@@ -4,7 +4,6 @@
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : IEmailAddress                                            **)
 (** Classes       : TEmailAddress, implements IEmailAddress                  **)
 (******************************************************************************)
 (** Dependencies  : RTL                                                      **)

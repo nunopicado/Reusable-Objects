@@ -4,7 +4,6 @@
 (** Framework     : JEDI JWA WinAPI                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : ICryptString                                             **)
 (** Classes       : TCryptString, implements ICryptString                    **)
 (******************************************************************************)
 (** Dependencies  : IBase64                                                  **)

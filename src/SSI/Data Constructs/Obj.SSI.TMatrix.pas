@@ -4,7 +4,6 @@
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : IMatrix                                                  **)
 (** Classes       : TMatrix, implements IMatrix                              **)
 (******************************************************************************)
 (** Dependencies  : RTL                                                      **)

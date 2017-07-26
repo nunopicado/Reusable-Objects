@@ -4,7 +4,6 @@
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : IPTVATNumber                                             **)
 (** Classes       : TPTVATNumber, Implements IPTVATNumber                    **)
 (******************************************************************************)
 (** Dependencies  : RTL                                                      **)

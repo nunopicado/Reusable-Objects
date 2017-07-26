@@ -4,7 +4,6 @@
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : ISNTPTime                                                **)
 (** Classes       : TSNTPTime, implements ISNTPTime                          **)
 (******************************************************************************)
 (** Dependencies  : RTL, Indy                                                **)

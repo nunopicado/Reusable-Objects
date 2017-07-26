@@ -4,7 +4,6 @@
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : ICurrency                                                **)
 (** Classes       : TCurrency, implements ICurrency                          **)
 (******************************************************************************)
 (** Dependencies  : RTL                                                      **)

@@ -4,7 +4,6 @@
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado (Code assembling)                            **)
 (******************************************************************************)
-(** Interfaces    : INetworkNode                                             **)
 (** Classes       : TNetworkNode, implements INetworkNode                    **)
 (******************************************************************************)
 (** Dependencies  : RTL, WinSock                                             **)

@@ -4,7 +4,6 @@
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : IPrinters                                                **)
 (** Classes       : TPrinters, Implements IPrinters                          **)
 (******************************************************************************)
 (** Dependencies  : RTL, WinSpool                                            **)

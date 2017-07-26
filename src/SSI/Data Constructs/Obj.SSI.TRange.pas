@@ -4,7 +4,6 @@
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : IIntegerRange, IFloatRange, ICharRange                   **)
 (** Classes       : TIntegerRange, implements IIntegerRange                  **)
 (**                 TFloatRange, implements IFloatRange                      **)
 (**                 TCharRange, implements ICharRange                        **)
