@@ -68,7 +68,7 @@ implementation
 
 uses
     SysUtils
-  , Obj.SSI.TPrimitive
+  , Obj.SSI.TValue
   ;
 
 { TPostalAddress }

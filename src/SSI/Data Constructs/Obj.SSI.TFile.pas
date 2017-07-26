@@ -31,7 +31,7 @@ implementation
 uses
     SysUtils
   , Obj.SSI.TDataStream
-  , Obj.SSI.TPrimitive
+  , Obj.SSI.TValue
   , Classes
   ;
 

@@ -49,7 +49,7 @@ uses
     SysUtils
   , Obj.SSI.IStringStat
   , Obj.SSI.TStringStat
-  , Obj.SSI.TPrimitive
+  , Obj.SSI.TValue
   ;
 
 { TMailAddress }

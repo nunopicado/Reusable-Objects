@@ -52,7 +52,7 @@ uses
   , RegularExpressions
   , StrUtils
   , Obj.SSI.Helpers
-  , Obj.SSI.TPrimitive
+  , Obj.SSI.TValue
   ;
 
 { TPTVATNumber }

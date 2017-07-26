@@ -47,7 +47,7 @@ implementation
 uses
     Classes
   , IdCoderMIME
-  , Obj.SSI.TPrimitive
+  , Obj.SSI.TValue
   ;
 
 { TBase64 }

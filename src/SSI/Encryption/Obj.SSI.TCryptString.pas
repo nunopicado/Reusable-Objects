@@ -59,7 +59,7 @@ uses
   , JwaWinType
   , Obj.SSI.IBase64
   , Obj.SSI.TBase64
-  , Obj.SSI.TPrimitive
+  , Obj.SSI.TValue
   ;
 
 type

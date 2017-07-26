@@ -40,7 +40,7 @@ implementation
 
 uses
     Obj.SSI.TString
-  , Obj.SSI.TPrimitive
+  , Obj.SSI.TValue
   ;
 
 

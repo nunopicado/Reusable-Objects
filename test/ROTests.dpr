@@ -14,13 +14,12 @@ uses
   Obj.SSI.IBMReference in '..\src\SSI\Business\Obj.SSI.IBMReference.pas',
   Obj.SSI.TMBReference in '..\src\SSI\Business\Obj.SSI.TMBReference.pas',
   Obj.SSI.IValue in '..\src\SSI\Data Types\Obj.SSI.IValue.pas',
-  Obj.SSI.TCached in '..\src\SSI\Data Types\Obj.SSI.TCached.pas',
-  Obj.SSI.TPrimitive in '..\src\SSI\Data Types\Obj.SSI.TPrimitive.pas',
+  Obj.SSI.TValue in '..\src\SSI\Data Types\Obj.SSI.TValue.pas',
   Obj.SSI.TString in '..\src\SSI\Data Types\Obj.SSI.TString.pas',
   Obj.SSI.IIf in '..\src\SSI\Flow Control\Obj.SSI.IIf.pas',
   Obj.SSI.TIf in '..\src\SSI\Flow Control\Obj.SSI.TIf.pas',
   uTMBReferenceTest in 'uTMBReferenceTest.pas',
-  uTPrimitiveTest in 'uTPrimitiveTest.pas',
+  uTValueTest in 'uTValueTest.pas',
   uTStringTest in 'uTStringTest.pas';
 
 var

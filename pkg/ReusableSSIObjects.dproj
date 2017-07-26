@@ -132,8 +132,7 @@
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.IValue.pas"/>
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TDate.pas"/>
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TEnum.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TCached.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TPrimitive.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TValue.pas"/>
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TString.pas"/>
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.IStringStat.pas"/>
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TStringStat.pas"/>

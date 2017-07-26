@@ -53,9 +53,8 @@ implementation
 
 uses
     SysUtils
-  , Obj.SSI.TPrimitive
   , Obj.SSI.TString
-  , Obj.SSI.TCached
+  , Obj.SSI.TValue
   ;
 
 { TMBReference }
@@ -66,7 +65,7 @@ begin
   FID        := ID;
   FValue     := Value;
   FReference :=
-  TCached<IString>.New(
+  TValue<IString>.New(
     DoCalc
   );
 end;

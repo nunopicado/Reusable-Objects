@@ -59,7 +59,7 @@ implementation
 uses
     SysUtils
   , Printers
-  , Obj.SSI.TPrimitive
+  , Obj.SSI.TValue
   , Obj.SSI.TIf
   ;
 

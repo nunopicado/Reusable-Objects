@@ -81,7 +81,7 @@ implementation
 uses
     IdExplicitTLSClientServerBase
   , IdAttachmentFile
-  , Obj.SSI.TPrimitive
+  , Obj.SSI.TValue
   ;
 
 { TMailServer }

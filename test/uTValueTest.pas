@@ -1,4 +1,4 @@
-unit uTPrimitiveTest;
+unit uTValueTest;
 
 interface
 uses
@@ -8,7 +8,7 @@ uses
 
 type
   [TestFixture]
-  TPrimitiveTest = class(TObject)
+  TValueTest = class(TObject)
   public
     [Test]
     [TestCase('Boolean 1','True')]
@@ -64,10 +64,10 @@ type
 implementation
 
 uses
-    Obj.SSI.TPrimitive
+    Obj.SSI.TValue
   ;
 
-procedure TPrimitiveTest._Boolean(const Value: Boolean);
+procedure TValueTest._Boolean(const Value: Boolean);
 begin
   Assert.AreEqual<boolean>(
     Value,
@@ -77,7 +77,7 @@ begin
   );
 end;
 
-procedure TPrimitiveTest._String(const Value: string);
+procedure TValueTest._String(const Value: string);
 begin
   Assert.AreEqual<string>(
     Value,
@@ -87,7 +87,7 @@ begin
   );
 end;
 
-procedure TPrimitiveTest._Char(const Value: Char);
+procedure TValueTest._Char(const Value: Char);
 begin
   Assert.AreEqual<Char>(
     Value,
@@ -97,7 +97,7 @@ begin
   );
 end;
 
-procedure TPrimitiveTest._Byte(const Value: Byte);
+procedure TValueTest._Byte(const Value: Byte);
 begin
   Assert.AreEqual<Byte>(
     Value,
@@ -107,7 +107,7 @@ begin
   );
 end;
 
-procedure TPrimitiveTest._Word(const Value: Word);
+procedure TValueTest._Word(const Value: Word);
 begin
   Assert.AreEqual<Word>(
     Value,
@@ -117,7 +117,7 @@ begin
   );
 end;
 
-procedure TPrimitiveTest._LongWord(const Value: LongWord);
+procedure TValueTest._LongWord(const Value: LongWord);
 begin
   Assert.AreEqual<LongWord>(
     Value,
@@ -127,7 +127,7 @@ begin
   );
 end;
 
-procedure TPrimitiveTest._Integer(const Value: Integer);
+procedure TValueTest._Integer(const Value: Integer);
 begin
   Assert.AreEqual<Integer>(
     Value,
@@ -137,7 +137,7 @@ begin
   );
 end;
 
-procedure TPrimitiveTest._Int64(const Value: Int64);
+procedure TValueTest._Int64(const Value: Int64);
 begin
   Assert.AreEqual<Int64>(
     Value,
@@ -147,7 +147,7 @@ begin
   );
 end;
 
-procedure TPrimitiveTest._Real(const Value: Real);
+procedure TValueTest._Real(const Value: Real);
 begin
   Assert.AreEqual<Real>(
     Value,
@@ -157,7 +157,7 @@ begin
   );
 end;
 
-procedure TPrimitiveTest._Single(const Value: Single);
+procedure TValueTest._Single(const Value: Single);
 begin
   Assert.AreEqual<Single>(
     Value,
@@ -167,7 +167,7 @@ begin
   );
 end;
 
-procedure TPrimitiveTest._Double(const Value: Double);
+procedure TValueTest._Double(const Value: Double);
 begin
   Assert.AreEqual<Double>(
     Value,
@@ -177,7 +177,7 @@ begin
   );
 end;
 
-procedure TPrimitiveTest._Currency(const Value: Currency);
+procedure TValueTest._Currency(const Value: Currency);
 begin
   Assert.AreEqual<Currency>(
     Value,
@@ -187,16 +187,16 @@ begin
   );
 end;
 
-procedure TPrimitiveTest._ShortInt(const Value: ShortInt);
+procedure TValueTest._ShortInt(const Value: ShortInt);
 begin
   Assert.AreEqual<ShortInt>(
     Value,
-    TPrimitive<ShortInt>.New(
+    TValue<ShortInt>.New(
       Value
     ).Value
   );
 end;
 
 initialization
-  TDUnitX.RegisterTestFixture(TPrimitiveTest);
+  TDUnitX.RegisterTestFixture(TValueTest);
 end.

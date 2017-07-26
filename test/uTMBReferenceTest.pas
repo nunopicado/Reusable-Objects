@@ -19,7 +19,7 @@ type
 implementation
 
 uses
-    Obj.SSI.TPrimitive
+    Obj.SSI.TValue
   ;
 
 procedure TMBReferenceTest.MBRef(const Expected: string; const Entity: Integer; const ID: Int64; const Value: Currency);

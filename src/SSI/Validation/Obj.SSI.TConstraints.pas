@@ -84,7 +84,7 @@ implementation
 
 uses
     SysUtils
-  , Obj.SSI.TCached
+  , Obj.SSI.TValue
   ;
 
 { TConstraintResult }
@@ -92,7 +92,7 @@ uses
 constructor TConstraintResult.Create(const Success: Boolean; const ErrorList: IErrorList);
 begin
   Create(Success);
-  FErrorList := TCached<IErrorList>.New(
+  FErrorList := TValue<IErrorList>.New(
     ErrorList
   );
 end;
@@ -100,7 +100,7 @@ end;
 constructor TConstraintResult.Create(const Success: Boolean);
 begin
   FSuccess   := Success;
-  FErrorList := TCached<IErrorList>.New(
+  FErrorList := TValue<IErrorList>.New(
     function : IErrorList
     begin
       Result := TErrorList.New;

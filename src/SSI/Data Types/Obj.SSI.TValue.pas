@@ -22,7 +22,7 @@
 (**                 terms                                                    **)
 (******************************************************************************)
 
-unit Obj.SSI.TCached;
+unit Obj.SSI.TValue;
 
 interface
 
@@ -33,7 +33,7 @@ uses
 type
   TDefineCached<T> = Reference to function: T;
 
-  TCached<T> = class(TInterfacedObject, IValue<T>)
+  TValue<T> = class(TInterfacedObject, IValue<T>)
   private
     FValue: T;
     FActive: Boolean;
@@ -46,18 +46,18 @@ type
     function Value: T;
   end;
 
-  TCachedBoolean  = TCached<Boolean>;
-  TCachedChar     = TCached<Char>;
-  TCachedString   = TCached<string>;
-  TCachedByte     = TCached<Byte>;
-  TCachedWord     = TCached<Word>;
-  TCachedLongWord = TCached<LongWord>;
-  TCachedInteger  = TCached<Integer>;
-  TCachedInt64    = TCached<Int64>;
-  TCachedReal     = TCached<Real>;
-  TCachedSingle   = TCached<Single>;
-  TCachedDouble   = TCached<Double>;
-  TCachedCurrency = TCached<Currency>;
+  TBoolean  = TValue<Boolean>;
+  TChar     = TValue<Char>;
+  TString   = TValue<string>;
+  TByte     = TValue<Byte>;
+  TWord     = TValue<Word>;
+  TLongWord = TValue<LongWord>;
+  TInteger  = TValue<Integer>;
+  TInt64    = TValue<Int64>;
+  TReal     = TValue<Real>;
+  TSingle   = TValue<Single>;
+  TDouble   = TValue<Double>;
+  TCurrency = TValue<Currency>;
 
 implementation
 
@@ -65,15 +65,15 @@ uses
     SysUtils
   ;
 
-{ TCached<T> }
+{ TValue<T> }
 
-procedure TCached<T>.DoDefine;
+procedure TValue<T>.DoDefine;
 begin
   FValue  := FDefine;
   FActive := True;
 end;
 
-class function TCached<T>.New(const Value: T): IValue<T>;
+class function TValue<T>.New(const Value: T): IValue<T>;
 begin
   Result := Create(
     function: T
@@ -83,18 +83,18 @@ begin
   );
 end;
 
-class function TCached<T>.New(const Define: TDefineCached<T>): IValue<T>;
+class function TValue<T>.New(const Define: TDefineCached<T>): IValue<T>;
 begin
   Result := Create(Define);
 end;
 
-constructor TCached<T>.Create(const Define: TDefineCached<T>);
+constructor TValue<T>.Create(const Define: TDefineCached<T>);
 begin
   FDefine := Define;
   FActive := False;
 end;
 
-function TCached<T>.Value: T;
+function TValue<T>.Value: T;
 begin
   if not FActive
     then DoDefine;

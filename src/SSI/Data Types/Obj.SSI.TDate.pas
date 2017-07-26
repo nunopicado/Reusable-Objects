@@ -100,7 +100,7 @@ uses
     SysUtils
   , DateUtils
   , Variants
-  , Obj.SSI.TPrimitive
+  , Obj.SSI.TValue
   ;
 
 { TDate }

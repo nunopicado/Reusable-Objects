@@ -83,7 +83,7 @@ uses
     SysUtils
   , Obj.SSI.IIf
   , Obj.SSI.TIf
-  , Obj.SSI.TCached
+  , Obj.SSI.TValue
   ;
 
 { TNumbersOnlyString }
@@ -96,7 +96,7 @@ end;
 constructor TNumbersOnly.Create(Origin: IString);
 begin
   FOrigin := Origin;
-  FValue  := TCached<string>.New(
+  FValue  := TString.New(
     function : string
     var
       i: Integer;
@@ -125,7 +125,7 @@ constructor TGroupDigits.Create(Origin: IString; DigitsPerGroup: Byte);
 begin
   FOrigin         := Origin;
   FDigitsPerGroup := DigitsPerGroup;
-  FValue          := TCached<string>.New(
+  FValue          := TString.New(
     function : string
     var
       i: Integer;
@@ -157,7 +157,7 @@ constructor TCut.Create(Origin: IString; Characters: Integer);
 begin
   FOrigin     := Origin;
   FCharacters := Characters;
-  FValue      := TCached<string>.New(
+  FValue      := TString.New(
     function : string
     begin
       Result := Copy(FOrigin.Value, 1, FCharacters);
