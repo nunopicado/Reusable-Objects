@@ -69,7 +69,7 @@ end;
 function TGeoCoordinate.ToIString: IString;
 begin
   Result := TString.New(
-    (FCoordinate.Value.ToString)
+    FCoordinate.Value.ToString()
   );
 end;
 
