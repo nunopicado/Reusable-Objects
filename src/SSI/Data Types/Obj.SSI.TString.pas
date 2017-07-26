@@ -148,9 +148,12 @@ var
   i: Integer;
 begin
   Result := FOrigin.Value;
-  for i := Result.Length downto 1 do
-    if (i mod 3 = 1) and (i < Result.Length)
-      then Result.Insert(i, ' ');
+  i := Result.Length - FDigitsPerGroup;
+  while i > 0 do
+    begin
+      Result.Insert(i, ' ');
+      Dec(i, FDigitsPerGroup);
+    end;
 end;
 
 constructor TGroupDigits.Create(Origin: IString; DigitsPerGroup: Byte);
