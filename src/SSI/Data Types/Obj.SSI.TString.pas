@@ -29,7 +29,6 @@ unit Obj.SSI.TString;
 interface
 
 uses
-  , Obj.SSI.ICached
     Obj.SSI.IValue
   ;
 
@@ -38,7 +37,7 @@ type
   TNumbersOnly = class(TInterfacedObject, IString)
   private
     FOrigin: IString;
-    FValue: ICached<string>;
+    FValue: IString;
   public
     constructor Create(Origin: IString);
     class function New(Origin: IString): IString;
@@ -49,7 +48,7 @@ type
   private
     FOrigin: IString;
     FDigitsPerGroup: Byte;
-    FValue: ICached<string>;
+    FValue: IString;
   public
     constructor Create(Origin: IString; DigitsPerGroup: Byte);
     class function New(Origin: IString; DigitsPerGroup: Byte): IString;
@@ -60,7 +59,7 @@ type
   private
     FOrigin: IString;
     FCharacters: Integer;
-    FValue: ICached<string>;
+    FValue: IString;
   public
     constructor Create(Origin: IString; Characters: Integer);
     class function New(Origin: IString; Characters: Integer): IString;

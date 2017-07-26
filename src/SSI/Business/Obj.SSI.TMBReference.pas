@@ -33,7 +33,6 @@ interface
 uses
     Obj.SSI.IValue
   , Obj.SSI.IBMReference
-  , Obj.SSI.ICached
   ;
 
 type
@@ -42,7 +41,7 @@ type
     FEntity: Integer;
     FID: Int64;
     FValue: Currency;
-    FReference: ICached<IString>;
+    FReference: IValue<IString>;
     function DoCalc: IString;
   public
     constructor Create(const Entity: Integer; const ID: Int64; const Value: Currency);
@@ -66,7 +65,8 @@ begin
   FEntity    := Entity;
   FID        := ID;
   FValue     := Value;
-  FReference := TCached<IString>.New(
+  FReference :=
+  TCached<IString>.New(
     DoCalc
   );
 end;
@@ -75,11 +75,9 @@ function TMBReference.DoCalc: IString;
 var
   Value : Integer;
   Ch    : Char;
-  S     : string;
 begin
   Value := 0;
-  S     := (FEntity.ToString.PadLeft(5, '0') + FID.ToString.PadLeft(7, '0') + FloatToStrF(FValue * 100, ffGeneral, 8, 0).PadLeft(8, '0'));
-  for Ch in S do
+  for Ch in (FEntity.ToString.PadLeft(5, '0') + FID.ToString.PadLeft(7, '0') + FloatToStrF(FValue * 100, ffGeneral, 8, 0).PadLeft(8, '0')) do
     Value := ((Value + StrToInt(Ch)) * 10) mod 97;
   Value  := 98 - ((Value * 10) mod 97);
   Result := TString.New(

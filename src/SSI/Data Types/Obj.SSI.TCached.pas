@@ -27,11 +27,13 @@ unit Obj.SSI.TCached;
 interface
 
 uses
-    Obj.SSI.ICached
+    Obj.SSI.IValue
   ;
 
 type
-  TCached<T> = Class(TInterfacedObject, ICached<T>)
+  TDefineCached<T> = Reference to function: T;
+
+  TCached<T> = class(TInterfacedObject, IValue<T>)
   private
     FValue: T;
     FActive: Boolean;
@@ -39,14 +41,14 @@ type
     procedure DoDefine;
   public
     constructor Create(const Define: TDefineCached<T>);
-    class function New(const Define: TDefineCached<T>): ICached<T>; overload;
-    class function New(const Value: T): ICached<T>; overload;
+    class function New(const Define: TDefineCached<T>): IValue<T>; overload;
+    class function New(const Value: T): IValue<T>; overload;
     function Value: T;
-  End;
+  end;
 
   TCachedBoolean  = TCached<Boolean>;
   TCachedChar     = TCached<Char>;
-  TCachedString   = TCached<String>;
+  TCachedString   = TCached<string>;
   TCachedByte     = TCached<Byte>;
   TCachedWord     = TCached<Word>;
   TCachedLongWord = TCached<LongWord>;
@@ -71,7 +73,7 @@ begin
   FActive := True;
 end;
 
-class function TCached<T>.New(const Value: T): ICached<T>;
+class function TCached<T>.New(const Value: T): IValue<T>;
 begin
   Result := Create(
     function: T
@@ -81,7 +83,7 @@ begin
   );
 end;
 
-class function TCached<T>.New(const Define: TDefineCached<T>): ICached<T>;
+class function TCached<T>.New(const Define: TDefineCached<T>): IValue<T>;
 begin
   Result := Create(Define);
 end;

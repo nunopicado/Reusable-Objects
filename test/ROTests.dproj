@@ -134,7 +134,6 @@
         </DelphiCompile>
         <DCCReference Include="..\src\SSI\Business\Obj.SSI.IBMReference.pas"/>
         <DCCReference Include="..\src\SSI\Business\Obj.SSI.TMBReference.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.ICached.pas"/>
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.IValue.pas"/>
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TCached.pas"/>
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TPrimitive.pas"/>

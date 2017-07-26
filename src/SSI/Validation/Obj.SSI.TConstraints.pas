@@ -4,7 +4,7 @@ interface
 
 uses
     Classes
-  , Obj.SSI.ICached
+  , Obj.SSI.IValue
   , Obj.SSI.IConstraints
   ;
 
@@ -41,7 +41,7 @@ type
   TConstraintResult = Class(TInterfacedObject, IConstraintResult)
   private
     FSuccess: Boolean;
-    FErrorList: ICached<IErrorList>;
+    FErrorList: IValue<IErrorList>;
   public
     constructor Create(const Success: Boolean); Overload;
     constructor Create(const Success: Boolean; const ErrorList: IErrorList); Overload;

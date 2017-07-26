@@ -13,7 +13,6 @@ uses
   DUnitX.TestFramework,
   Obj.SSI.IBMReference in '..\src\SSI\Business\Obj.SSI.IBMReference.pas',
   Obj.SSI.TMBReference in '..\src\SSI\Business\Obj.SSI.TMBReference.pas',
-  Obj.SSI.ICached in '..\src\SSI\Data Types\Obj.SSI.ICached.pas',
   Obj.SSI.IValue in '..\src\SSI\Data Types\Obj.SSI.IValue.pas',
   Obj.SSI.TCached in '..\src\SSI\Data Types\Obj.SSI.TCached.pas',
   Obj.SSI.TPrimitive in '..\src\SSI\Data Types\Obj.SSI.TPrimitive.pas',
