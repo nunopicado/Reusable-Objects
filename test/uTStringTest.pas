@@ -40,60 +40,75 @@ implementation
 
 uses
     Obj.SSI.TString
+  , Obj.SSI.IValue
   , Obj.SSI.TValue
+  , Delphi.Mocks
   ;
 
 
 { TStringTest }
 
 procedure TStringTest._NumbersOnly(const Expected, Value: string);
+var
+  IStringMock: TMock<IString>;
 begin
+  IStringMock := TMock<IString>.Create;
+  IStringMock.Setup.WillReturn(Value).When.Value;
+
   Assert.AreEqual(
     Expected,
     TNumbersOnly.New(
-      TString.New(
-        Value
-      )
+      IStringMock
     ).Value
   );
 end;
 
 procedure TStringTest._Cut(const Expected: string; const Chars: integer; const Value: string);
+var
+  IStringMock: TMock<IString>;
 begin
+  IStringMock := TMock<IString>.Create;
+  IStringMock.Setup.WillReturn(Value).When.Value;
+
   Assert.AreEqual<string>(
     Expected,
     TCut.New(
-      TString.New(
-        Value
-      ),
+      IStringMock,
       Chars
     ).Value
   );
 end;
 
 procedure TStringTest._Default(const Expected, Value, Default: string);
+var
+  IStringMockValue: TMock<IString>;
+  IStringMockDefault: TMock<IString>;
 begin
+  IStringMockValue := TMock<IString>.Create;
+  IStringMockValue.Setup.WillReturn(Value).When.Value;
+  IStringMockDefault := TMock<IString>.Create;
+  IStringMockDefault.Setup.WillReturn(Default).When.Value;
+
   Assert.AreEqual(
     Expected,
     TDefault.New(
-      TString.New(
-        Value
-      ),
-      TString.New(
-        Default
-      )
+      IStringMockValue,
+      IStringMockDefault
     ).Value
   );
 end;
 
 procedure TStringTest._GroupDigits(const Expected: string; const NumDigits: Integer; const Value: string);
+var
+  IStringMock: TMock<IString>;
 begin
+  IStringMock := TMock<IString>.Create;
+  IStringMock.Setup.WillReturn(Value).When.Value;
+
   Assert.AreEqual(
     Expected,
     TGroupDigits.New(
-      TString.New(
-        Value
-      ),
+      IStringMock,
       NumDigits
     ).Value
   );
