@@ -20,7 +20,11 @@ uses
   Obj.SSI.TIf in '..\src\SSI\Flow Control\Obj.SSI.TIf.pas',
   uTMBReferenceTest in 'uTMBReferenceTest.pas',
   uTValueTest in 'uTValueTest.pas',
-  uTStringTest in 'uTStringTest.pas';
+  uTStringTest in 'uTStringTest.pas',
+  Obj.SSI.TPTVATNumber in '..\src\SSI\Validation\Obj.SSI.TPTVATNumber.pas',
+  Obj.SSI.IPTVATNumber in '..\src\SSI\Validation\Obj.SSI.IPTVATNumber.pas',
+  uPTVATNumberTest in 'uPTVATNumberTest.pas',
+  Obj.SSI.Helpers in '..\src\SSI\Helpers\Obj.SSI.Helpers.pas';
 
 var
   runner : ITestRunner;
