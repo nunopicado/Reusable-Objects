@@ -33,8 +33,8 @@ type
   IPTVATNumber = interface(IInvokable)
   ['{60BEF117-FF0B-4F36-A69E-A8CB147EF87C}']
     function IsValid: Boolean;
-    function AsIString: IString;
-    function AsIInteger: IInteger;
+    function AsString: string;
+    function AsInteger: Integer;
   end;
 
 implementation
