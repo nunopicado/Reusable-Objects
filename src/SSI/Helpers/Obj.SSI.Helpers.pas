@@ -27,7 +27,7 @@ unit Obj.SSI.Helpers;
 interface
 
 type
-  THString = record Helper for string
+  TStringHelper = record Helper for string
     function ToInteger: Integer;
     function Length: Integer;
   end;
@@ -40,14 +40,14 @@ uses
 
 { THString }
 
-function THString.Length: Integer;
+function TStringHelper.Length: Integer;
 begin
   Result := System.Length(Self);
 end;
 
-function THString.ToInteger: Integer;
+function TStringHelper.ToInteger: Integer;
 begin
-     Result := StrToInt(Self);
+  Result := StrToInt(Self);
 end;
 
 end.
