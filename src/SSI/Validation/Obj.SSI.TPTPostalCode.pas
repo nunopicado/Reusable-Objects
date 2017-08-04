@@ -37,14 +37,17 @@ type
       procedure Validate;
     public
       constructor Create(const PostalCode: IString); overload;
-      class function New(const PostalCode: IString): IPTPostalCode;
+      class function New(const PostalCode: IString): IPTPostalCode; overload;
+      class function New(const PostalCode: string): IPTPostalCode; overload;
       function ToIString: IString;
     end;
 
 implementation
 
 uses
-    SysUtils;
+    SysUtils
+  , Obj.SSI.TValue
+  ;
 
 { TMailAddress }
 
@@ -53,6 +56,15 @@ begin
      inherited Create;
      FPostalCode := PostalCode;
      Validate;
+end;
+
+class function TPTPostalCode.New(const PostalCode: string): IPTPostalCode;
+begin
+  Result := New(
+    TString.New(
+      PostalCode
+    )
+  );
 end;
 
 function TPTPostalCode.ToIString: IString;
