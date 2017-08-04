@@ -52,6 +52,11 @@ type
                        Longitude: IGeoCoordinate): IPostalAddress; overload;
     class function New(const Address1, Address2: IString; const PostalCode: IPTPostalCode;
                        const City, Region, Country: IString): IPostalAddress; overload;
+    class function New(const Address1, Address2: string; const PostalCode: IPTPostalCode;
+                       const City, Region, Country: string; const Latitude,
+                       Longitude: IGeoCoordinate): IPostalAddress; overload;
+    class function New(const Address1, Address2: string; const PostalCode: IPTPostalCode;
+                       const City, Region, Country: string): IPostalAddress; overload;
     function ToIString: IString;
     function Address1: IString;
     function Address2: IString;
@@ -147,6 +152,34 @@ end;
 function TPostalAddress.Region: IString;
 begin
   Result := FRegion;
+end;
+
+class function TPostalAddress.New(const Address1, Address2: string; const PostalCode: IPTPostalCode; const City,
+  Region, Country: string; const Latitude, Longitude: IGeoCoordinate): IPostalAddress;
+begin
+  Result := New(
+    TString.New(Address1),
+    TString.New(Address2),
+    PostalCode,
+    TString.New(City),
+    TString.New(Region),
+    TString.New(Country),
+    Latitude,
+    Longitude
+  );
+end;
+
+class function TPostalAddress.New(const Address1, Address2: string; const PostalCode: IPTPostalCode; const City,
+  Region, Country: string): IPostalAddress;
+begin
+  Result := New(
+    TString.New(Address1),
+    TString.New(Address2),
+    PostalCode,
+    TString.New(City),
+    TString.New(Region),
+    TString.New(Country)
+  );
 end;
 
 end.
