@@ -35,10 +35,11 @@ type
   private
     FCoordinate: IDouble;
     FCoordinateType: TGeoCoordinateType;
-    constructor Create(const CoordinateType: TGeoCoordinateType; const Coordinate: IDouble); Overload;
+    constructor Create(const CoordinateType: TGeoCoordinateType; const Coordinate: IDouble); overload;
     procedure Validate;
   public
-    class function New(const CoordinateType: TGeoCoordinateType; const Coordinate: IDouble): IGeoCoordinate;
+    class function New(const CoordinateType: TGeoCoordinateType; const Coordinate: IDouble): IGeoCoordinate; overload;
+    class function New(const CoordinateType: TGeoCoordinateType; const Coordinate: Double): IGeoCoordinate; overload;
     function ToIString: IString;
     function ToIDouble: IDouble;
   end;
@@ -58,6 +59,17 @@ begin
   FCoordinateType := CoordinateType;
   FCoordinate     := Coordinate;
   Validate;
+end;
+
+class function TGeoCoordinate.New(const CoordinateType: TGeoCoordinateType;
+  const Coordinate: Double): IGeoCoordinate;
+begin
+  Result := New(
+    CoordinateType,
+    TDouble.New(
+      Coordinate
+    )
+  );
 end;
 
 function TGeoCoordinate.ToIDouble: IDouble;
