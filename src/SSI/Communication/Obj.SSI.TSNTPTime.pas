@@ -111,7 +111,7 @@ end;
 function TSNTPTimePool.Now: IDate;
   function ValidDate(aDate: TDateTime): Boolean; inline;
   begin
-       Result := FormatDateTime('yyyy', aDate) <> '1899';
+    Result := FormatDateTime('yyyy', aDate) <> '1899';
   end;
 var
   i: Integer;
