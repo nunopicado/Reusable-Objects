@@ -36,7 +36,8 @@ type
     FText: IString;
   public
     constructor Create(const Text: IString);
-    class function New(const Text: IString): IBase64;
+    class function New(const Text: IString): IBase64; overload;
+    class function New(const Text: string): IBase64; overload;
     function Encode: IString;
     function Decode: IString;
   end;
@@ -71,6 +72,15 @@ begin
   finally
     Encoder.Free;
   end;
+end;
+
+class function TBase64.New(const Text: string): IBase64;
+begin
+  Result := New(
+    TString.New(
+      Text
+    )
+  );
 end;
 
 function TBase64.Decode: IString;
