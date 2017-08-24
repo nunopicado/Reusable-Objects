@@ -281,7 +281,7 @@ var
   CertStore          : Pointer;
   PFXBlob            : Crypt_Data_Blob;
   PFXCert            : PCCert_Context;
-  WSPass             : WideString;
+  WSPass             : LPCWSTR;
   DwKeySpec          : DWord;
   PfCallerFreeProv   : LongBool;
   ProviderOrKeyHandle: HCryptProv_Or_NCrypt_Key_Handle;
@@ -293,14 +293,14 @@ begin
     then raise Exception.Create('Invalid certificate data.');
 
   // Password validation
-  WSPass := WideString(FPFXPass);
-  if not PFXVerifyPassword(PFXBlob, LPCWSTR(WsPass), 0)
+  WSPass := PWideChar(FPFXPass);
+  if not PFXVerifyPassword(PFXBlob, WsPass, 0)
     then raise Exception.Create('Invalid certificate password.');
 
   // Certificate store validation
   CertStore := PFXImportCertStore(
     PFXBlob,
-    LPCWSTR(WsPass),
+    WsPass,
     CRYPT_EXPORTABLE or
     { PKCS12_PREFER_CNG_KSP or }
     PKCS12_INCLUDE_EXTENDED_PROPERTIES
