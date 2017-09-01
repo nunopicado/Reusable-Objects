@@ -27,8 +27,10 @@ interface
 
 uses
     Generics.Collections
+  , Classes
   , Obj.SSI.IDate
   , Obj.SSI.ISNTPTime
+  , Obj.SSI.IValue
   ;
 
 type
@@ -37,7 +39,8 @@ type
     FServer : string;
   public
     constructor Create(Server: string);
-    class function New(Server: string): ISNTPTime;
+    class function New(Server: string): ISNTPTime; overload;
+    class function New(Server: IString): ISNTPTime; overload;
     function Now: TDateTime;
   end;
 
@@ -48,7 +51,8 @@ type
   public
     constructor Create(ServerList: array of string; IfFail: TSPBehavior);
     destructor Destroy; override;
-    class function New(ServerList: array of string; IfFail: TSPBehavior): ISNTPTime;
+    class function New(ServerList: array of string; IfFail: TSPBehavior): ISNTPTime; overload;
+    class function New(ServerList: TStrings; IfFail: TSPBehavior): ISNTPTime; overload;
     function Now: TDateTime;
   end;
 
@@ -70,6 +74,11 @@ end;
 class function TSNTPTime.New(Server: string): ISNTPTime;
 begin
   Result := Create(Server);
+end;
+
+class function TSNTPTime.New(Server: IString): ISNTPTime;
+begin
+  Result := New(Server.Value);
 end;
 
 function TSNTPTime.Now: TDateTime;
@@ -104,6 +113,18 @@ end;
 class function TSNTPTimePool.New(ServerList: array of string; IfFail: TSPBehavior): ISNTPTime;
 begin
   Result := Create(ServerList, IfFail);
+end;
+
+class function TSNTPTimePool.New(ServerList: TStrings;
+  IfFail: TSPBehavior): ISNTPTime;
+var
+  List: array of string;
+  i: Integer;
+begin
+  SetLength(List, ServerList.Count);
+  for i := 0 to Pred(ServerList.Count) do
+    List[i] := ServerList[i];
+  Result := New(List, IfFail);
 end;
 
 function TSNTPTimePool.Now: TDateTime;

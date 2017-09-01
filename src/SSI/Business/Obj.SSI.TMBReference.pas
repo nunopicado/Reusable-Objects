@@ -26,6 +26,7 @@ interface
 
 uses
     Obj.SSI.IValue
+  , Obj.SSI.ICurrency
   , Obj.SSI.IBMReference
   ;
 
@@ -39,7 +40,8 @@ type
     function DoCalc: string;
   public
     constructor Create(const Entity: Integer; const ID: Int64; const Value: Currency);
-    class function New(const Entity: Integer; const ID: Int64; const Value: Currency): IMBReference;
+    class function New(const Entity: Integer; const ID: Int64; const Value: Currency): IMBReference; overload;
+    class function New(const Entity: IInteger; const ID: IInt64; const Value: ICurrency): IMBReference; overload;
     function AsString: string;
   end;
 
@@ -73,6 +75,12 @@ begin
     Value := ((Value + StrToInt(Ch)) * 10) mod 97;
   Value  := 98 - ((Value * 10) mod 97);
   Result := FID.ToString + Value.ToString.PadLeft(2, '0');
+end;
+
+class function TMBReference.New(const Entity: IInteger; const ID: IInt64;
+  const Value: ICurrency): IMBReference;
+begin
+  Result := New(Entity.Value, ID.Value, Value.Value);
 end;
 
 class function TMBReference.New(const Entity: Integer; const ID: Int64; const Value: Currency): IMBReference;

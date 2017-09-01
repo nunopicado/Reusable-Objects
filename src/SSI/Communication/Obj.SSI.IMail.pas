@@ -33,14 +33,15 @@ uses
 type
   TAfterConnect    = Reference to procedure (const Connected: Boolean);
   TAfterDisconnect = TAfterConnect;
-  TAfterSend       = Reference to procedure (const Subject: IString);
+  TAfterSend       = Reference to procedure (const Subject: string);
 
   IMailServer  = interface;
   IMailMessage = interface;
 
   IMailServer = interface(IInvokable)
   ['{DCA8E8BA-5765-4591-816A-FD442F4E6384}']
-    function UseAuthentication(const UserName, Password: IString): IMailServer;
+    function UseAuthentication(const UserName, Password: string): IMailServer; overload;
+    function UseAuthentication(const UserName, Password: IString): IMailServer; overload;
     function UseSSL: IMailServer;
     function Connect: IMailServer;
     function OnAfterConnect(const Action: TAfterConnect): IMailServer;
@@ -51,9 +52,12 @@ type
 
   IMailMessage = interface(IInvokable)
   ['{440D5058-F8CA-4E6E-9146-056BEB305FFF}']
-    function Subject(const Subject: IString): IMailMessage;
-    function Attach(const FileName: IString): IMailMessage;
-    function Body(const MsgBody: IString): IMailMessage;
+    function Subject(const MsgSubject: string): IMailMessage; overload;
+    function Subject(const MsgSubject: IString): IMailMessage; overload;
+    function Attach(const FileName: string): IMailMessage; overload;
+    function Attach(const FileName: IString): IMailMessage; overload;
+    function Body(const MsgBody: string): IMailMessage; overload;
+    function Body(const MsgBody: IString): IMailMessage; overload;
     function Msg: TidMessage;
   end;
 

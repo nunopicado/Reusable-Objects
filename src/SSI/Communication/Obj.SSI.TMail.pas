@@ -45,10 +45,12 @@ type
     mail             : TIdSMTP;
     mailSSL          : TIdSSLIOHandlerSocketOpenSSL;
   public
-    constructor Create(const HostName: IString; const HostPort: IWord); overload;
+    constructor Create(const HostName: string; const HostPort: Word);
     destructor Destroy; override;
-    class function New(const HostName: IString; const HostPort: IWord): IMailServer;
-    function UseAuthentication(const UserName, Password: IString): IMailServer;
+    class function New(const HostName: string; const HostPort: Word): IMailServer; overload;
+    class function New(const HostName: IString; const HostPort: IWord): IMailServer; overload;
+    function UseAuthentication(const UserName, Password: string): IMailServer; overload;
+    function UseAuthentication(const UserName, Password: IString): IMailServer; overload;
     function UseSSL: IMailServer;
     function Connect: IMailServer;
     function OnAfterConnect(const Action: TAfterConnect): IMailServer;
@@ -64,9 +66,12 @@ type
     constructor Create(const FromName: IString; const FromAddr, ToAddr: IEmailAddress); overload;
     destructor Destroy; override;
     class function New(const FromName: IString; const FromAddr, ToAddr: IEmailAddress): IMailMessage;
-    function Subject(const Subject: IString): IMailMessage;
-    function Attach(const FileName: IString): IMailMessage;
-    function Body(const MsgBody: IString): IMailMessage;
+    function Subject(const MsgSubject: string): IMailMessage; overload;
+    function Subject(const MsgSubject: IString): IMailMessage; overload;
+    function Attach(const FileName: string): IMailMessage; overload;
+    function Attach(const FileName: IString): IMailMessage; overload;
+    function Body(const MsgBody: string): IMailMessage; overload;
+    function Body(const MsgBody: IString): IMailMessage; overload;
     function AddToAddr(const ToAddr: IEmailAddress): IMailMessage;
     function AddCcAddr(const CcAddr: IEmailAddress): IMailMessage;
     function AddBccAddr(const BccAddr: IEmailAddress): IMailMessage;
@@ -93,13 +98,13 @@ begin
     then FAfterConnect(mail.Connected);
 end;
 
-constructor TMailServer.Create(const HostName: IString; const HostPort: IWord);
+constructor TMailServer.Create(const HostName: string; const HostPort: Word);
 begin
   inherited Create;
 
   mail           := TidSMTP.Create(nil);
-  mail.Host      := HostName.Value;
-  mail.Port      := HostPort.Value;
+  mail.Host      := HostName;
+  mail.Port      := HostPort;
   mail.AuthType  := satNone;
   mail.IoHandler := nil;
 end;
@@ -118,9 +123,15 @@ begin
   inherited;
 end;
 
+class function TMailServer.New(const HostName: string;
+  const HostPort: Word): IMailServer;
+begin
+  Result := Create(HostName, HostPort);
+end;
+
 class function TMailServer.New(const HostName: IString; const HostPort: IWord): IMailServer;
 begin
-  Result := Create(Hostname, HostPort);
+  Result := New(Hostname.Value, HostPort.Value);
 end;
 
 function TMailServer.OnAfterConnect(const Action: TAfterConnect): IMailServer;
@@ -146,11 +157,13 @@ begin
   Result := Self;
   mail.Send(MailMessage.Msg);
   if Assigned(FAfterSend)
-    then FAfterSend(
-           TString.New(
-             MailMessage.Msg.Subject
-           )
-         );
+    then FAfterSend(MailMessage.Msg.Subject);
+end;
+
+function TMailServer.UseAuthentication(const UserName,
+  Password: IString): IMailServer;
+begin
+  Result := UseAuthentication(Username.Value, Password.Value);
 end;
 
 function TMailServer.UseSSL: IMailServer;
@@ -166,12 +179,12 @@ begin
     else mail.UseTLS  := utUseExplicitTLS;
 end;
 
-function TMailServer.UseAuthentication(const UserName, Password: IString): IMailServer;
+function TMailServer.UseAuthentication(const UserName, Password: string): IMailServer;
 begin
   Result        := Self;
   mail.AuthType := satDefault;
-  mail.Username := UserName.Value;
-  mail.Password := Password.Value;
+  mail.Username := UserName;
+  mail.Password := Password;
 end;
 
 { TMailMessage }
@@ -199,15 +212,20 @@ end;
 
 function TMailMessage.Attach(const FileName: IString): IMailMessage;
 begin
-  Result := Self;
-  if FileExists(FileName.Value)
-    then TIdAttachmentFile.Create(FMsg.MessageParts, FileName.Value);
+  Result := Attach(Filename.Value);
 end;
 
-function TMailMessage.Body(const MsgBody: IString): IMailMessage;
+function TMailMessage.Attach(const FileName: string): IMailMessage;
+begin
+  Result := Self;
+  if FileExists(FileName)
+    then TIdAttachmentFile.Create(FMsg.MessageParts, FileName);
+end;
+
+function TMailMessage.Body(const MsgBody: string): IMailMessage;
 begin
   Result         := Self;
-  FMsg.Body.Text := MsgBody.Value;
+  FMsg.Body.Text := MsgBody;
 end;
 
 constructor TMailMessage.Create(const FromName: IString; const FromAddr, ToAddr: IEmailAddress);
@@ -236,10 +254,20 @@ begin
   Result := Create(FromName, FromAddr, ToAddr);
 end;
 
-function TMailMessage.Subject(const Subject: IString): IMailMessage;
+function TMailMessage.Subject(const MsgSubject: IString): IMailMessage;
+begin
+  Result := Subject(MsgSubject.Value);
+end;
+
+function TMailMessage.Subject(const MsgSubject: string): IMailMessage;
 begin
   Result       := Self;
-  FMsg.Subject := Subject.Value;
+  FMsg.Subject := MsgSubject;
+end;
+
+function TMailMessage.Body(const MsgBody: IString): IMailMessage;
+begin
+  Result := Body(MsgBody.Value);
 end;
 
 end.

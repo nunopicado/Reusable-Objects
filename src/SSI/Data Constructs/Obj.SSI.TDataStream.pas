@@ -29,6 +29,7 @@ interface
 uses
     Classes
   , Obj.SSI.IDataStream
+  , Obj.SSI.IValue
   ;
 
 type
@@ -41,12 +42,14 @@ type
     constructor Create;
     class function New(const Stream: TStream): IDataStream; overload;
     class function New(const S: string): IDataStream; overload;
+    class function New(const S: IString): IDataStream; overload;
     class function New(const Strings: TStrings): IDataStream; overload;
     class function New: IDataStream; overload;
     destructor Destroy; override;
     function Save(const Stream: TStream): IDataStream; overload;
     function Save(const Strings: TStrings): IDataStream; overload;
     function Save(const FileName: string): IDataStream; overload;
+    function Save(const FileName: IString): IDataStream; overload;
     function AsString: string;
     function Size: Int64;
   end;
@@ -72,7 +75,7 @@ begin
   raise Exception.Create('TDataStream was meant to be used only in it''s interfaced version. Use New instead.');
 end;
 
-constructor TDataStream.CreatePrivate(const S: String);
+constructor TDataStream.CreatePrivate(const S: string);
 var
   F: TStringStream;
 begin
@@ -89,7 +92,7 @@ begin
   Result := CreatePrivate(Stream);
 end;
 
-class function TDataStream.New(const S: String): IDataStream;
+class function TDataStream.New(const S: string): IDataStream;
 begin
   Result := CreatePrivate(S);
 end;
@@ -110,6 +113,11 @@ end;
 class function TDataStream.New: IDataStream;
 begin
   Result := New('');
+end;
+
+class function TDataStream.New(const S: IString): IDataStream;
+begin
+  Result := New(S.Value);
 end;
 
 destructor TDataStream.Destroy;
@@ -139,13 +147,13 @@ begin
   end;
 end;
 
-function TDataStream.Save(const FileName: String): IDataStream;
+function TDataStream.Save(const FileName: string): IDataStream;
 begin
   Result := Self;
   FStream.SaveToFile(FileName);
 end;
 
-function TDataStream.AsString: String;
+function TDataStream.AsString: string;
 var
   SS: TStringStream;
 begin
@@ -160,6 +168,11 @@ begin
            end;
          end
     else Result := '';
+end;
+
+function TDataStream.Save(const FileName: IString): IDataStream;
+begin
+  Result := Save(Filename.Value);
 end;
 
 function TDataStream.Size: Int64;

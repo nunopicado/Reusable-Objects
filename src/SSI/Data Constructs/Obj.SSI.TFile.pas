@@ -33,21 +33,23 @@ uses
   ;
 
 type
-  TFile = Class(TInterfacedObject, IFile)
+  TFile = class(TInterfacedObject, IFile)
   private
-    FFileName: String;
+    FFileName: string;
     FAttributeData: TWin32FileAttributeData;
     function DateConversion(const FileTime: TFileTime): TDateTime;
   public
-    constructor Create(const FileName: String);
-    class function New(const FileName: String): IFile;
+    constructor Create(const FileName: string);
+    class function New(const FileName: string): IFile; overload;
+    class function New(const FileName: IString): IFile; overload;
     function Size: Int64;
     function Created: TDateTime;
     function Modified: TDateTime;
     function Accessed: TDateTime;
-    function Version(const Full: Boolean = True): string;
+    function Version(const Full: Boolean = True): string; overload;
+    function Version(const Full: IBoolean): string; overload;
     function AsDataStream: IDataStream;
-  End;
+  end;
 
 implementation
 
@@ -77,7 +79,7 @@ begin
   end;
 end;
 
-constructor TFile.Create(const FileName: String);
+constructor TFile.Create(const FileName: string);
 begin
   FFileName := FileName;
   if not GetFileAttributesEx(PChar(FFileName), GetFileExInfoStandard, @FAttributeData)
@@ -102,7 +104,12 @@ begin
   Result := DateConversion(FAttributeData.ftLastWriteTime);
 end;
 
-class function TFile.New(const FileName: String): IFile;
+class function TFile.New(const FileName: IString): IFile;
+begin
+  Result := New(Filename.Value);
+end;
+
+class function TFile.New(const FileName: string): IFile;
 begin
   Result := Create(FileName);
 end;
@@ -111,6 +118,11 @@ function TFile.Size: Int64;
 begin
   Int64Rec(Result).Lo := FAttributeData.nFileSizeLow;
   Int64Rec(Result).Hi := FAttributeData.nFileSizeHigh;
+end;
+
+function TFile.Version(const Full: IBoolean): string;
+begin
+  Result := Version(Full.Value);
 end;
 
 function TFile.Version(const Full: Boolean = True): string;

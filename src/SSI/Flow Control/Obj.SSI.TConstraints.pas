@@ -28,6 +28,7 @@ interface
 
 uses
     Classes
+  , SysUtils
   , Obj.SSI.IValue
   , Obj.SSI.IConstraints
   ;
@@ -39,7 +40,8 @@ type
     FFailMessage: string;
   public
     constructor Create(const ID, FailMessage: string);
-    class function New(const ID, FailMessage: string): IError;
+    class function New(const ID, FailMessage: string): IError; overload;
+    class function New(const ID, FailMessage: IString): IError; overload;
     function ID: string;
     function FailMessage: string;
   end;
@@ -90,16 +92,16 @@ type
     function Eval: IConstraintResult;
   end;
 
-  TBooleanFunction<T>   = Reference to function(Value: T): Boolean;
   TGenericConstraint<T> = class(TInterfacedObject, IConstraint)
   private
     FID: string;
     FFailMessage: string;
-    FTest: TBooleanFunction<T>;
+    FTest: TPredicate<T>;
     FValue: T;
   public
-    constructor Create(const Value: T; const ID, FailMessage: string; const Test: TBooleanFunction<T>);
-    class function New(const Value: T; const ID, FailMessage: string; const Test: TBooleanFunction<T>): IConstraint;
+    constructor Create(const Value: T; const ID, FailMessage: string; const Test: TPredicate<T>);
+    class function New(const Value: T; const ID, FailMessage: string; const Test: TPredicate<T>): IConstraint; overload;
+    class function New(const Value: T; const ID, FailMessage: IString; const Test: TPredicate<T>): IConstraint; overload;
     function Eval: IConstraintResult;
   end;
 
@@ -107,8 +109,7 @@ type
 implementation
 
 uses
-    SysUtils
-  , Obj.SSI.TValue
+    Obj.SSI.TValue
   ;
 
 { TConstraintResult }
@@ -218,6 +219,11 @@ begin
   Result := FID;
 end;
 
+class function TError.New(const ID, FailMessage: IString): IError;
+begin
+  Result := New(ID.Value, FailMessage.Value);
+end;
+
 function TError.FailMessage: string;
 begin
   Result := FFailMessage;
@@ -310,7 +316,7 @@ end;
 
 { TGenericConstraint<T> }
 
-constructor TGenericConstraint<T>.Create(const Value: T; const ID, FailMessage: string; const Test: TBooleanFunction<T>);
+constructor TGenericConstraint<T>.Create(const Value: T; const ID, FailMessage: string; const Test: TPredicate<T>);
 begin
   FValue       := Value;
   FID          := ID;
@@ -336,7 +342,13 @@ begin
          );
 end;
 
-class function TGenericConstraint<T>.New(const Value: T; const ID, FailMessage: string; const Test: TBooleanFunction<T>): IConstraint;
+class function TGenericConstraint<T>.New(const Value: T; const ID,
+  FailMessage: IString; const Test: TPredicate<T>): IConstraint;
+begin
+  Result := New(Value, ID.Value, FailMessage.Value, Test);
+end;
+
+class function TGenericConstraint<T>.New(const Value: T; const ID, FailMessage: string; const Test: TPredicate<T>): IConstraint;
 begin
   Result := Create(Value, ID, FailMessage, Test);
 end;

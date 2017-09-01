@@ -40,6 +40,7 @@ type
     constructor Create(Node: AnsiString);
     class function New(Node: AnsiString): INetworkNode; overload;
     class function New(Node: IValue<AnsiString>): INetworkNode; overload;
+    class function New(Node: IString): INetworkNode; overload;
     function IsIPv4Address: Boolean;
     function AsIPv4Address: AnsiString;
     function AsHostname: AnsiString;
@@ -201,6 +202,11 @@ begin
   finally
     WSACleanup;
   end;
+end;
+
+class function TNetworkNode.New(Node: IString): INetworkNode;
+begin
+  Result := New(AnsiString(Node.Value));
 end;
 
 class function TNetworkNode.New(Node: IValue<AnsiString>): INetworkNode;

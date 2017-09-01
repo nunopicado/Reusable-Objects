@@ -28,6 +28,7 @@ interface
 
 uses
     Obj.SSI.IStringStat
+  , Obj.SSI.IValue
   ;
 
 type
@@ -36,7 +37,8 @@ type
     FString: string;
   public
     constructor Create(const aString: string);
-    class function New(const aString: string): IStringStat;
+    class function New(const aString: string): IStringStat; overload;
+    class function New(const aString: IString): IStringStat; overload;
     function OccurrenciesOf(const Ch: Char): Word;
     function ciPos(const SubStr: string): Word;
     function Compare(const OtherString: string): Byte;
@@ -208,6 +210,11 @@ end;
 constructor TStringStat.Create(const aString: string);
 begin
   FString := aString;
+end;
+
+class function TStringStat.New(const aString: IString): IStringStat;
+begin
+  Result := New(aString.Value);
 end;
 
 class function TStringStat.New(const aString: string): IStringStat;

@@ -30,19 +30,19 @@ uses
   ;
 
 type
-  TMatrix<T> = Class(TInterfacedObject, IMatrix<T>)
+  TMatrix<T> = class(TInterfacedObject, IMatrix<T>)
   private
-    FMatrix: Array of Array of T;
+    FMatrix: array of array of T;
   public
     constructor Create(const ColCount, RowCount: Word);
-    class function New: IMatrix<T>; Overload;
-    class function New(const ColCount, RowCount: Word): IMatrix<T>; Overload;
+    class function New: IMatrix<T>; overload;
+    class function New(const ColCount, RowCount: Word): IMatrix<T>; overload;
     function Cell(const Col, Row: LongInt): T;
     function Edit(const Col, Row: LongInt; const Value: T): IMatrix<T>;
     function ColCount: Integer;
     function RowCount: Integer;
     function Resize(const ColCount, RowCount: LongInt): IMatrix<T>;
-  End;
+  end;
 
 implementation
 
