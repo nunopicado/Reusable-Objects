@@ -27,7 +27,7 @@ unit Obj.SSI.IStringStat;
 interface
 
 type
-  TCharSet = Set of Char;
+  TCharSet = set of Char;
 
   IStringStat = interface(IInvokable)
   ['{31A932DC-C98B-4C9F-B608-111EA84C7BAA}']

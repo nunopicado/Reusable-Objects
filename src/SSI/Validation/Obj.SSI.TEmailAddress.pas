@@ -33,12 +33,12 @@ uses
 type
   TEmailAddress = class(TInterfacedObject, IEmailAddress)
   private
-    FEmailAddress: IString;
+    FEmailAddress: string;
   public
-    constructor Create(EmailAddress: IString);
+    constructor Create(EmailAddress: string);
     class function New(EmailAddress: string): IEMailAddress; overload;
     class function New(EmailAddress: IString): IEmailAddress; overload;
-    function Value: IString;
+    function Value: string;
     function IsValid: Boolean;
   end;
 
@@ -48,18 +48,17 @@ uses
     SysUtils
   , Obj.SSI.IStringStat
   , Obj.SSI.TStringStat
-  , Obj.SSI.TValue
   ;
 
 { TMailAddress }
 
-constructor TEmailAddress.Create(EmailAddress: IString);
+constructor TEmailAddress.Create(EmailAddress: string);
 begin
   inherited Create;
   FEmailAddress := EmailAddress;
 end;
 
-function TEmailAddress.Value: IString;
+function TEmailAddress.Value: string;
 begin
   if not IsValid
     then raise Exception.Create(Format('Invalid Email Address (%s)', [FEmailAddress]));
@@ -75,11 +74,11 @@ var
   ServerPart : string;
 begin
   Result := False;
-  i      := Pos('@', FEmailAddress.Value);
+  i      := Pos('@', FEmailAddress);
   if i = 0
     then Exit;
-  NamePart   := Copy(FEmailAddress.Value, 1, i - 1);
-  ServerPart := Copy(FEmailAddress.Value, i + 1, FEmailAddress.Value.Length);
+  NamePart   := Copy(FEmailAddress, 1, i - 1);
+  ServerPart := Copy(FEmailAddress, i + 1, FEmailAddress.Length);
   if (NamePart.Length = 0) or
      (ServerPart.Length < 5)
     then Exit;
@@ -93,16 +92,12 @@ end;
 
 class function TEmailAddress.New(EmailAddress: IString): IEmailAddress;
 begin
-  Result := Create(EmailAddress);
+  Result := Create(EmailAddress.Value);
 end;
 
 class function TEmailAddress.New(EmailAddress: string): IEMailAddress;
 begin
-  Result := Create(
-    TString.New(
-      EmailAddress
-    )
-  );
+  Result := Create(EmailAddress);
 end;
 
 end.

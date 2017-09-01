@@ -39,6 +39,7 @@ type
     constructor Create(const PTVATNumber: string);
     class function New(const PTVATNumber: string): IPTVATNumber; overload;
     class function New(const PTVATNumber: IString): IPTVATNumber; overload;
+    class function New(const PTVATNumber: IInteger): IPTVATNumber; overload;
     function IsValid: Boolean;
     function AsString: string;
     function AsInteger: Integer;
@@ -89,6 +90,11 @@ function TPTVATNumber.IsValid: Boolean;
 begin
   Result := TRegEx.IsMatch(FPTVATNumber, '^(?!\s*$)[0-9]{9}$') and
             (RightStr(FPTVATNumber, 1).ToInteger = CalcCheckDigit);
+end;
+
+class function TPTVATNumber.New(const PTVATNumber: IInteger): IPTVATNumber;
+begin
+  Result := New(PTVATNumber.Value.ToString);
 end;
 
 class function TPTVATNumber.New(const PTVATNumber: string): IPTVatNumber;

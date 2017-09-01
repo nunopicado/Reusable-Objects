@@ -25,10 +25,6 @@ unit Obj.SSI.IPTVATNumber;
 
 interface
 
-uses
-    Obj.SSI.IValue
-  ;
-
 type
   IPTVATNumber = interface(IInvokable)
   ['{60BEF117-FF0B-4F36-A69E-A8CB147EF87C}']

@@ -26,21 +26,21 @@ unit Obj.SSI.TPTPostalCode;
 interface
 
 uses
-    Obj.SSI.IPTPostalCode
+    Obj.SSI.IPostalCode
   , Obj.SSI.IValue
   ;
 
 type
-    TPTPostalCode = class(TInterfacedObject, IPTPostalCode)
-    private
-      FPostalCode: IString;
-      procedure Validate;
-    public
-      constructor Create(const PostalCode: IString); overload;
-      class function New(const PostalCode: IString): IPTPostalCode; overload;
-      class function New(const PostalCode: string): IPTPostalCode; overload;
-      function ToIString: IString;
-    end;
+  TPTPostalCode = class(TInterfacedObject, IPostalCode)
+  private
+    FPostalCode: string;
+    procedure Validate;
+  public
+    constructor Create(const PostalCode: string); overload;
+    class function New(const PostalCode: string): IPostalCode; overload;
+    class function New(const PostalCode: IString): IPostalCode; overload;
+    function AsString: string;
+  end;
 
 implementation
 
@@ -51,53 +51,48 @@ uses
 
 { TMailAddress }
 
-constructor TPTPostalCode.Create(const PostalCode: IString);
+constructor TPTPostalCode.Create(const PostalCode: string);
 begin
-     inherited Create;
-     FPostalCode := PostalCode;
-     Validate;
+  FPostalCode := PostalCode;
+  Validate;
 end;
 
-class function TPTPostalCode.New(const PostalCode: string): IPTPostalCode;
+class function TPTPostalCode.New(const PostalCode: string): IPostalCode;
 begin
-  Result := New(
-    TString.New(
-      PostalCode
-    )
-  );
+  Result := Create(PostalCode);
 end;
 
-function TPTPostalCode.ToIString: IString;
+function TPTPostalCode.AsString: string;
 begin
-     Result := FPostalCode;
+  Result := FPostalCode;
 end;
 
 procedure TPTPostalCode.Validate;
 var
-   Valid: Boolean;
-   Value: Integer;
-   Parts: TArray<String>;
+  Valid: Boolean;
+  Value: Integer;
+  Parts: TArray<string>;
 begin
-     Valid := (FPostalCode.Value.Length = 8) and (FPostalCode.Value[5] = '-');
-     if Valid
-        then begin
-                  Parts := FPostalCode.Value.Split(['-']);
-                  Valid := Length(Parts) = 2;
-                  if Valid
-                     then begin
-                               Valid := TryStrToInt(Parts[0], Value) and (Value >= 1000) and (Value <= 9999);
-                               if Valid
-                                  then Valid := TryStrToInt(Parts[1], Value) and (Value >= 0) and (Value <= 999);
-                          end;
-             end;
+  Valid := (FPostalCode.Length = 8) and (FPostalCode[5] = '-');
+  if Valid
+    then begin
+           Parts := FPostalCode.Split(['-']);
+           Valid := Length(Parts) = 2;
+           if Valid
+             then begin
+                    Valid := TryStrToInt(Parts[0], Value) and (Value >= 1000) and (Value <= 9999);
+                    if Valid
+                      then Valid := TryStrToInt(Parts[1], Value) and (Value >= 0) and (Value <= 999);
+                  end;
+         end;
 
-     if not Valid
-        then raise exception.Create(Format('"%s" is not a valid portuguese postal code.', [FPostalCode]));
+  if not Valid
+    then raise exception.Create(Format('"%s" is not a valid portuguese postal code.', [FPostalCode]));
 end;
 
-class function TPTPostalCode.New(const PostalCode: IString): IPTPostalCode;
+class function TPTPostalCode.New(const PostalCode: IString): IPostalCode;
 begin
-     Result := Create(PostalCode);
+  Result := New(PostalCode.Value);
 end;
 
 end.

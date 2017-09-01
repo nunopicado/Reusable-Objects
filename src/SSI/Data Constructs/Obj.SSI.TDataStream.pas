@@ -36,18 +36,18 @@ type
   strict private
     FStream: TMemoryStream;
   public
-    constructor CreatePrivate(const Stream: TStream); Overload;
-    constructor CreatePrivate(const S: String); Overload;
+    constructor CreatePrivate(const Stream: TStream); overload;
+    constructor CreatePrivate(const S: string); overload;
     constructor Create;
-    class function New(const Stream: TStream): IDataStream; Overload;
-    class function New(const S: String): IDataStream; Overload;
-    class function New(const Strings: TStrings): IDataStream; Overload;
-    class function New: IDataStream; Overload;
-    destructor Destroy; Override;
-    function Save(const Stream: TStream): IDataStream; Overload;
-    function Save(const Strings: TStrings): IDataStream; Overload;
-    function Save(const FileName: String): IDataStream; Overload;
-    function AsString: String;
+    class function New(const Stream: TStream): IDataStream; overload;
+    class function New(const S: string): IDataStream; overload;
+    class function New(const Strings: TStrings): IDataStream; overload;
+    class function New: IDataStream; overload;
+    destructor Destroy; override;
+    function Save(const Stream: TStream): IDataStream; overload;
+    function Save(const Strings: TStrings): IDataStream; overload;
+    function Save(const FileName: string): IDataStream; overload;
+    function AsString: string;
     function Size: Int64;
   end;
 
@@ -153,7 +153,7 @@ begin
     then begin
            SS := TStringStream.Create('');
            try
-             SS.CopyFrom(FStream, 0);  // No need to position at 0 nor provide size
+             SS.CopyFrom(FStream, 0);
              Result := SS.DataString;
            finally
              SS.Free;

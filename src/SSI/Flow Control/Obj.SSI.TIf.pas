@@ -37,11 +37,11 @@ type
   public
     class function New(const Condition: Boolean; const ValueIfTrue, ValueIfFalse: T): IIf<T>;
     function Eval: T;
-  End;
+  end;
 
 implementation
 
-{ TIIF }
+{ TIf }
 
 constructor TIf<T>.Create(const Condition: Boolean; const ValueIfTrue, ValueIfFalse: T);
 begin

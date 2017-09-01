@@ -33,15 +33,15 @@ uses
 type
   TGeoCoordinate = class(TInterfacedObject, IGeoCoordinate)
   private
-    FCoordinate: IDouble;
+    FCoordinate: Double;
     FCoordinateType: TGeoCoordinateType;
-    constructor Create(const CoordinateType: TGeoCoordinateType; const Coordinate: IDouble); overload;
+    constructor Create(const CoordinateType: TGeoCoordinateType; const Coordinate: Double); overload;
     procedure Validate;
   public
-    class function New(const CoordinateType: TGeoCoordinateType; const Coordinate: IDouble): IGeoCoordinate; overload;
     class function New(const CoordinateType: TGeoCoordinateType; const Coordinate: Double): IGeoCoordinate; overload;
-    function ToIString: IString;
-    function ToIDouble: IDouble;
+    class function New(const CoordinateType: TGeoCoordinateType; const Coordinate: IDouble): IGeoCoordinate; overload;
+    function AsString: string;
+    function AsDouble: Double;
   end;
 
 implementation
@@ -53,7 +53,7 @@ uses
 
 { TMailAddress }
 
-constructor TGeoCoordinate.Create(const CoordinateType: TGeoCoordinateType; const Coordinate: IDouble);
+constructor TGeoCoordinate.Create(const CoordinateType: TGeoCoordinateType; const Coordinate: Double);
 begin
   inherited Create;
   FCoordinateType := CoordinateType;
@@ -64,32 +64,25 @@ end;
 class function TGeoCoordinate.New(const CoordinateType: TGeoCoordinateType;
   const Coordinate: Double): IGeoCoordinate;
 begin
-  Result := New(
-    CoordinateType,
-    TDouble.New(
-      Coordinate
-    )
-  );
+  Result := Create(CoordinateType, Coordinate);
 end;
 
-function TGeoCoordinate.ToIDouble: IDouble;
+function TGeoCoordinate.AsDouble: Double;
 begin
   Result := FCoordinate;
 end;
 
-function TGeoCoordinate.ToIString: IString;
+function TGeoCoordinate.AsString: string;
 begin
-  Result := TString.New(
-    FCoordinate.Value.ToString()
-  );
+  Result := FCoordinate.ToString();
 end;
 
 procedure TGeoCoordinate.Validate;
 var
   Valid: Boolean;
 begin
-  Valid := ((FCoordinateType = gcLatitude) and (FCoordinate.Value >= -90) and (FCoordinate.Value <= 90)) or
-           ((FCoordinateType = gcLongitude) and (FCoordinate.Value >= -180) and (FCoordinate.Value <= 180));
+  Valid := ((FCoordinateType = gcLatitude) and (FCoordinate >= -90) and (FCoordinate <= 90)) or
+           ((FCoordinateType = gcLongitude) and (FCoordinate >= -180) and (FCoordinate <= 180));
 
   if not Valid
     then raise exception.Create(Format('"%d" is not a valid geo coordinate.', [FCoordinate]));
@@ -97,7 +90,7 @@ end;
 
 class function TGeoCoordinate.New(const CoordinateType: TGeoCoordinateType; const Coordinate: IDouble): IGeoCoordinate;
 begin
-  Result := Create(CoordinateType, Coordinate);
+  Result := New(CoordinateType, Coordinate.Value);
 end;
 
 end.

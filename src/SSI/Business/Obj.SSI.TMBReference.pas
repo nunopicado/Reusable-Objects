@@ -35,12 +35,12 @@ type
     FEntity: Integer;
     FID: Int64;
     FValue: Currency;
-    FReference: IValue<IString>;
-    function DoCalc: IString;
+    FReference: IString;
+    function DoCalc: string;
   public
     constructor Create(const Entity: Integer; const ID: Int64; const Value: Currency);
     class function New(const Entity: Integer; const ID: Int64; const Value: Currency): IMBReference;
-    function AsIString: IString;
+    function AsString: string;
   end;
 
 implementation
@@ -58,13 +58,12 @@ begin
   FEntity    := Entity;
   FID        := ID;
   FValue     := Value;
-  FReference :=
-  TValue<IString>.New(
+  FReference := TString.New(
     DoCalc
   );
 end;
 
-function TMBReference.DoCalc: IString;
+function TMBReference.DoCalc: string;
 var
   Value : Integer;
   Ch    : Char;
@@ -73,9 +72,7 @@ begin
   for Ch in (FEntity.ToString.PadLeft(5, '0') + FID.ToString.PadLeft(7, '0') + FloatToStrF(FValue * 100, ffGeneral, 8, 0).PadLeft(8, '0')) do
     Value := ((Value + StrToInt(Ch)) * 10) mod 97;
   Value  := 98 - ((Value * 10) mod 97);
-  Result := TString.New(
-    FID.ToString + Value.ToString.PadLeft(2, '0')
-  );
+  Result := FID.ToString + Value.ToString.PadLeft(2, '0');
 end;
 
 class function TMBReference.New(const Entity: Integer; const ID: Int64; const Value: Currency): IMBReference;
@@ -83,7 +80,7 @@ begin
   Result := Create(Entity, ID, Value);
 end;
 
-function TMBReference.AsIString: IString;
+function TMBReference.AsString: string;
 begin
   Result := FReference.Value;
 end;

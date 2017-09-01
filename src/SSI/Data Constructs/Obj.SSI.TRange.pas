@@ -44,16 +44,16 @@ uses
   ;
 
 type
-  TAggregatedIntegerRange = Class(TAggregatedObject, IIntegerRange)
+  TAggregatedIntegerRange = class(TAggregatedObject, IIntegerRange)
   strict private
     FOrigin: IIntegerRange;
   public
     constructor Create(const Origin: IIntegerRange);
     function Includes(const Value: Int64): Boolean;
     function Excludes(const Value: Int64): Boolean;
-  End;
+  end;
 
-  TIntegerRange = Class(TInterfacedObject, IIntegerRange)
+  TIntegerRange = class(TInterfacedObject, IIntegerRange)
   strict private
     FLow  : Int64;
     FHigh : Int64;
@@ -62,18 +62,18 @@ type
     class function New(const LowValue, HighValue: Int64): IIntegerRange;
     function Includes(const Value: Int64): Boolean;
     function Excludes(const Value: Int64): Boolean;
-  End;
+  end;
 
-  TAggregatedFloatRange = Class(TAggregatedObject, IFloatRange)
+  TAggregatedFloatRange = class(TAggregatedObject, IFloatRange)
   strict private
     FOrigin: IFloatRange;
   public
     constructor Create(const Origin: IFloatRange);
     function Includes(const Value: Extended): Boolean;
     function Excludes(const Value: Extended): Boolean;
-  End;
+  end;
 
-  TFloatRange = Class(TInterfacedObject, IFloatRange)
+  TFloatRange = class(TInterfacedObject, IFloatRange)
   strict private
     FLow  : Extended;
     FHigh : Extended;
@@ -82,18 +82,18 @@ type
     class function New(const LowValue, HighValue: Extended): IFloatRange;
     function Includes(const Value: Extended): Boolean;
     function Excludes(const Value: Extended): Boolean;
-  End;
+  end;
 
-  TAggregatedCharRange = Class(TAggregatedObject, ICharRange)
+  TAggregatedCharRange = class(TAggregatedObject, ICharRange)
   strict private
     FOrigin: ICharRange;
   public
     constructor Create(const Origin: ICharRange);
     function Includes(const Value: Char): Boolean;
     function Excludes(const Value: Char): Boolean;
-  End;
+  end;
 
-  TCharRange = Class(TInterfacedObject, ICharRange)
+  TCharRange = class(TInterfacedObject, ICharRange)
   strict private
     FLow  : Char;
     FHigh : Char;
@@ -102,25 +102,25 @@ type
     class function New(const LowValue, HighValue: Char): ICharRange;
     function Includes(const Value: Char): Boolean;
     function Excludes(const Value: Char): Boolean;
-  End;
+  end;
 
-  TRange = Class(TInterfacedObject, IIntegerRange, IFloatRange, ICharRange)
+  TRange = class(TInterfacedObject, IIntegerRange, IFloatRange, ICharRange)
   strict private
     FIntegerRange : TAggregatedIntegerRange;
     FFloatRange   : TAggregatedFloatRange;
     FCharRange    : TAggregatedCharRange;
-    constructor Create(const LowValue, HighValue: Int64); Overload;
-    constructor Create(const LowValue, HighValue: Extended); Overload;
-    constructor Create(const LowValue, HighValue: Char); Overload;
+    constructor Create(const LowValue, HighValue: Int64); overload;
+    constructor Create(const LowValue, HighValue: Extended); overload;
+    constructor Create(const LowValue, HighValue: Char); overload;
   public
-    class function New(const LowValue, HighValue: Int64)    : IIntegerRange; Overload;
-    class function New(const LowValue, HighValue: Extended) : IFloatRange; Overload;
-    class function New(const LowValue, HighValue: Char)     : ICharRange; Overload;
-    destructor Destroy; Override;
+    class function New(const LowValue, HighValue: Int64)    : IIntegerRange; overload;
+    class function New(const LowValue, HighValue: Extended) : IFloatRange; overload;
+    class function New(const LowValue, HighValue: Char)     : ICharRange; overload;
+    destructor Destroy; override;
     property IntegerRange : TAggregatedIntegerRange read FIntegerRange implements IIntegerRange;
     property FloatRange   : TAggregatedFloatRange   read FFloatRange   implements IFloatRange;
     property CharRange    : TAggregatedCharRange    read FCharRange    implements ICharRange;
-  End;
+  end;
 
 implementation
 

@@ -33,21 +33,22 @@ uses
 
 type
   TCryptString = class(TInterfacedObject, ICryptString)
-  private
-    const
-      BufferSize = 1024 * 1024;
-      DefaultPassword = '98C9E3C7';
-    var
-      FText: IString;
-      FPassword: AnsiString;
+  private const
+    BufferSize = 1024 * 1024;
+    DefaultPassword = '98C9E3C7';
+  private var
+    FText: AnsiString;
+    FPassword: AnsiString;
   public
-    constructor Create(const Text, Password: IString); overload;
-    constructor Create(const Text: IString); overload;
-    class function New(const Text: IString): ICryptString; overload;
-    class function New(const Text, Password: IString): ICryptString; overload;
-    function Crypt: IString;
-    function Decrypt: IString;
-  End;
+    constructor Create(const Text, Password: AnsiString); overload;
+    constructor Create(const Text: AnsiString); overload;
+    class function New(const Text, Password: AnsiString): ICryptString; overload;
+    class function New(const Text: AnsiString): ICryptString; overload;
+    class function New(const Text, Password: IValue<AnsiString>): ICryptString; overload;
+    class function New(const Text: IValue<AnsiString>): ICryptString; overload;
+    function Crypt: AnsiString;
+    function Decrypt: AnsiString;
+  end;
 
 implementation
 
@@ -77,26 +78,22 @@ type
     destructor Destroy; override;
     class function New(const Password: AnsiString): ICryptKey;
     function Key: HCryptKey;
-  End;
+  end;
 
 { TCryptString }
 
-constructor TCryptString.Create(const Text: IString);
+constructor TCryptString.Create(const Text, Password: AnsiString);
 begin
-  Create(
-   Text,
-   TString.New(DefaultPassword)
-  );
-end;
-
-constructor TCryptString.Create(const Text, Password: IString);
-begin
-  inherited Create;
   FText     := Text;
-  FPassword := Password.Value;
+  FPassword := Password;
 end;
 
-function TCryptString.Crypt: IString;
+constructor TCryptString.Create(const Text: AnsiString);
+begin
+  Create(Text, DefaultPassword);
+end;
+
+function TCryptString.Crypt: AnsiString;
 var
   Source    : TStringStream;
   Target    : TStringStream;
@@ -106,7 +103,7 @@ var
   FCryptKey : ICryptKey;
 begin
   FCryptKey       := TCryptKey.New(FPassword);
-  Source          := TStringStream.Create(FText.Value);
+  Source          := TStringStream.Create(FText);
   Source.Position := 0;
   Target          := TStringStream.Create;
   try
@@ -119,7 +116,7 @@ begin
           then RaiseLastOSError;
         Target.Write(Buffer^, BytesIn);
       until Last;
-      Result := TBase64.New(TString.New(Target.DataString)).Encode;
+      Result := TBase64.New(TValue<AnsiString>.New(AnsiString(Target.DataString))).Encode;
     finally
       FreeMem(Buffer, BufferSize);
     end;
@@ -129,7 +126,7 @@ begin
   end;
 end;
 
-function TCryptString.Decrypt: IString;
+function TCryptString.Decrypt: AnsiString;
 var
   Source    : TStringStream;
   Target    : TStringStream;
@@ -139,7 +136,7 @@ var
   FCryptKey : ICryptKey;
 begin
   FCryptKey       := TCryptKey.New(FPassword);
-  Source          := TStringStream.Create(TBase64.New(FText).Decode.Value);
+  Source          := TStringStream.Create(TBase64.New(FText).Decode);
   Source.Position := 0;
   Target          := TStringStream.Create;
   try
@@ -152,7 +149,7 @@ begin
           then RaiseLastOSError;
         Target.Write(Buffer^, BytesIn);
       until Last;
-      Result := TString.New(Target.DataString);
+      Result := AnsiString(Target.DataString);
     finally
       FreeMem(Buffer, BufferSize);
     end;
@@ -162,14 +159,25 @@ begin
   end;
 end;
 
-class function TCryptString.New(const Text: IString): ICryptString;
+class function TCryptString.New(const Text: AnsiString): ICryptString;
 begin
   Result := Create(Text);
 end;
 
-class function TCryptString.New(const Text, Password: IString): ICryptString;
+class function TCryptString.New(const Text, Password: AnsiString): ICryptString;
 begin
   Result := Create(Text, Password);
+end;
+
+class function TCryptString.New(const Text,
+  Password: IValue<AnsiString>): ICryptString;
+begin
+  Result := New(Text.Value, Password.Value);
+end;
+
+class function TCryptString.New(const Text: IValue<AnsiString>): ICryptString;
+begin
+  Result := New(Text.Value);
 end;
 
 { TCryptKey }

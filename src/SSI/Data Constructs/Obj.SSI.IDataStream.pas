@@ -33,10 +33,10 @@ uses
 type
   IDataStream = interface(IInvokable)
   ['{1ED9FBE5-56F3-45BD-8A84-EA5F4A54CED9}']
-    function Save(const Stream: TStream): IDataStream; Overload;
-    function Save(const Strings: TStrings): IDataStream; Overload;
-    function Save(const FileName: string): IDataStream; Overload;
-    function AsString: String;
+    function Save(const Stream: TStream): IDataStream; overload;
+    function Save(const Strings: TStrings): IDataStream; overload;
+    function Save(const FileName: string): IDataStream; overload;
+    function AsString: string;
     function Size: Int64;
   end;
 

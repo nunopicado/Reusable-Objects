@@ -27,27 +27,30 @@ interface
 
 uses
     Obj.SSI.INetworkNode
+  , Obj.SSI.IValue
   ;
 
 type
-  TNetworkNode = Class(TInterfacedObject, INetworkNode)
+  TNetworkNode = class(TInterfacedObject, INetworkNode)
   private
-    FNode: String;
+    FNode: AnsiString;
     function HostToIP(const Hostname: AnsiString; var IP: AnsiString): Boolean;
     function IPToHost(const IP: AnsiString; var Hostname: AnsiString): Boolean;
   public
     constructor Create(Node: AnsiString);
-    class function New(Node: AnsiString): INetworkNode;
+    class function New(Node: AnsiString): INetworkNode; overload;
+    class function New(Node: IValue<AnsiString>): INetworkNode; overload;
     function IsIPv4Address: Boolean;
     function AsIPv4Address: AnsiString;
     function AsHostname: AnsiString;
     function IsPortOpen(const Port: Word): Boolean;
-  End;
+  end;
 
 implementation
 
 uses
     SysUtils
+  , AnsiStrings
   , WinAPI.WinSock
   ;
 
@@ -63,7 +66,7 @@ begin
   WSAStartup($0101, wsData);
   try
     GetHostName(aHostName, SizeOf(aHostName));
-    StrPCopy(aHostName, Hostname);
+    AnsiStrings.StrPCopy(aHostName, Hostname);
     HostEnt := GetHostByName(aHostName);
     if Assigned(HostEnt)
       then if Assigned(HostEnt^.H_Addr_List)
@@ -71,7 +74,17 @@ begin
                     pcAddr := HostEnt^.H_Addr_List^;
                     if Assigned(pcAddr)
                       then begin
-                             IP     := Format('%d.%d.%d.%d', [Byte(pcAddr[0]), Byte(pcAddr[1]), Byte(pcAddr[2]), Byte(pcAddr[3])]);
+                             IP := AnsiString(
+                               Format(
+                                 '%d.%d.%d.%d',
+                                 [
+                                   Byte(pcAddr[0]),
+                                   Byte(pcAddr[1]),
+                                   Byte(pcAddr[2]),
+                                   Byte(pcAddr[3])
+                                 ]
+                               )
+                             );
                              Result := True;
                            end
                       else Result := False;
@@ -117,7 +130,7 @@ begin
     HostEnt:= GetHostByAddr(@SockAddrIn.sin_addr.S_addr, 4, AF_INET);
     if HostEnt <> nil
        then begin
-              Hostname := StrPas(Hostent^.h_name);
+              Hostname := AnsiStrings.StrPas(Hostent^.h_name);
               Result   := True;
             end;
   finally
@@ -136,7 +149,7 @@ begin
   Result      := False;
   GroupCount  := 0;
   GroupLength := 0;
-  for i := 1 to FNode.Length do
+  for i := 1 to Length(FNode) do
     case FNode[i] of
       '0'..'9': begin
                   Inc(GroupLength);
@@ -145,14 +158,30 @@ begin
                 end;
       '.'     : begin
                   Inc(GroupCount);
-                  Val(Copy(FNode, i - GroupLength, GroupLength), GroupValue, ErrCode);
+                  Val(
+                    Copy(
+                      string(FNode),
+                      i - GroupLength,
+                      GroupLength
+                    ),
+                    GroupValue,
+                    ErrCode
+                  );
                   if ((GroupCount > 3) or (GroupLength = 0)) or (GroupValue > 255)
                     then Exit;
                   GroupLength := 0;
                 end;
     else Exit;
     end;
-  Val(Copy(FNode, i - GroupLength, GroupLength), GroupValue, ErrCode);
+  Val(
+    Copy(
+      string(FNode),
+      i - GroupLength,
+      GroupLength
+    ),
+    GroupValue,
+    ErrCode
+  );
   Result := (GroupCount = 3) and (GroupLength > 0) and (GroupValue < 256);
 end;
 
@@ -172,6 +201,11 @@ begin
   finally
     WSACleanup;
   end;
+end;
+
+class function TNetworkNode.New(Node: IValue<AnsiString>): INetworkNode;
+begin
+  Result := New(Node.Value);
 end;
 
 class function TNetworkNode.New(Node: AnsiString): INetworkNode;

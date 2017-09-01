@@ -25,17 +25,13 @@ unit Obj.SSI.IGeoCoordinate;
 
 interface
 
-uses
-    Obj.SSI.IValue
-  ;
-
 type
   TGeoCoordinateType = (gcLatitude, gcLongitude);
 
   IGeoCoordinate = interface(IInvokable)
   ['{6D48CC57-3187-47B3-A8F1-E1C7CFCFB237}']
-    function ToIString: IString;
-    function ToIDouble: IDouble;
+    function AsString: string;
+    function AsDouble: Double;
   end;
 
 implementation

@@ -180,21 +180,21 @@ function TMailMessage.AddBccAddr(const BccAddr: IEmailAddress): IMailMessage;
 begin
   if FMsg.BCCList.EMailAddresses <> ''
     then FMsg.BCCList.EMailAddresses := FMsg.BCCList.EMailAddresses + ';';
-  FMsg.BCCList.EMailAddresses := FMsg.BCCList.EMailAddresses + BccAddr.Value.Value;
+  FMsg.BCCList.EMailAddresses := FMsg.BCCList.EMailAddresses + BccAddr.Value;
 end;
 
 function TMailMessage.AddCcAddr(const CcAddr: IEmailAddress): IMailMessage;
 begin
   if FMsg.CCList.EMailAddresses <> ''
     then FMsg.CCList.EMailAddresses := FMsg.CCList.EMailAddresses + ';';
-  FMsg.CCList.EMailAddresses := FMsg.CCList.EMailAddresses + CcAddr.Value.Value;
+  FMsg.CCList.EMailAddresses := FMsg.CCList.EMailAddresses + CcAddr.Value;
 end;
 
 function TMailMessage.AddToAddr(const ToAddr: IEmailAddress): IMailMessage;
 begin
   if FMsg.Recipients.EMailAddresses <> ''
     then FMsg.Recipients.EMailAddresses := FMsg.Recipients.EMailAddresses + ';';
-  FMsg.Recipients.EMailAddresses := FMsg.Recipients.EMailAddresses + ToAddr.Value.Value;
+  FMsg.Recipients.EMailAddresses := FMsg.Recipients.EMailAddresses + ToAddr.Value;
 end;
 
 function TMailMessage.Attach(const FileName: IString): IMailMessage;
@@ -216,8 +216,8 @@ begin
   FMsg                           := TidMessage.Create(nil);
   FMsg.MessageParts.Clear;
   FMsg.From.Name                 := FromName.Value;
-  FMsg.From.Address              := FromAddr.Value.Value;
-  FMsg.Recipients.EMailAddresses := ToAddr.Value.Value;
+  FMsg.From.Address              := FromAddr.Value;
+  FMsg.Recipients.EMailAddresses := ToAddr.Value;
 end;
 
 destructor TMailMessage.Destroy;

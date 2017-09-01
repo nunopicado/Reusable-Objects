@@ -35,21 +35,21 @@ type
   TSNTPTime = class(TInterfacedObject, ISNTPTime)
   private
     FServer : string;
-    constructor Create(Server: string);
   public
+    constructor Create(Server: string);
     class function New(Server: string): ISNTPTime;
-    function Now: IDate;
+    function Now: TDateTime;
   end;
 
   TSNTPTimePool = class(TInterfacedObject, ISNTPTime)
   private
     FServerList : TList<string>;
     FIfFail     : TSPBehavior;
+  public
     constructor Create(ServerList: array of string; IfFail: TSPBehavior);
     destructor Destroy; override;
-  public
     class function New(ServerList: array of string; IfFail: TSPBehavior): ISNTPTime;
-    function Now: IDate;
+    function Now: TDateTime;
   end;
 
 implementation
@@ -72,7 +72,7 @@ begin
   Result := Create(Server);
 end;
 
-function TSNTPTime.Now: IDate;
+function TSNTPTime.Now: TDateTime;
 var
   NTP : TIdSNTP;
 begin
@@ -80,9 +80,7 @@ begin
   try
     NTP.ReceiveTimeout := 3000;
     NTP.Host           := FServer;
-    Result             := TDate.New(
-      NTP.DateTime
-    );
+    Result             := NTP.DateTime;
   finally
     NTP.Free;
   end;
@@ -108,7 +106,7 @@ begin
   Result := Create(ServerList, IfFail);
 end;
 
-function TSNTPTimePool.Now: IDate;
+function TSNTPTimePool.Now: TDateTime;
   function ValidDate(aDate: TDateTime): Boolean; inline;
   begin
     Result := FormatDateTime('yyyy', aDate) <> '1899';
@@ -120,12 +118,10 @@ begin
   repeat
     Result := TSNTPTime.New(FServerList[i]).Now;
     Inc(i);
-  until (i > FServerList.Count) or ValidDate(Result.Value);
-  if not ValidDate(Result.Value)
+  until (i > FServerList.Count) or ValidDate(Result);
+  if not ValidDate(Result)
     then case FIfFail of
-           spReturnCurrentDate : Result := TDate.New(
-                                   SysUtils.Now
-                                 );
+           spReturnCurrentDate : Result := SysUtils.Now;
            spThrowException    : raise Exception.Create('Could not retrieve current date from any server in the list.');
          end;
 end;

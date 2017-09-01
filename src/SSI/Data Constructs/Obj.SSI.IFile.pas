@@ -27,7 +27,6 @@ interface
 
 uses
     Obj.SSI.IDataStream
-  , Obj.SSI.IValue
   ;
 
 type
@@ -37,7 +36,7 @@ type
     function Created: TDateTime;
     function Modified: TDateTime;
     function Accessed: TDateTime;
-    function Version(const Full: Boolean = True): IString;
+    function Version(const Full: Boolean = True): string;
     function AsDataStream: IDataStream;
   end;
 

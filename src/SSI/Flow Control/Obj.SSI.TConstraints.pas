@@ -33,49 +33,49 @@ uses
   ;
 
 type
-  TError = Class(TInterfacedObject, IError)
+  TError = class(TInterfacedObject, IError)
   private
-    FID: String;
-    FFailMessage: String;
+    FID: string;
+    FFailMessage: string;
   public
-    constructor Create(const ID, FailMessage: String);
-    class function New(const ID, FailMessage: String): IError;
-    function ID: String;
-    function FailMessage: String;
-  End;
+    constructor Create(const ID, FailMessage: string);
+    class function New(const ID, FailMessage: string): IError;
+    function ID: string;
+    function FailMessage: string;
+  end;
 
-  TErrorList = Class(TInterfacedObject, IErrorList)
+  TErrorList = class(TInterfacedObject, IErrorList)
   private
     FList: IInterfaceList;
   public
-    constructor Create; Overload;
-    constructor Create(const Error: IError); Overload;
-    constructor Create(const ErrorList: IErrorList); Overload;
-    class function New: IErrorList; Overload;
-    class function New(const Error: IError): IErrorList; Overload;
-    class function New(const ErrorList: IErrorList): IErrorList; Overload;
-    function Add(const Error: IError): IErrorList; Overload;
-    function Add(const ErrorList: IErrorList): IErrorList; Overload;
+    constructor Create; overload;
+    constructor Create(const Error: IError); overload;
+    constructor Create(const ErrorList: IErrorList); overload;
+    class function New: IErrorList; overload;
+    class function New(const Error: IError): IErrorList; overload;
+    class function New(const ErrorList: IErrorList): IErrorList; overload;
+    function Add(const Error: IError): IErrorList; overload;
+    function Add(const ErrorList: IErrorList): IErrorList; overload;
     function Get(const Idx: Integer): IError;
     function Count: Integer;
-    function Text: String;
+    function Text: string;
     function Clear: IErrorList;
-  End;
+  end;
 
-  TConstraintResult = Class(TInterfacedObject, IConstraintResult)
+  TConstraintResult = class(TInterfacedObject, IConstraintResult)
   private
     FSuccess: Boolean;
     FErrorList: IValue<IErrorList>;
   public
-    constructor Create(const Success: Boolean); Overload;
-    constructor Create(const Success: Boolean; const ErrorList: IErrorList); Overload;
-    class function New(const Success: Boolean): IConstraintResult; Overload;
-    class function New(const Success: Boolean; const ErrorList: IErrorList): IConstraintResult; Overload;
+    constructor Create(const Success: Boolean); overload;
+    constructor Create(const Success: Boolean; const ErrorList: IErrorList); overload;
+    class function New(const Success: Boolean): IConstraintResult; overload;
+    class function New(const Success: Boolean; const ErrorList: IErrorList): IConstraintResult; overload;
     function Success: Boolean;
     function ErrorList: IErrorList;
-  End;
+  end;
 
-  TConstraints = Class(TInterfacedObject, IConstraints)
+  TConstraints = class(TInterfacedObject, IConstraints)
   private
     FList: IInterfaceList;
     FValid: Boolean;
@@ -88,20 +88,20 @@ type
     function Get(const Idx: Integer): IConstraint;
     function Count: Integer;
     function Eval: IConstraintResult;
-  End;
+  end;
 
-  TBooleanFunction<T> = Reference to Function(Value: T): Boolean;
-  TGenericConstraint<T> = Class(TInterfacedObject, IConstraint)
+  TBooleanFunction<T>   = Reference to function(Value: T): Boolean;
+  TGenericConstraint<T> = class(TInterfacedObject, IConstraint)
   private
-    FID: String;
-    FFailMessage: String;
+    FID: string;
+    FFailMessage: string;
     FTest: TBooleanFunction<T>;
     FValue: T;
   public
-    constructor Create(const Value: T; const ID, FailMessage: String; const Test: TBooleanFunction<T>);
-    class function New(const Value: T; const ID, FailMessage: String; const Test: TBooleanFunction<T>): IConstraint;
+    constructor Create(const Value: T; const ID, FailMessage: string; const Test: TBooleanFunction<T>);
+    class function New(const Value: T; const ID, FailMessage: string; const Test: TBooleanFunction<T>): IConstraint;
     function Eval: IConstraintResult;
-  End;
+  end;
 
 
 implementation
@@ -207,23 +207,23 @@ end;
 
 { TError }
 
-constructor TError.Create(const ID, FailMessage: String);
+constructor TError.Create(const ID, FailMessage: string);
 begin
   FID          := ID;
   FFailMessage := FailMessage;
 end;
 
-function TError.ID: String;
+function TError.ID: string;
 begin
   Result := FID;
 end;
 
-function TError.FailMessage: String;
+function TError.FailMessage: string;
 begin
   Result := FFailMessage;
 end;
 
-class function TError.New(const ID, FailMessage: String): IError;
+class function TError.New(const ID, FailMessage: string): IError;
 begin
   Result := Create(ID, FailMessage);
 end;
@@ -295,7 +295,7 @@ begin
   Result := Create(ErrorList);
 end;
 
-function TErrorList.Text: String;
+function TErrorList.Text: string;
 var
   Idx: Integer;
 begin
@@ -310,7 +310,7 @@ end;
 
 { TGenericConstraint<T> }
 
-constructor TGenericConstraint<T>.Create(const Value: T; const ID, FailMessage: String; const Test: TBooleanFunction<T>);
+constructor TGenericConstraint<T>.Create(const Value: T; const ID, FailMessage: string; const Test: TBooleanFunction<T>);
 begin
   FValue       := Value;
   FID          := ID;
@@ -336,7 +336,7 @@ begin
          );
 end;
 
-class function TGenericConstraint<T>.New(const Value: T; const ID, FailMessage: String; const Test: TBooleanFunction<T>): IConstraint;
+class function TGenericConstraint<T>.New(const Value: T; const ID, FailMessage: string; const Test: TBooleanFunction<T>): IConstraint;
 begin
   Result := Create(Value, ID, FailMessage, Test);
 end;

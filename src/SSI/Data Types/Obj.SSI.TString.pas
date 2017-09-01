@@ -38,46 +38,55 @@ uses
 
 type
   {$M+}
-  TNumbersOnly = class(TInterfacedObject, IString)
-  private
+  TDecorableIString = class(TInterfacedObject, IString)
+  protected
     FOrigin: IString;
-    FValue: IString;
   public
-    constructor Create(Origin: IString);
-    class function New(Origin: IString): IString;
-    function Value: string;
+    constructor Create(Origin: IString); virtual;
+    class function New(Origin: IString): IString; virtual;
+    function Value: string; virtual;
+    function Refresh: IString; virtual;
   end;
 
-  TGroupDigits = class(TInterfacedObject, IString)
+  TNumbersOnly = class(TDecorableIString, IString)
+  private
+    FValue: IString;
+  public
+    constructor Create(Origin: IString); override;
+    class function New(Origin: IString): IString; override;
+    function Value: string; override;
+  end;
+
+  TGroupDigits = class(TDecorableIString, IString)
   private
     FOrigin: IString;
     FDigitsPerGroup: Byte;
     FValue: IString;
   public
-    constructor Create(Origin: IString; DigitsPerGroup: Byte);
-    class function New(Origin: IString; DigitsPerGroup: Byte): IString;
-    function Value: string;
+    constructor Create(Origin: IString; DigitsPerGroup: Byte); reintroduce;
+    class function New(Origin: IString; DigitsPerGroup: Byte): IString; reintroduce;
+    function Value: string; override;
   end;
 
-  TCut = class(TInterfacedObject, IString)
+  TCut = class(TDecorableIString, IString)
   private
     FOrigin: IString;
     FCharacters: Integer;
     FValue: IString;
   public
-    constructor Create(Origin: IString; Characters: Integer);
-    class function New(Origin: IString; Characters: Integer): IString;
-    function Value: string;
+    constructor Create(Origin: IString; Characters: Integer); reintroduce;
+    class function New(Origin: IString; Characters: Integer): IString; reintroduce;
+    function Value: string; override;
   end;
 
-  TDefault = class(TInterfacedObject, IString)
+  TDefault = class(TDecorableIString, IString)
   private
     FOrigin: IString;
     FDefault: IString;
   public
-    constructor Create(Origin: IString; Default: IString);
-    class function New(Origin: IString; Default: IString): IString;
-    function Value: string;
+    constructor Create(Origin: IString; Default: IString); reintroduce;
+    class function New(Origin: IString; Default: IString): IString; reintroduce;
+    function Value: string; override;
   end;
   {$M-}
 
@@ -194,6 +203,28 @@ end;
 class function TDefault.New(Origin: IString; Default: IString): IString;
 begin
   Result := Create(Origin, Default);
+end;
+
+{ TDecorableIString }
+
+constructor TDecorableIString.Create(Origin: IString);
+begin
+  FOrigin := Origin;
+end;
+
+class function TDecorableIString.New(Origin: IString): IString;
+begin
+  Result := Create(Origin);
+end;
+
+function TDecorableIString.Refresh: IString;
+begin
+  Result := FOrigin.Refresh;
+end;
+
+function TDecorableIString.Value: string;
+begin
+  Result := FOrigin.Value;
 end;
 
 end.

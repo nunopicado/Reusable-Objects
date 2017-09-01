@@ -60,7 +60,7 @@ contains
   Obj.SSI.IGeoCoordinate in '..\src\SSI\Validation\Obj.SSI.IGeoCoordinate.pas',
   Obj.SSI.TGeoCoordinate in '..\src\SSI\Validation\Obj.SSI.TGeoCoordinate.pas',
   Obj.SSI.IPostalAddress in '..\src\SSI\Validation\Obj.SSI.IPostalAddress.pas',
-  Obj.SSI.IPTPostalCode in '..\src\SSI\Validation\Obj.SSI.IPTPostalCode.pas',
+  Obj.SSI.IPostalCode in '..\src\SSI\Validation\Obj.SSI.IPostalCode.pas',
   Obj.SSI.TPTPostalCode in '..\src\SSI\Validation\Obj.SSI.TPTPostalCode.pas',
   Obj.SSI.TPostalAddress in '..\src\SSI\Validation\Obj.SSI.TPostalAddress.pas',
   Obj.SSI.IBMReference in '..\src\SSI\Business\Obj.SSI.IBMReference.pas',

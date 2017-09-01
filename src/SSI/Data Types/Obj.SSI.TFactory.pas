@@ -39,9 +39,9 @@ type
     var
       FList    : TDictionary<TKey, TCreationMethod<IBaseClass>>;
       FCounter : TDictionary<TKey, Word>;
-    destructor Destroy; override;
   public
     constructor Create; reintroduce;
+    destructor Destroy; override;
     class function New                       : IFactory<TKey, IBaseClass>;
     function RegClass      (const Key: TKey; const CreationMethod: TCreationMethod<IBaseClass>) : IFactory<TKey, IBaseClass>;
     function UnRegClass    (const Key: TKey) : IFactory<TKey, IBaseClass>;

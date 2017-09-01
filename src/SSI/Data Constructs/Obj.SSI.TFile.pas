@@ -45,7 +45,7 @@ type
     function Created: TDateTime;
     function Modified: TDateTime;
     function Accessed: TDateTime;
-    function Version(const Full: Boolean = True): IString;
+    function Version(const Full: Boolean = True): string;
     function AsDataStream: IDataStream;
   End;
 
@@ -113,16 +113,15 @@ begin
   Int64Rec(Result).Hi := FAttributeData.nFileSizeHigh;
 end;
 
-function TFile.Version(const Full: Boolean = True): IString;
+function TFile.Version(const Full: Boolean = True): string;
 var
   VerInfoSize  : Cardinal;
   VerValueSize : Cardinal;
   Dummy        : Cardinal;
   PVerInfo     : Pointer;
   PVerValue    : PVSFixedFileInfo;
-  Res          : string;
 begin
-  Res         := '';
+  Result      := '';
   VerInfoSize := GetFileVersionInfoSize(PChar(FFileName), Dummy);
   GetMem(PVerInfo, VerInfoSize);
   try
@@ -130,13 +129,13 @@ begin
       then if VerQueryValue(PVerInfo, '\', Pointer(PVerValue), VerValueSize)
              then with PVerValue^ do
                     begin
-                      Res := Format('%d.%d', [
+                      Result := Format('%d.%d', [
                         HiWord(dwFileVersionMS),    // Major
                         LoWord(dwFileVersionMS)     // Minor
                       ]);
                       if Full
-                        then Res := Format('%s.%d.%d', [
-                               Res,
+                        then Result := Format('%s.%d.%d', [
+                               Result,
                                HiWord(dwFileVersionLS),   // Release
                                LoWord(dwFileVersionLS)    // Build
                              ]);
@@ -144,7 +143,6 @@ begin
   finally
     FreeMem(PVerInfo, VerInfoSize);
   end;
-  Result := TString.New(Res);
 end;
 
 end.

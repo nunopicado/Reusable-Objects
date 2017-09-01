@@ -26,7 +26,7 @@ unit Obj.SSI.TPostalAddress;
 interface
 
 uses
-    Obj.SSI.IPTPostalCode
+    Obj.SSI.IPostalCode
   , Obj.SSI.IPostalAddress
   , Obj.SSI.IGeoCoordinate
   , Obj.SSI.IValue
@@ -35,35 +35,35 @@ uses
 type
   TPostalAddress = class(TInterfacedObject, IPostalAddress)
   private
-    FAddress1: IString;
-    FAddress2: IString;
-    FPostalCode: IPTPostalCode;
-    FCity: IString;
-    FRegion: IString;
-    FCountry: IString;
+    FAddress1: string;
+    FAddress2: string;
+    FPostalCode: IPostalCode;
+    FCity: string;
+    FRegion: string;
+    FCountry: string;
     FLatitude: IGeoCoordinate;
     FLongitude: IGeoCoordinate;
   public
-    constructor Create(const Address1, Address2: IString; const PostalCode: IPTPostalCode;
-                       const City, Region, Country: IString; const Latitude,
+    constructor Create(const Address1, Address2: string; const PostalCode: IPostalCode;
+                       const City, Region, Country: string; const Latitude,
                        Longitude: IGeoCoordinate); overload;
-    class function New(const Address1, Address2: IString; const PostalCode: IPTPostalCode;
+    class function New(const Address1, Address2: IString; const PostalCode: IPostalCode;
                        const City, Region, Country: IString; const Latitude,
                        Longitude: IGeoCoordinate): IPostalAddress; overload;
-    class function New(const Address1, Address2: IString; const PostalCode: IPTPostalCode;
+    class function New(const Address1, Address2: IString; const PostalCode: IPostalCode;
                        const City, Region, Country: IString): IPostalAddress; overload;
-    class function New(const Address1, Address2: string; const PostalCode: IPTPostalCode;
+    class function New(const Address1, Address2: string; const PostalCode: IPostalCode;
                        const City, Region, Country: string; const Latitude,
                        Longitude: IGeoCoordinate): IPostalAddress; overload;
-    class function New(const Address1, Address2: string; const PostalCode: IPTPostalCode;
+    class function New(const Address1, Address2: string; const PostalCode: IPostalCode;
                        const City, Region, Country: string): IPostalAddress; overload;
-    function ToIString: IString;
-    function Address1: IString;
-    function Address2: IString;
-    function PostalCode: IPTPostalCode;
-    function City: IString;
-    function Region: IString;
-    function Country: IString;
+    function AsString: string;
+    function Address1: string;
+    function Address2: string;
+    function PostalCode: IPostalCode;
+    function City: string;
+    function Region: string;
+    function Country: string;
     function Latitude: IGeoCoordinate;
     function Longitude: IGeoCoordinate;
   end;
@@ -77,28 +77,28 @@ uses
 
 { TPostalAddress }
 
-function TPostalAddress.Address1: IString;
+function TPostalAddress.Address1: string;
 begin
   Result := FAddress1;
 end;
 
-function TPostalAddress.Address2: IString;
+function TPostalAddress.Address2: string;
 begin
   Result := FAddress2;
 end;
 
-function TPostalAddress.City: IString;
+function TPostalAddress.City: string;
 begin
   Result := FCity;
 end;
 
-function TPostalAddress.Country: IString;
+function TPostalAddress.Country: string;
 begin
   Result := FCountry;
 end;
 
-constructor TPostalAddress.Create(const Address1, Address2: IString; const PostalCode: IPTPostalCode;
-                                  const City, Region, Country: IString; const Latitude, Longitude: IGeoCoordinate);
+constructor TPostalAddress.Create(const Address1, Address2: string; const PostalCode: IPostalCode;
+                                  const City, Region, Country: string; const Latitude, Longitude: IGeoCoordinate);
 begin
   inherited Create;
   FAddress1   := Address1;
@@ -111,21 +111,28 @@ begin
   FLongitude  := Longitude;
 end;
 
-function TPostalAddress.ToIString: IString;
+function TPostalAddress.AsString: string;
 begin
-  Result := TString.New(
-    FAddress1.Value + #13#10 +
-    FAddress2.Value + #13#10 +
-    FPostalCode.ToIString.Value + ' ' + FCity.Value + #13#10 +
-    FRegion.Value + ' - ' + FCountry.Value
-  );
+  Result := FAddress1 + #13#10 +
+            FAddress2 + #13#10 +
+            FPostalCode.AsString + ' ' + FCity + #13#10 +
+            FRegion + ' - ' + FCountry;
 end;
 
-class function TPostalAddress.New(const Address1, Address2: IString; const PostalCode: IPTPostalCode;
+class function TPostalAddress.New(const Address1, Address2: IString; const PostalCode: IPostalCode;
                                   const City, Region, Country: IString; const Latitude,
                                   Longitude: IGeoCoordinate): IPostalAddress;
 begin
-  Result := Create(Address1, Address2, PostalCode, City, Region, Country, Latitude, Longitude);
+  Result := New(
+    Address1.Value,
+    Address2.Value,
+    PostalCode,
+    City.Value,
+    Region.Value,
+    Country.Value,
+    Latitude,
+    Longitude
+  );
 end;
 
 function TPostalAddress.Latitude: IGeoCoordinate;
@@ -138,47 +145,56 @@ begin
   Result := FLongitude;
 end;
 
-class function TPostalAddress.New(const Address1, Address2: IString; const PostalCode: IPTPostalCode;
+class function TPostalAddress.New(const Address1, Address2: IString; const PostalCode: IPostalCode;
                                   const City, Region, Country: IString): IPostalAddress;
 begin
-  Result := Create(Address1, Address2, PostalCode, City, Region, Country, nil, nil);
+  Result := New(
+    Address1.Value,
+    Address2.Value,
+    PostalCode,
+    City.Value,
+    Region.Value,
+    Country.Value
+  );
 end;
 
-function TPostalAddress.PostalCode: IPTPostalCode;
+function TPostalAddress.PostalCode: IPostalCode;
 begin
   Result := FPostalCode;
 end;
 
-function TPostalAddress.Region: IString;
+function TPostalAddress.Region: string;
 begin
   Result := FRegion;
 end;
 
-class function TPostalAddress.New(const Address1, Address2: string; const PostalCode: IPTPostalCode; const City,
+class function TPostalAddress.New(const Address1, Address2: string; const PostalCode: IPostalCode; const City,
   Region, Country: string; const Latitude, Longitude: IGeoCoordinate): IPostalAddress;
 begin
-  Result := New(
-    TString.New(Address1),
-    TString.New(Address2),
+  Result := Create(
+    Address1,
+    Address2,
     PostalCode,
-    TString.New(City),
-    TString.New(Region),
-    TString.New(Country),
+    City,
+    Region,
+    Country,
     Latitude,
     Longitude
   );
 end;
 
-class function TPostalAddress.New(const Address1, Address2: string; const PostalCode: IPTPostalCode; const City,
+class function TPostalAddress.New(const Address1, Address2: string; const PostalCode: IPostalCode; const City,
   Region, Country: string): IPostalAddress;
 begin
-  Result := New(
-    TString.New(Address1),
-    TString.New(Address2),
+  Result := Create(
+    Address1,
+    Address2,
     PostalCode,
-    TString.New(City),
-    TString.New(Region),
-    TString.New(Country)
+    City,
+    Region,
+    Country,
+    nil,
+    nil
   );
 end;
 

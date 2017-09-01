@@ -30,6 +30,7 @@ type
   IValue<T> = interface(IInvokable)
   ['{21E1AA41-099A-49FA-8C9B-2CA3A37BAD25}']
     function Value: T;
+    function Refresh: IValue<T>;
   end;
 
   IBoolean  = IValue<Boolean>;

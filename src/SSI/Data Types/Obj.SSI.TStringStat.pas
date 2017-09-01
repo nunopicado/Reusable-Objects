@@ -31,9 +31,9 @@ uses
   ;
 
 type
-  TStringStat = Class(TInterfacedObject, IStringStat)
+  TStringStat = class(TInterfacedObject, IStringStat)
   private
-    FString: String;
+    FString: string;
   public
     constructor Create(const aString: string);
     class function New(const aString: string): IStringStat;
@@ -42,7 +42,7 @@ type
     function Compare(const OtherString: string): Byte;
     function AdvSearch(SearchTerms: string): Boolean;
     function ContainsOnly(const CharList: TCharSet): Boolean;
-  End;
+  end;
 
 implementation
 
@@ -55,15 +55,15 @@ uses
 
 { TStringStat }
 
-function TStringStat.AdvSearch(SearchTerms: String): Boolean;
+function TStringStat.AdvSearch(SearchTerms: string): Boolean;
 // & delimiter = OR search
 // % delimiter = AND search
-  function PrepareSearchTerms(const SearchTerms: String): String; Inline;
+  function PrepareSearchTerms(const SearchTerms: string): string; inline;
   begin
     Result := SearchTerms + '&';
     Result := StringReplace(Result, '&&', '&', [rfReplaceAll]);
   end;
-  function ExtractNext(var SearchTerms: String; const Delimiter: Char): String;
+  function ExtractNext(var SearchTerms: string; const Delimiter: Char): string;
   begin
     Result := Copy(SearchTerms, 1, Pred(pos(Delimiter, SearchTerms)));
     Delete(SearchTerms, 1, pos(Delimiter, SearchTerms));
@@ -82,7 +82,7 @@ function TStringStat.AdvSearch(SearchTerms: String): Boolean;
   end;
 var
 	Expressions : TStringList;
-	Sub         : String;
+	Sub         : string;
 begin
   Result      := False;
   Expressions := TStringList.Create;
@@ -103,18 +103,18 @@ begin
   end;
 end;
 
-function TStringStat.ciPos(const SubStr: String): Word;
+function TStringStat.ciPos(const SubStr: string): Word;
 begin
   Result := Pos(UpperCase(SubStr), UpperCase(FString));
 end;
 
-function TStringStat.Compare(const OtherString: String): Byte;
+function TStringStat.Compare(const OtherString: string): Byte;
 type
-  TLink = Array[0..1] of Byte;
+  TLink = array[0..1] of Byte;
 var
   tmpPattern : TLink;
   PatternA,
-  PatternB   : Array of TLink;
+  PatternB   : array of TLink;
   IndexA,
   IndexB,
   LengthStr  : Integer;
@@ -205,12 +205,12 @@ begin
   Result := True;
 end;
 
-constructor TStringStat.Create(const aString: String);
+constructor TStringStat.Create(const aString: string);
 begin
   FString := aString;
 end;
 
-class function TStringStat.New(const aString: String): IStringStat;
+class function TStringStat.New(const aString: string): IStringStat;
 begin
   Result := Create(aString);
 end;

@@ -33,14 +33,14 @@ uses
 type
   ICryptString = interface(IInvokable)
   ['{98C9E3C7-230A-4718-9BB8-0E0B1B40BBE5}']
-    function Crypt: IString;
-    function Decrypt: IString;
+    function Crypt: AnsiString;
+    function Decrypt: AnsiString;
   end;
 
   ICryptStringFactory = interface(IInvokable)
   ['{7700A319-F560-42CC-B10F-E703BB791E89}']
-    function New(const Text: IString): ICryptString; overload;
-    function New(const Text, Password: IString): ICryptString; overload;
+    function New(const Text: IValue<AnsiString>): ICryptString; overload;
+    function New(const Text, Password: IValue<AnsiString>): ICryptString; overload;
   end;
 
 implementation

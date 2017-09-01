@@ -32,13 +32,14 @@ uses
 type
   IBase64 = interface(IInvokable)
   ['{B8422767-272C-4BB3-9804-FC9ACBD22FBE}']
-    function Encode: IString;
-    function Decode: IString;
+    function Encode: AnsiString;
+    function Decode: AnsiString;
   end;
 
   IBase64Factory = interface(IInvokable)
   ['{5C3BBD8B-199E-480D-ABC8-DFABF9D922A1}']
-    function New(const Text: IString): IBase64;
+    function New(const Text: IValue<AnsiString>): IBase64; overload;
+    function New(const Text: AnsiString): IBase64; overload;
   end;
 
 implementation

@@ -21,18 +21,14 @@
 (**                 terms                                                    **)
 (******************************************************************************)
 
-unit Obj.SSI.IPTPostalCode;
+unit Obj.SSI.IPostalCode;
 
 interface
 
-uses
-    Obj.SSI.IValue
-  ;
-
 type
-  IPTPostalCode = interface(IInvokable)
+  IPostalCode = interface(IInvokable)
   ['{111CB5A3-8EFD-463E-AADF-74F7999B92F0}']
-    function ToIString: IString;
+    function AsString: string;
   end;
 
 implementation

@@ -29,17 +29,17 @@ interface
 type
   IError = interface(IInvokable)
   ['{930FDA03-395A-4D1F-AB22-4BF17FCC10F3}']
-    function ID: String;
-    function FailMessage: String;
+    function ID: string;
+    function FailMessage: string;
   end;
 
   IErrorList = interface(IInvokable)
   ['{73B086E5-50DE-4ACC-88FE-993D5879BB8A}']
-    function Add(const Error: IError): IErrorList; Overload;
-    function Add(const ErrorList: IErrorList): IErrorList; Overload;
+    function Add(const Error: IError): IErrorList; overload;
+    function Add(const ErrorList: IErrorList): IErrorList; overload;
     function Get(const Idx: Integer): IError;
     function Count: Integer;
-    function Text: String;
+    function Text: string;
     function Clear: IErrorList;
   end;
 

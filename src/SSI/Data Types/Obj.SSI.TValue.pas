@@ -44,6 +44,7 @@ type
     class function New(const Define: TDefineCached<T>): IValue<T>; overload;
     class function New(const Value: T): IValue<T>; overload;
     function Value: T;
+    function Refresh: IValue<T>;
   end;
 
   TBoolean  = TValue<Boolean>;
@@ -81,6 +82,12 @@ begin
       Result := Value;
     end
   );
+end;
+
+function TValue<T>.Refresh: IValue<T>;
+begin
+  Result  := Self;
+  FActive := False;
 end;
 
 class function TValue<T>.New(const Define: TDefineCached<T>): IValue<T>;

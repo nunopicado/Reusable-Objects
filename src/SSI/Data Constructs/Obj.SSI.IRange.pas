@@ -35,8 +35,8 @@ type
   end;
 
   IIntegerRange = IRange<Int64>;
-  IFloatRange = IRange<Extended>;
-  ICharRange = IRange<Char>;
+  IFloatRange   = IRange<Extended>;
+  ICharRange    = IRange<Char>;
 
 implementation
 

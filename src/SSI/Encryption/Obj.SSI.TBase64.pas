@@ -31,15 +31,15 @@ uses
   ;
 
 type
-  TBase64 = Class(TInterfacedObject, IBase64)
+  TBase64 = class(TInterfacedObject, IBase64)
   private
-    FText: IString;
+    FText: AnsiString;
   public
-    constructor Create(const Text: IString);
-    class function New(const Text: IString): IBase64; overload;
-    class function New(const Text: string): IBase64; overload;
-    function Encode: IString;
-    function Decode: IString;
+    constructor Create(const Text: AnsiString);
+    class function New(const Text: IValue<AnsiString>): IBase64; overload;
+    class function New(const Text: AnsiString): IBase64; overload;
+    function Encode: AnsiString;
+    function Decode: AnsiString;
   end;
 
 implementation
@@ -47,12 +47,11 @@ implementation
 uses
     Classes
   , IdCoderMIME
-  , Obj.SSI.TValue
   ;
 
 { TBase64 }
 
-function TBase64.Encode: IString;
+function TBase64.Encode: AnsiString;
 var
   Encoder : TIdEncoderMIME;
   Source  : TStringStream;
@@ -60,11 +59,11 @@ var
 begin
   Encoder := TIdEncoderMIME.Create(nil);
   try
-    Source := TStringStream.Create(FText.Value);
+    Source := TStringStream.Create(FText);
     Target := TStringStream.Create;
     try
       Encoder.Encode(Source, Target);
-      Result := TString.New(Target.DataString);
+      Result := Target.DataString;
     finally
       Source.Free;
       Target.Free;
@@ -74,16 +73,12 @@ begin
   end;
 end;
 
-class function TBase64.New(const Text: string): IBase64;
+class function TBase64.New(const Text: AnsiString): IBase64;
 begin
-  Result := New(
-    TString.New(
-      Text
-    )
-  );
+  Result := New(Text);
 end;
 
-function TBase64.Decode: IString;
+function TBase64.Decode: AnsiString;
 var
   Decoder : TIdDecoderMIME;
   Target  : TStringStream;
@@ -93,10 +88,10 @@ begin
     Target := TStringStream.Create;
     try
       Decoder.DecodeBegin(Target);
-      Decoder.Decode(FText.Value);
+      Decoder.Decode(FText);
       Decoder.DecodeEnd;
       Target.Position := 0;
-      Result := TString.New(Target.DataString);
+      Result := Target.DataString;
     finally
       Target.Free;
     end;
@@ -105,15 +100,15 @@ begin
   end;
 end;
 
-constructor TBase64.Create(const Text: IString);
+constructor TBase64.Create(const Text: AnsiString);
 begin
   inherited Create;
   FText := Text;
 end;
 
-class function TBase64.New(const Text: IString): IBase64;
+class function TBase64.New(const Text: IValue<AnsiString>): IBase64;
 begin
-  Result := Create(Text);
+  Result := New(Text.Value);
 end;
 
 end.

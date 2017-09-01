@@ -39,9 +39,9 @@ type
     class function New(aDate: TDateTime) : IDate; overload;
     class function New(aDate: string)    : IDate; overload;
     class function New(aDate: IString)   : IDate; overload;
-    function Value     : TDateTime;
-    function AsIString : IString;
-    function Age       : IInteger;
+    function Value    : TDateTime;
+    function AsString : string;
+    function Age      : Integer;
   End;
 
   TDecorableDate = class(TInterfacedObject, IDate)
@@ -51,9 +51,9 @@ type
     constructor Create(Origin: IDate);
   public
     class function New(Origin: IDate): IDate; virtual;
-    function Value      : TDateTime; virtual;
-    function AsIString  : IString;   virtual;
-    function Age        : IInteger; virtual;
+    function Value     : TDateTime; virtual;
+    function AsString  : string; virtual;
+    function Age       : Integer; virtual;
   end;
 
   TUTC = class(TDecorableDate, IDate)
@@ -66,7 +66,7 @@ type
     const
       cXMLTime = 'yyyy''-''mm''-''dd''T''hh'':''nn'':''ss''.''zzz''Z';
   public
-    function AsIString: IString; override;
+    function AsString: string; override;
   end;
 
   TFormattedDate = class(TDecorableDate, IDate)
@@ -75,22 +75,22 @@ type
     constructor Create(Origin: IDate; Mask: IString); overload;
   public
     class function New(Origin: IDate; Mask: IString): IDate; overload;
-    function AsIString: IString; override;
+    function AsString: string; override;
   end;
 
   TMonthsAge = class(TDecorableDate, IDate)
   public
-    function Age: IInteger; override;
+    function Age: Integer; override;
   end;
 
   TWeeksAge = class(TDecorableDate, IDate)
   public
-    function Age: IInteger; override;
+    function Age: Integer; override;
   end;
 
   TDaysAge = class(TDecorableDate, IDate)
   public
-    function Age: IInteger; override;
+    function Age: Integer; override;
   end;
 
 implementation
@@ -104,18 +104,14 @@ uses
 
 { TDate }
 
-function TDate.Age: IInteger;
+function TDate.Age: Integer;
 begin
-  Result := TInteger.New(
-    YearsBetween(Date, FDate)
-  );
+  Result := YearsBetween(Date, FDate);
 end;
 
-function TDate.AsIString: IString;
+function TDate.AsString: string;
 begin
-  Result := TString.New(
-   DateToStr(FDate)
-  );
+  Result := DateToStr(FDate);
 end;
 
 constructor TDate.Create(aDate: TDateTime);
@@ -147,9 +143,9 @@ end;
 
 { TDecorableDate }
 
-function TDecorableDate.AsIString: IString;
+function TDecorableDate.AsString: string;
 begin
-  Result := FOrigin.AsIString;
+  Result := FOrigin.AsString;
 end;
 
 constructor TDecorableDate.Create(Origin: IDate);
@@ -157,7 +153,7 @@ begin
   FOrigin := Origin;
 end;
 
-function TDecorableDate.Age: IInteger;
+function TDecorableDate.Age: Integer;
 begin
   Result := FOrigin.Age;
 end;
@@ -181,20 +177,16 @@ end;
 
 { TXMLTime }
 
-function TXMLTime.AsIString: IString;
+function TXMLTime.AsString: string;
 begin
-  Result := TString.New(
-    FormatDateTime(cXMLTime, FOrigin.Value)
-  );
+  Result := FormatDateTime(cXMLTime, FOrigin.Value);
 end;
 
 { TFormattedDate }
 
-function TFormattedDate.AsIString: IString;
+function TFormattedDate.AsString: string;
 begin
-  Result := TString.New(
-    FormatDateTime(FMask.Value, FOrigin.Value)
-  );
+  Result := FormatDateTime(FMask.Value, FOrigin.Value);
 end;
 
 constructor TFormattedDate.Create(Origin: IDate; Mask: IString);
@@ -210,29 +202,23 @@ end;
 
 { TMonthsAge }
 
-function TMonthsAge.Age: IInteger;
+function TMonthsAge.Age: Integer;
 begin
-  Result := TInteger.New(
-    MonthsBetween(Now, FOrigin.Value)
-  );
+  Result := MonthsBetween(Now, FOrigin.Value);
 end;
 
 { TWeeksAge }
 
-function TWeeksAge.Age: IInteger;
+function TWeeksAge.Age: Integer;
 begin
-  Result := TInteger.New(
-    WeeksBetween(Now, FOrigin.Value)
-  );
+  Result := WeeksBetween(Now, FOrigin.Value);
 end;
 
 { TDaysAge }
 
-function TDaysAge.Age: IInteger;
+function TDaysAge.Age: Integer;
 begin
-  Result := TInteger.New(
-    DaysBetween(Now, FOrigin.Value)
-  );
+  Result := DaysBetween(Now, FOrigin.Value);
 end;
 
 end.

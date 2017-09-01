@@ -30,36 +30,36 @@ uses
   ;
 
 type
-  TDecorableCurrency = Class(TInterfacedObject, ICurrency)
+  TDecorableCurrency = class(TInterfacedObject, ICurrency)
   protected
     FOrigin: ICurrency;
   public
-    function Value: Currency; Virtual;
-    function AsString: String; Virtual;
-    function Add(const Value: Currency): ICurrency; Virtual;
-    function Sub(const Value: Currency): ICurrency; Virtual;
-    function Reset: ICurrency; Virtual;
-  End;
+    function Value: Currency; virtual;
+    function AsString: string; virtual;
+    function Add(const Value: Currency): ICurrency; virtual;
+    function Sub(const Value: Currency): ICurrency; virtual;
+    function Reset: ICurrency; virtual;
+  end;
 
-  TCurrency = Class(TInterfacedObject, ICurrency)
+  TCurrency = class(TInterfacedObject, ICurrency)
   private
     FValue: Currency;
     constructor Create(const InitialValue: Currency);
   public
     class function New(const InitialValue: Currency): ICurrency;
     function Value: Currency;
-    function AsString: String;
+    function AsString: string;
     function Add(const Value: Currency): ICurrency;
     function Sub(const Value: Currency): ICurrency;
     function Reset: ICurrency;
-  End;
+  end;
 
-  TDiscount = Class(TDecorableCurrency, ICurrency)
+  TDiscount = class(TDecorableCurrency, ICurrency)
   private
     constructor Create(const Origin: ICurrency; const Discount: Single);
   public
     class function New(const Origin: ICurrency; const Discount: Single): ICurrency;
-  End;
+  end;
 
   TTax = Class(TDecorableCurrency, ICurrency)
   private
@@ -67,7 +67,7 @@ type
     function CalcTax(const BaseValue: Currency; const Tax: Single): Currency;
   public
     class function New(const Origin: ICurrency; const Tax: Single): ICurrency;
-  End;
+  end;
 
 implementation
 
@@ -87,7 +87,7 @@ begin
   Result := FValue;
 end;
 
-function TCurrency.AsString: String;
+function TCurrency.AsString: string;
 begin
   Result := CurrToStrF(FValue, ffCurrency, FormatSettings.CurrencyDecimals);
 end;
@@ -120,7 +120,7 @@ begin
   Result := FOrigin.Add(Value);
 end;
 
-function TDecorableCurrency.AsString: String;
+function TDecorableCurrency.AsString: string;
 begin
   Result := FOrigin.AsString;
 end;

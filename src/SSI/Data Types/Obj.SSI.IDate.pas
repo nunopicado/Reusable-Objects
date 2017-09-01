@@ -32,9 +32,9 @@ uses
 type
   IDate = interface(IInvokable)
   ['{26A4BD5E-9220-4687-B246-87A8060A277E}']
-    function Value     : TDateTime;
-    function AsIString : IString;
-    function Age       : IInteger;
+    function Value    : TDateTime;
+    function AsString : string;
+    function Age      : Integer;
   end;
 
 implementation
