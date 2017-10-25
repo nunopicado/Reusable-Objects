@@ -42,6 +42,30 @@ type
     function AsString: string;
   end;
 
+  TDecorablePostalCode = class(TInterfacedObject, IPostalCode)
+  protected
+    FOrigin: IPostalCode;
+  public
+    constructor Create(const PostalCode: IPostalCode);
+    class function New(const PostalCode: IPostalCode): IPostalCode;
+    function AsString: string; virtual;
+  end;
+
+  TPTCP7 = class(TDecorablePostalCode, IPostalCode)
+  public
+    function AsString: string;
+  end;
+
+  TPTCP4 = class(TDecorablePostalCode, IPostalCode)
+  public
+    function AsString: string;
+  end;
+
+  TPTCP3 = class(TDecorablePostalCode, IPostalCode)
+  public
+    function AsString: string;
+  end;
+
 implementation
 
 uses
@@ -93,6 +117,48 @@ end;
 class function TPTPostalCode.New(const PostalCode: IString): IPostalCode;
 begin
   Result := New(PostalCode.Value);
+end;
+
+{ TPTCP7 }
+
+function TPTCP7.AsString: string;
+begin
+  Result := FOrigin.AsString;
+  Delete(Result, 5, 1);
+end;
+
+{ TDecorablePostalCode }
+
+function TDecorablePostalCode.AsString: string;
+begin
+  Result := FOrigin.AsString;
+end;
+
+constructor TDecorablePostalCode.Create(const PostalCode: IPostalCode);
+begin
+  FOrigin := PostalCode;
+end;
+
+class function TDecorablePostalCode.New(
+  const PostalCode: IPostalCode): IPostalCode;
+begin
+  Result := Create(PostalCode);
+end;
+
+{ TPTCP4 }
+
+function TPTCP4.AsString: string;
+begin
+  Result := FOrigin.AsString;
+  Delete(Result, 5, 4);
+end;
+
+{ TPTCP3 }
+
+function TPTCP3.AsString: string;
+begin
+  Result := FOrigin.AsString;
+  Delete(Result, 1, 5);
 end;
 
 end.
