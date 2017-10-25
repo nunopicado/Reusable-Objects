@@ -105,8 +105,6 @@
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.IValue.pas"/>
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TValue.pas"/>
         <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TString.pas"/>
-        <DCCReference Include="..\src\SSI\Flow Control\Obj.SSI.IIf.pas"/>
-        <DCCReference Include="..\src\SSI\Flow Control\Obj.SSI.TIf.pas"/>
         <DCCReference Include="uTMBReferenceTest.pas"/>
         <DCCReference Include="uTValueTest.pas"/>
         <DCCReference Include="uTStringTest.pas"/>
@@ -114,6 +112,8 @@
         <DCCReference Include="..\src\SSI\Validation\Obj.SSI.IPTVATNumber.pas"/>
         <DCCReference Include="uPTVATNumberTest.pas"/>
         <DCCReference Include="..\src\SSI\Helpers\Obj.SSI.Helpers.pas"/>
+        <DCCReference Include="..\src\SSI\Flow Control\Obj.SSI.IIf.pas"/>
+        <DCCReference Include="..\src\SSI\Flow Control\Obj.SSI.TIf.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
