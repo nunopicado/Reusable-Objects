@@ -59,7 +59,6 @@ type
 
   TGroupDigits = class(TDecorableIString, IString)
   private
-    FOrigin: IString;
     FDigitsPerGroup: Byte;
     FValue: IString;
   public
@@ -70,7 +69,6 @@ type
 
   TCut = class(TDecorableIString, IString)
   private
-    FOrigin: IString;
     FCharacters: Integer;
     FValue: IString;
   public
@@ -81,7 +79,6 @@ type
 
   TDefault = class(TDecorableIString, IString)
   private
-    FOrigin: IString;
     FDefault: IString;
   public
     constructor Create(Origin: IString; Default: IString); reintroduce;
