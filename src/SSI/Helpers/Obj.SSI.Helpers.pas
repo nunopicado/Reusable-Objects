@@ -38,7 +38,7 @@ uses
     SysUtils
   ;
 
-{ THString }
+{ TStringHelper }
 
 function TStringHelper.Length: Integer;
 begin
