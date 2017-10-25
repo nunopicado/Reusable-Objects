@@ -18,6 +18,9 @@
         <Projects Include="test\ROSSITests.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="test\ROFMXTests.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -70,6 +73,15 @@
     </Target>
     <Target Name="ROSSITests:Make">
         <MSBuild Projects="test\ROSSITests.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ROFMXTests">
+        <MSBuild Projects="test\ROFMXTests.dproj"/>
+    </Target>
+    <Target Name="ROFMXTests:Clean">
+        <MSBuild Projects="test\ROFMXTests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ROFMXTests:Make">
+        <MSBuild Projects="test\ROFMXTests.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
         <CallTarget Targets="ReusableFMXObjects;ReusableSSIObjects;ReusableVCLObjects;ReusableDBObjects;ROSSITests;ROFMXTests"/>
