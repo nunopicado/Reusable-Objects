@@ -28,20 +28,19 @@ interface
 
 uses
     Obj.SSI.IValue
+  , SysUtils
   ;
 
 type
-  TDefineCached<T> = Reference to function: T;
-
   TValue<T> = class(TInterfacedObject, IValue<T>)
   private
     FValue: T;
     FActive: Boolean;
-    FDefine: TDefineCached<T>;
+    FDefine: TFunc<T>;
     procedure DoDefine;
   public
-    constructor Create(const Define: TDefineCached<T>);
-    class function New(const Define: TDefineCached<T>): IValue<T>; overload;
+    constructor Create(const Define: TFunc<T>);
+    class function New(const Define: TFunc<T>): IValue<T>; overload;
     class function New(const Value: T): IValue<T>; overload;
     function Value: T;
     function Refresh: IValue<T>;
@@ -60,10 +59,6 @@ type
   TDouble   = TValue<Double>;
 
 implementation
-
-uses
-    SysUtils
-  ;
 
 { TValue<T> }
 
@@ -89,12 +84,12 @@ begin
   FActive := False;
 end;
 
-class function TValue<T>.New(const Define: TDefineCached<T>): IValue<T>;
+class function TValue<T>.New(const Define: TFunc<T>): IValue<T>;
 begin
   Result := Create(Define);
 end;
 
-constructor TValue<T>.Create(const Define: TDefineCached<T>);
+constructor TValue<T>.Create(const Define: TFunc<T>);
 begin
   FDefine := Define;
   FActive := False;
