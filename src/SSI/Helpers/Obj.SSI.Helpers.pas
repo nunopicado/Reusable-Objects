@@ -32,6 +32,10 @@ type
     function Length: Integer;
   end;
 
+  TIntegerHelper = record Helper for Integer
+    function ToString: string;
+  end;
+
 implementation
 
 uses
@@ -48,6 +52,13 @@ end;
 function TStringHelper.ToInteger: Integer;
 begin
   Result := StrToInt(Self);
+end;
+
+{ TIntegerHelper }
+
+function TIntegerHelper.ToString: string;
+begin
+  Result := IntToStr(Self);
 end;
 
 end.
