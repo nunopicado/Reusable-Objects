@@ -115,7 +115,7 @@ begin
   Result := string(
     TBase64.New(
       StrOut1 + StrOut2
-    ).Encode.Value
+    ).Encode
   );
   EVP_CIPHER_CTX_free(@FCipherContext);
 end;

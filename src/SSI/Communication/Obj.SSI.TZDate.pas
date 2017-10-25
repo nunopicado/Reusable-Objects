@@ -75,7 +75,7 @@ begin
   TZ := TBundledTimeZone.GetTimeZone(FTZInfo);
   XSDate := TXSDatetime.Create;
   try
-    XSDate.AsUTCDateTime := TZ.ToUniversalTime(FSNTPTime.Now.Value);
+    XSDate.AsUTCDateTime := TZ.ToUniversalTime(FSNTPTime.Now);
   finally
     Result := XSDate.NativeToXS;
     XSDate.Free;
