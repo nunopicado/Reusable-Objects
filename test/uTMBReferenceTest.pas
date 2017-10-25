@@ -30,7 +30,7 @@ begin
       Entity,
       ID,
       Value
-    ).AsIString.Value
+    ).AsString
   );
 end;
 
