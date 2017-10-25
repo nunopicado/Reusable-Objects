@@ -75,7 +75,7 @@ end;
 
 class function TBase64.New(const Text: AnsiString): IBase64;
 begin
-  Result := New(Text);
+  Result := Create(Text);
 end;
 
 function TBase64.Decode: AnsiString;
