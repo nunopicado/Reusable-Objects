@@ -52,10 +52,6 @@ type
     [TestCase('Double 2','70123.1234')]
     procedure _Double(const Value: Double);
     [Test]
-    [TestCase('Currency 1','-70123.1234')]
-    [TestCase('Currency 2','70123.1234')]
-    procedure _Currency(const Value: Currency);
-    [Test]
     [TestCase('ShortInt 1','-80')]
     [TestCase('ShortInt 2','34')]
     procedure _ShortInt(const Value: ShortInt);
@@ -172,16 +168,6 @@ begin
   Assert.AreEqual<Double>(
     Value,
     TDouble.New(
-      Value
-    ).Value
-  );
-end;
-
-procedure TValueTest._Currency(const Value: Currency);
-begin
-  Assert.AreEqual<Currency>(
-    Value,
-    TCurrency.New(
       Value
     ).Value
   );
