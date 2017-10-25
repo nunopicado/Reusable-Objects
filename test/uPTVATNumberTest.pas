@@ -16,7 +16,7 @@ type
     [TestCase('Invalid 1','111111111,False')]
     [TestCase('Invalid 2','123,False')]
     [TestCase('Invalid 3',',False')]
-    procedure Validation(const VATNumber: string; const Expected: Boolean);
+    procedure IsValidTest(const VATNumber: string; const Expected: Boolean);
   end;
 
 implementation
@@ -27,7 +27,7 @@ uses
 
 { TPTVATNumberTest }
 
-procedure TPTVATNumberTest.Validation(const VATNumber: string; const Expected: Boolean);
+procedure TPTVATNumberTest.IsValidTest(const VATNumber: string; const Expected: Boolean);
 begin
   Assert.AreEqual(
     Expected,
