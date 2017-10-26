@@ -168,7 +168,11 @@ end;
 
 function TDBUniQuery.RecordCount: Integer;
 begin
-     Result := FQuery.RecordCount;
+  Result := TIf<Integer>.New(
+    FQuery.Value.Active,
+    FQuery.Value.RecordCount,
+    0
+  ).Eval;
 end;
 
 function TDBUniQuery.Run: IDBQuery;
