@@ -110,3 +110,4 @@ Win32
 Win64
 *.res
 *.skincfg
+src/ThirdParty/
