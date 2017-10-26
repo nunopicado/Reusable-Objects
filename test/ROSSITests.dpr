@@ -84,7 +84,8 @@ uses
   TZDB in '..\src\ThirdParty\TZDB\TZDB.pas',
   Obj.SSI.IZDate in '..\src\SSI\Communication\Obj.SSI.IZDate.pas',
   Obj.SSI.TZDate in '..\src\SSI\Communication\Obj.SSI.TZDate.pas',
-  uTDataStreamTest in 'uTDataStreamTest.pas';
+  uTDataStreamTest in 'uTDataStreamTest.pas',
+  uTZipStringTest in 'uTZipStringTest.pas';
 
 var
   runner : ITestRunner;
