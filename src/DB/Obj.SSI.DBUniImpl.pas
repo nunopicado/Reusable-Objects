@@ -63,6 +63,9 @@ uses
   , PostgreSQLUniProvider
   , SQLiteUniProvider
   , SQLServerUniProvider
+  , Obj.SSI.IValue
+  , Obj.SSI.TValue
+  , Obj.SSI.TIf
   ;
 
 type
@@ -112,8 +115,21 @@ end;
 
 constructor TDBUniQuery.Create(Connection: TUniConnection; Statement: ISQLStatement);
 begin
-     FConnection := Connection;
-     FStatement  := Statement;
+  FQuery := TValue<TUniQuery>.New(
+    function : TUniQuery
+    var
+      i: Byte;
+    begin
+      Result := TUniQuery.Create(nil);
+      Result.Connection := Connection;
+      Result.SQL.Text := Statement.AsString;
+      if Assigned(Statement.ParamList) then begin
+        for i := 0 to Pred(Statement.ParamList.Count) do begin
+          Result.ParamByName(Statement.ParamList.Param(i).Name).Value := Statement.ParamList.Param(i).Value;
+        end;
+      end;
+    end
+  );
 end;
 
 destructor TDBUniQuery.Destroy;
@@ -176,25 +192,9 @@ begin
 end;
 
 function TDBUniQuery.Run: IDBQuery;
-  procedure LoadParams;
-  var
-     i: Byte;
-  begin
-       if Assigned(FStatement.ParamList)
-          then for i := 0 to FStatement.ParamList.Count-1 do
-                   FQuery.ParamByName(FStatement.ParamList.Param(i).Name).Value := FStatement.ParamList.Param(i).Value;
-  end;
 begin
-     Result := Self;
-     if not Assigned(FQuery)
-        then begin
-                  FQuery            := TUniQuery.Create(nil);
-                  FQuery.Connection := FConnection;
-             end
-        else FQuery.Close;
-     FQuery.SQL.Text := FStatement.AsString;
-     LoadParams;
-     FQuery.Open;
+  Result := Self;
+  FQuery.Value.Open;
 end;
 
 procedure TDBUniQuery.SetRecNo(Idx: Integer);
