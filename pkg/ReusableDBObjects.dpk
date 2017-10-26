@@ -30,13 +30,13 @@ package ReusableDBObjects;
 requires
   rtl,
   dbrtl,
-  dac250,
-  unidac250,
   ZComponent,
   ZDbc,
   ZPlain,
   ZCore,
-  ZParseSql;
+  ZParseSql,
+  dac230,
+  unidac230;
 
 contains
   Obj.SSI.DBConnectionIntf in '..\src\DB\Obj.SSI.DBConnectionIntf.pas',
