@@ -151,17 +151,18 @@ function TDataStream.AsString: string;
 var
   SS: TStringStream;
 begin
-  if FStream <> nil
-    then begin
-           SS := TStringStream.Create('');
-           try
-             SS.CopyFrom(FStream, 0);
-             Result := SS.DataString;
-           finally
-             SS.Free;
-           end;
-         end
-    else Result := '';
+  if FStream <> nil then begin
+    SS := TStringStream.Create('');
+    try
+      SS.CopyFrom(FStream, 0);
+      Result := SS.DataString;
+    finally
+      SS.Free;
+    end;
+  end
+  else begin
+    Result := '';
+  end;
 end;
 
 function TDataStream.Save(const FileName: IString): IDataStream;
