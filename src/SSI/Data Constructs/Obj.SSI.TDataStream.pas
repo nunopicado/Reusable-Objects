@@ -37,9 +37,8 @@ type
   strict private
     FStream: TMemoryStream;
   public
-    constructor CreatePrivate(const Stream: TStream); overload;
-    constructor CreatePrivate(const S: string); overload;
-    constructor Create;
+    constructor Create(const Stream: TStream); overload;
+    constructor Create(const S: string); overload;
     class function New(const Stream: TStream): IDataStream; overload;
     class function New(const S: string): IDataStream; overload;
     class function New(const S: IString): IDataStream; overload;
@@ -62,7 +61,7 @@ uses
 
 { TDataStream }
 
-constructor TDataStream.CreatePrivate(const Stream: TStream);
+constructor TDataStream.Create(const Stream: TStream);
 begin
   inherited Create;
   FStream := TMemoryStream.Create;
@@ -70,18 +69,13 @@ begin
     then FStream.LoadFromStream(Stream);
 end;
 
-constructor TDataStream.Create;
-begin
-  raise Exception.Create('TDataStream was meant to be used only in it''s interfaced version. Use New instead.');
-end;
-
-constructor TDataStream.CreatePrivate(const S: string);
+constructor TDataStream.Create(const S: string);
 var
   F: TStringStream;
 begin
   F := TStringStream.Create(S);
   try
-    CreatePrivate(F);
+    Create(F);
   finally
     F.Free;
   end;
@@ -89,12 +83,12 @@ end;
 
 class function TDataStream.New(const Stream: TStream): IDataStream;
 begin
-  Result := CreatePrivate(Stream);
+  Result := Create(Stream);
 end;
 
 class function TDataStream.New(const S: string): IDataStream;
 begin
-  Result := CreatePrivate(S);
+  Result := Create(S);
 end;
 
 class function TDataStream.New(const Strings: TStrings): IDataStream;
