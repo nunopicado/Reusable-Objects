@@ -7,28 +7,28 @@ uses
   ;
 
 type
-  TObj = class
+  Using = class
   public
-    class procedure Using<T: class, constructor>(O: T; Proc: TProc<T>); overload; static;
-    class procedure Using<T: class, constructor>(Proc: TProc<T>); overload; static;
+    class procedure New<T: class, constructor>(Obj: T; Action: TProc<T>); overload; static;
+    class procedure New<T: class, constructor>(Action: TProc<T>); overload; static;
   end;
 
 implementation
 
 { Obj }
 
-class procedure TObj.Using<T>(O: T; Proc: TProc<T>);
+class procedure Using.New<T>(Obj: T; Action: TProc<T>);
 begin
   try
-    Proc(O);
+    Action(Obj);
   finally
-    O.Free;
+    Obj.Free;
   end;
 end;
 
-class procedure TObj.Using<T>(Proc: TProc<T>);
+class procedure Using.New<T>(Action: TProc<T>);
 begin
-  Using<T>(T.Create, Proc);
+  New<T>(T.Create, Action);
 end;
 
 end.
