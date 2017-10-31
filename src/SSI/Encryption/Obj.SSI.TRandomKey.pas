@@ -57,7 +57,7 @@ end;
 
 constructor TRandomKey.Create(const NumberOfBits: Byte);
 begin
-  FKey := TString.New(Generate);
+  FKey := TString.NewDelayed(Generate);
 end;
 
 function TRandomKey.Generate: string;
