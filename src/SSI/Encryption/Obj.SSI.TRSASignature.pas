@@ -1,4 +1,4 @@
-(******************************************************************************)
+ï»¿(******************************************************************************)
 (** Suite         : Reusable Objects                                         **)
 (** Object        : TRSASignature                                            **)
 (** Framework     :                                                          **)
@@ -120,7 +120,7 @@ begin
   end;
 
   if not Assigned(Key) then
-    raise Exception.Create('ChavePublicAT não pôde ser lida.');
+    raise Exception.Create('The public key could not be read.');
 
   RSA := EVP_PKey_Get1_RSA(Key);
   EVP_PKey_Free(Key);
