@@ -26,8 +26,7 @@ unit Obj.SSI.TBase64;
 interface
 
 uses
-    Obj.SSI.IBase64
-  , Obj.SSI.IValue
+    Obj.SSI.IValue
   , Obj.SSI.TValue
   ;
 

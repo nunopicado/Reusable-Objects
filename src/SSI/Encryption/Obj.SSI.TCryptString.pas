@@ -6,8 +6,7 @@
 (******************************************************************************)
 (** Classes       : TCryptString, implements ICryptString                    **)
 (******************************************************************************)
-(** Dependencies  : IBase64                                                  **)
-(**               : RTL, Jedi JWA WinAPI                                     **)
+(** Dependencies  : RTL, Jedi JWA WinAPI                                     **)
 (******************************************************************************)
 (** Description   : Handles Currency values and calculations                 **)
 (******************************************************************************)
@@ -57,7 +56,6 @@ uses
   , Classes
   , JwaWinCrypt
   , JwaWinType
-  , Obj.SSI.IBase64
   , Obj.SSI.TBase64
   , Obj.SSI.TValue
   ;
