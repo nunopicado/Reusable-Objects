@@ -60,7 +60,7 @@ begin
   FEntity    := Entity;
   FID        := ID;
   FValue     := Value;
-  FReference := TString.New(
+  FReference := TString.NewDelayed(
     DoCalc
   );
 end;
