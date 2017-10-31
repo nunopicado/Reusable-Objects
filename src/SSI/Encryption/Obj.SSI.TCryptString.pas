@@ -116,7 +116,11 @@ begin
           then RaiseLastOSError;
         Target.Write(Buffer^, BytesIn);
       until Last;
-      Result := TBase64.New(TValue<AnsiString>.New(AnsiString(Target.DataString))).Encode;
+      Result := TBase64.New(
+        TValue<AnsiString>.New(
+          AnsiString(Target.DataString)
+        )
+      ).Value;
     finally
       FreeMem(Buffer, BufferSize);
     end;
@@ -136,7 +140,13 @@ var
   FCryptKey : ICryptKey;
 begin
   FCryptKey       := TCryptKey.New(FPassword);
-  Source          := TStringStream.Create(TBase64.New(FText).Decode);
+  Source          := TStringStream.Create(
+    TUnBase64.New(
+      TValue<AnsiString>.New(
+        FText
+      )
+    ).Value
+  );
   Source.Position := 0;
   Target          := TStringStream.Create;
   try

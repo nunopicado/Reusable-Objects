@@ -116,8 +116,10 @@ begin
   SetLength(StrOut2, OutLen);
   Result := string(
     TBase64.New(
-      StrOut1 + StrOut2
-    ).Encode
+      TValue<AnsiString>.New(
+        StrOut1 + StrOut2
+      )
+    ).Value
   );
   EVP_CIPHER_CTX_free(@FCipherContext);
 end;

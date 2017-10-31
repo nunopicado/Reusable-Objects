@@ -53,7 +53,6 @@ uses
   Obj.SSI.TStringStat in '..\src\SSI\Data Types\Obj.SSI.TStringStat.pas',
   Obj.SSI.TValue in '..\src\SSI\Data Types\Obj.SSI.TValue.pas',
   Obj.SSI.TZipString in '..\src\SSI\Data Types\Obj.SSI.TZipString.pas',
-  Obj.SSI.IBase64 in '..\src\SSI\Encryption\Obj.SSI.IBase64.pas',
   Obj.SSI.ICryptString in '..\src\SSI\Encryption\Obj.SSI.ICryptString.pas',
   Obj.SSI.IRandomKey in '..\src\SSI\Encryption\Obj.SSI.IRandomKey.pas',
   Obj.SSI.IRSASignature in '..\src\SSI\Encryption\Obj.SSI.IRSASignature.pas',

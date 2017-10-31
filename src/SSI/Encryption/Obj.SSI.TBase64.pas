@@ -1,10 +1,10 @@
 (******************************************************************************)
 (** Suite         : Reusable Objects                                         **)
-(** Object        : IBase64                                                  **)
+(** Object        : TBase64, TUnBase64, decorates IValue<AnsiString>         **)
 (** Framework     : Indy                                                     **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Classes       : TBase64, implements IBase64                              **)
+(** Classes       : TBase64, TUnBase64                                       **)
 (******************************************************************************)
 (** Dependencies  : RTL, Indy                                                **)
 (******************************************************************************)
@@ -28,18 +28,28 @@ interface
 uses
     Obj.SSI.IBase64
   , Obj.SSI.IValue
+  , Obj.SSI.TValue
   ;
 
 type
-  TBase64 = class(TInterfacedObject, IBase64)
+  TBase64 = class(TInterfacedObject, IValue<AnsiString>)
   private
-    FText: AnsiString;
+    FOrigin: IValue<AnsiString>;
   public
-    constructor Create(const Text: AnsiString);
-    class function New(const Text: IValue<AnsiString>): IBase64; overload;
-    class function New(const Text: AnsiString): IBase64; overload;
-    function Encode: AnsiString;
-    function Decode: AnsiString;
+    constructor Create(const Origin: IValue<AnsiString>);
+    class function New(const Origin: IValue<AnsiString>): IValue<AnsiString>;
+    function Value: AnsiString;
+    function Refresh: IValue<AnsiString>;
+  end;
+
+  TUnBase64 = class(TInterfacedObject, IValue<AnsiString>)
+  private
+    FOrigin: IValue<AnsiString>;
+  public
+    constructor Create(const Origin: IValue<AnsiString>);
+    class function New(const Origin: IValue<AnsiString>): IValue<AnsiString>;
+    function Value: AnsiString;
+    function Refresh: IValue<AnsiString>;
   end;
 
 implementation
@@ -51,7 +61,7 @@ uses
 
 { TBase64 }
 
-function TBase64.Encode: AnsiString;
+function TBase64.Value: AnsiString;
 var
   Encoder : TIdEncoderMIME;
   Source  : TStringStream;
@@ -59,7 +69,7 @@ var
 begin
   Encoder := TIdEncoderMIME.Create(nil);
   try
-    Source := TStringStream.Create(FText);
+    Source := TStringStream.Create(FOrigin.Value);
     Target := TStringStream.Create;
     try
       Encoder.Encode(Source, Target);
@@ -73,12 +83,35 @@ begin
   end;
 end;
 
-class function TBase64.New(const Text: AnsiString): IBase64;
+class function TBase64.New(const Origin: IValue<AnsiString>): IValue<AnsiString>;
 begin
-  Result := Create(Text);
+  Result := Create(Origin);
 end;
 
-function TBase64.Decode: AnsiString;
+function TBase64.Refresh: IValue<AnsiString>;
+begin
+  Result := FOrigin.Refresh;
+end;
+
+constructor TBase64.Create(const Origin: IValue<AnsiString>);
+begin
+  inherited Create;
+  FOrigin := Origin;
+end;
+
+{ TUnBase64 }
+
+class function TUnBase64.New(const Origin: IValue<AnsiString>): IValue<AnsiString>;
+begin
+  Result := Create(Origin);
+end;
+
+function TUnBase64.Refresh: IValue<AnsiString>;
+begin
+  Result := FOrigin.Refresh;
+end;
+
+function TUnBase64.Value: AnsiString;
 var
   Decoder : TIdDecoderMIME;
   Target  : TStringStream;
@@ -88,7 +121,7 @@ begin
     Target := TStringStream.Create;
     try
       Decoder.DecodeBegin(Target);
-      Decoder.Decode(FText);
+      Decoder.Decode(FOrigin.Value);
       Decoder.DecodeEnd;
       Target.Position := 0;
       Result := Target.DataString;
@@ -100,15 +133,10 @@ begin
   end;
 end;
 
-constructor TBase64.Create(const Text: AnsiString);
+constructor TUnBase64.Create(const Origin: IValue<AnsiString>);
 begin
   inherited Create;
-  FText := Text;
-end;
-
-class function TBase64.New(const Text: IValue<AnsiString>): IBase64;
-begin
-  Result := New(Text.Value);
+  FOrigin := Origin;
 end;
 
 end.
