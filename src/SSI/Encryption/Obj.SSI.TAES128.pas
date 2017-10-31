@@ -99,7 +99,7 @@ begin
   if Length(SecretKey) < EVP_CIPHER_CTX_key_length(@FCipherContext)
     then raise Exception.Create('Key length too short');
   EVP_CipherInit_ex(@FCipherContext, nil, nil, Pointer(SecretKey), nil, -1);
-  StrIn := RawByteString(FStrIn);
+  StrIn := RawByteString(FOrigin.Value);
   InLen := Length(StrIn);
   if InLen = 0
     then raise Exception.Create('Data must not be empty');
