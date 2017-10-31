@@ -53,7 +53,6 @@ uses
   Obj.SSI.TStringStat in '..\src\SSI\Data Types\Obj.SSI.TStringStat.pas',
   Obj.SSI.TValue in '..\src\SSI\Data Types\Obj.SSI.TValue.pas',
   Obj.SSI.TZipString in '..\src\SSI\Data Types\Obj.SSI.TZipString.pas',
-  Obj.SSI.IAES128 in '..\src\SSI\Encryption\Obj.SSI.IAES128.pas',
   Obj.SSI.IBase64 in '..\src\SSI\Encryption\Obj.SSI.IBase64.pas',
   Obj.SSI.ICryptString in '..\src\SSI\Encryption\Obj.SSI.ICryptString.pas',
   Obj.SSI.IRandomKey in '..\src\SSI\Encryption\Obj.SSI.IRandomKey.pas',
@@ -85,7 +84,8 @@ uses
   Obj.SSI.IZDate in '..\src\SSI\Communication\Obj.SSI.IZDate.pas',
   Obj.SSI.TZDate in '..\src\SSI\Communication\Obj.SSI.TZDate.pas',
   uTDataStreamTest in 'uTDataStreamTest.pas',
-  uTZipStringTest in 'uTZipStringTest.pas';
+  uTZipStringTest in 'uTZipStringTest.pas',
+  uTAES128Test in 'uTAES128Test.pas';
 
 var
   runner : ITestRunner;
