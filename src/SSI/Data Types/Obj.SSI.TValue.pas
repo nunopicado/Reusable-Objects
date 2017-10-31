@@ -42,6 +42,7 @@ type
     constructor Create(const Define: TFunc<T>);
     class function New(const Define: TFunc<T>): IValue<T>; overload;
     class function New(const Value: T): IValue<T>; overload;
+    class function NewDelayed(const Define: TFunc<T>): IValue<T>;
     function Value: T;
     function Refresh: IValue<T>;
   end;
@@ -76,6 +77,11 @@ begin
       Result := Value;
     end
   );
+end;
+
+class function TValue<T>.NewDelayed(const Define: TFunc<T>): IValue<T>;
+begin
+  Result := New(Define);
 end;
 
 function TValue<T>.Refresh: IValue<T>;
