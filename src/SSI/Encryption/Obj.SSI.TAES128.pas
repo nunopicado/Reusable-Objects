@@ -1,12 +1,12 @@
 (******************************************************************************)
 (** Suite         : Reusable Objects                                         **)
-(** Object        : TAES128                                                  **)
+(** Object        : TAES128, decorates IString                               **)
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : IAES128                                                  **)
+(** Interfaces    : IString (IValue<string>)                                 **)
 (******************************************************************************)
-(** Dependencies  : DelphiOnRails                                            **)
+(** Dependencies  : OpenSSL                                                  **)
 (******************************************************************************)
 (** Description   : Encrypts a string with AES128 protocol                   **)
 (******************************************************************************)
@@ -28,53 +28,54 @@ interface
 uses
     Obj.SSI.IAES128
   , Obj.SSI.IValue
+  , Obj.SSI.TString
   , LibEay.Ext
   ;
 
 type
-  TAES128 = class(TInterfacedObject, IAES128)
+  TAES128 = class(TDecorableIString, IString)
   private type
     TKey = array[0..EVP_MAX_KEY_LENGTH - 1] of Byte;
     TIV  = array[0..EVP_MAX_IV_LENGTH - 1] of Byte;
   private var
     FCipherContext: EVP_CIPHER_CTX;
     FSecretKey: string;
-    FStrIn: string;
+    FOrigin: IString;
     FOut: IString;
   private
     function AESEncrypt: string;
   public
-    constructor Create(const SecretKey, StrIn: string);
-    class function New(const SecretKey, StrIn: string): IAES128;
-    function AsString: string;
+    constructor Create(const Origin: IString; const SecretKey: string);
+    class function New(const Origin: IString; const SecretKey: string): IString;
+    function Value: string;
   end;
 
 implementation
 
 uses
-    Obj.SSI.TValue
-  , Obj.SSI.TBase64
+    Obj.SSI.TBase64
+  , Obj.SSI.TValue
   , SysUtils
   , LibEay32
   ;
 
 { TAES }
 
-function TAES128.AsString: string;
+function TAES128.Value: string;
 begin
   Result := FOut.Value;
 end;
 
-constructor TAES128.Create(const SecretKey, StrIn: string);
+constructor TAES128.Create(const Origin: IString; const SecretKey: string);
 begin
   FSecretKey := SecretKey;
-  FStrIn     := StrIn;
+  FOrigin    := Origin;
   FOut       := TString.NewDelayed(AESEncrypt);
 end;
 
-class function TAES128.New(const SecretKey, StrIn: string): IAES128;
+class function TAES128.New(const Origin: IString; const SecretKey: string): IString;
 begin
-  Result := Create(SecretKey, StrIn);
+  Result := Create(Origin, SecretKey);
 end;
 
 function TAES128.AESEncrypt: string;
