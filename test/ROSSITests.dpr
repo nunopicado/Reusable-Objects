@@ -84,7 +84,8 @@ uses
   Obj.SSI.TZDate in '..\src\SSI\Communication\Obj.SSI.TZDate.pas',
   uTDataStreamTest in 'uTDataStreamTest.pas',
   uTZipStringTest in 'uTZipStringTest.pas',
-  uTAES128Test in 'uTAES128Test.pas';
+  uTAES128Test in 'uTAES128Test.pas',
+  uTBase64Test in 'uTBase64Test.pas';
 
 var
   runner : ITestRunner;
