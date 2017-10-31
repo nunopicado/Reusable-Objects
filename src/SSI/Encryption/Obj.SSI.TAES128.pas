@@ -26,8 +26,7 @@ unit Obj.SSI.TAES128;
 interface
 
 uses
-    Obj.SSI.IAES128
-  , Obj.SSI.IValue
+    Obj.SSI.IValue
   , Obj.SSI.TString
   , LibEay.Ext
   ;
