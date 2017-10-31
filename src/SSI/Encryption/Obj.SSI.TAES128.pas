@@ -88,6 +88,8 @@ var
   StrOut2   : RawByteString;
   OutLen    : Integer;
 begin
+  LibEAY32.OpenSSL_Add_All_Algorithms;
+
   Cipher := EVP_get_cipherbyname(PAnsiChar(AnsiString('aes-128-ecb')));
   FillChar(Key, SizeOf(TKey), 0);
   EVP_CipherInit_ex(@FCipherContext, Cipher, nil, PByte(@Key), nil, -1);
