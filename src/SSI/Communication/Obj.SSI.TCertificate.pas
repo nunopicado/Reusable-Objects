@@ -272,7 +272,7 @@ begin
     );
   FPFXFile := PFXFile;
   FPFXPass := PFXPass;
-  FPFXData := TValue<AnsiString>.New(GetPFXData);
+  FPFXData := TValue<AnsiString>.NewDelayed(GetPFXData);
   FContext := TValue<Pointer>.New(GetPCCert_Context);
 end;
 
