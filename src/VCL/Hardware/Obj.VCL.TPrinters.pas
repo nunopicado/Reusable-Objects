@@ -35,10 +35,10 @@ uses
   ;
 
 type
-  TPrinters = Class(TInterfacedObject, IPrinters)
+  TPrinters = class(TInterfacedObject, IPrinters)
   private
     type
-      TByteArray = Array of Byte;
+      TByteArray = array of Byte;
     var
       FSelected : IString;
       FDocInfo1 : TDocInfo1;
@@ -48,10 +48,10 @@ type
     constructor Create;
     class function New: IPrinters;
     function SendSequence(const Sequence: IList<Byte>): IPrinters;
-    function AsList(const List: IList<String>): IPrinters;
+    function AsList(const List: IList<string>): IPrinters;
     function Select(const Name: IString): IPrinters;
     function Default: IString;
-  End;
+  end;
 
 implementation
 
@@ -64,12 +64,11 @@ uses
 
 constructor TPrinters.Create;
 begin
-  with FDocInfo1 do
-    begin
-      pDocName    := nil;
-      pOutputFile := nil;
-      pDataType   := 'RAW';
-    end;
+  with FDocInfo1 do begin
+    pDocName    := nil;
+    pOutputFile := nil;
+    pDataType   := 'RAW';
+  end;
   FSelected := Default;
 end;
 
@@ -103,17 +102,18 @@ var
 begin
   Result := Self;
   PrepareBuffer(Sequence, Buffer);
-  if not OpenPrinter(PChar(FSelected), Handle, nil)
-    then raise exception.Create(Format('Failed opening printer: %d', [GetLastError]))
-    else begin
-           StartDocPrinter(Handle, 1, @FDocInfo1);
-           WritePrinter(Handle, Pointer(Buffer), Length(Buffer), N);
-           EndDocPrinter(Handle);
-           ClosePrinter(Handle);
-         end;
+  if not OpenPrinter(PChar(FSelected), Handle, nil) then begin
+    raise exception.Create(Format('Failed opening printer: %d', [GetLastError]))
+  end
+  else begin
+    StartDocPrinter(Handle, 1, @FDocInfo1);
+    WritePrinter(Handle, Pointer(Buffer), Length(Buffer), N);
+    EndDocPrinter(Handle);
+    ClosePrinter(Handle);
+  end;
 end;
 
-function TPrinters.AsList(const List: IList<String>): IPrinters;
+function TPrinters.AsList(const List: IList<string>): IPrinters;
 var
   i: Byte;
 begin
@@ -125,7 +125,7 @@ end;
 function TPrinters.Default: IString;
 begin
   Result := TString.New(
-    TIf<String>.New(
+    TIf<string>.New(
       Printer.PrinterIndex > 0,
       PChar(Printer.Printers[Printer.PrinterIndex]),
       ''

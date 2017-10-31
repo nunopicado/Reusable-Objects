@@ -9,13 +9,11 @@ uses
 
 type
   TZipString = class(TDecorableIString, IString)
-  private
   public
     function Value: string; override;
   end;
 
   TUnZipString = class(TDecorableIString, IString)
-  private
   public
     function Value: string; override;
   end;
