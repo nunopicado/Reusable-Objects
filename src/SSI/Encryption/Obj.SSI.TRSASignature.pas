@@ -65,7 +65,7 @@ begin
   FStrIn        := StrIn;
   FPubKey       := PubKey;
   FPubKeySource := PubKeySource;
-  FStrOut       := TString.New(GenerateSignature);
+  FStrOut       := TString.NewDelayed(GenerateSignature);
 end;
 
 function TRSASignature.GenerateSignature: string;
