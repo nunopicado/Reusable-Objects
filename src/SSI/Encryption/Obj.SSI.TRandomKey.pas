@@ -34,10 +34,11 @@ type
   TRandomKey = class(TInterfacedObject, IRandomKey)
   private
     FKey: IString;
+    FKeySize: Byte;
     function Generate: string;
   public
-    constructor Create(const NumberOfBits: Byte);
-    class function New(const NumberOfBits: Byte = 16): IRandomKey;
+    constructor Create(const KeySize: Byte);
+    class function New(const KeySize: Byte = 16): IRandomKey;
     function AsString: string;
   end;
 
@@ -55,9 +56,10 @@ begin
   Result := FKey.Value;
 end;
 
-constructor TRandomKey.Create(const NumberOfBits: Byte);
+constructor TRandomKey.Create(const KeySize: Byte);
 begin
-  FKey := TString.NewDelayed(Generate);
+  FKeySize := KeySize;
+  FKey     := TString.NewDelayed(Generate);
 end;
 
 function TRandomKey.Generate: string;
@@ -72,10 +74,10 @@ begin
 
   Result := '';
   s      := Default(TStringArray);
-  for i := 1 to 16 do
+  for i := 1 to FKeySize do
     for j := Low(s) to High(s) do
       s[j] := s[j] + Random(9).ToString;
-  for i := 1 to 16 do
+  for i := 1 to FKeySize do
     begin
       v := 0;
       for j := Low(s) to High(s) do
@@ -84,9 +86,9 @@ begin
     end;
 end;
 
-class function TRandomKey.New(const NumberOfBits: Byte): IRandomKey;
+class function TRandomKey.New(const KeySize: Byte): IRandomKey;
 begin
-  Result := Create(NumberOfBits);
+  Result := Create(KeySize);
 end;
 
 end.
