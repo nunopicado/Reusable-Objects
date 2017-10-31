@@ -64,7 +64,7 @@ constructor TZDate.Create(const TimeZoneInfo: string; const SNTPTime: ISNTPTime)
 begin
   FTZInfo   := TimeZoneInfo;
   FSNTPTime := SNTPTime;
-  FZDate    := TString.New(GetZDate);
+  FZDate    := TString.NewDelayed(GetZDate);
 end;
 
 function TZDate.GetZDate: string;
