@@ -69,7 +69,7 @@ constructor TAES128.Create(const SecretKey, StrIn: string);
 begin
   FSecretKey := SecretKey;
   FStrIn     := StrIn;
-  FOut       := TString.New(AESEncrypt);
+  FOut       := TString.NewDelayed(AESEncrypt);
 end;
 
 class function TAES128.New(const SecretKey, StrIn: string): IAES128;
