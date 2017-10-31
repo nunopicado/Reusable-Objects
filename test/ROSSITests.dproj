@@ -175,6 +175,7 @@
         <DCCReference Include="uTZipStringTest.pas"/>
         <DCCReference Include="uTAES128Test.pas"/>
         <DCCReference Include="uTBase64Test.pas"/>
+        <DCCReference Include="uTCryptStringTest.pas"/>
         <None Include="..\src\ThirdParty\TZDB\TZDB.inc"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

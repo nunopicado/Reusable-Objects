@@ -85,7 +85,8 @@ uses
   uTDataStreamTest in 'uTDataStreamTest.pas',
   uTZipStringTest in 'uTZipStringTest.pas',
   uTAES128Test in 'uTAES128Test.pas',
-  uTBase64Test in 'uTBase64Test.pas';
+  uTBase64Test in 'uTBase64Test.pas',
+  uTCryptStringTest in 'uTCryptStringTest.pas';
 
 var
   runner : ITestRunner;
