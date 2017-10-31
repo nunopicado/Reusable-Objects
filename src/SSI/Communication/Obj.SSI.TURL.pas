@@ -54,7 +54,7 @@ uses
 constructor TURL.Create(const URL: string);
 begin
   FURL     := URL;
-  FIsValid := TBoolean.New(DoCheckURL);
+  FIsValid := TBoolean.NewDelayed(DoCheckURL);
 end;
 
 function TURL.DoCheckURL: Boolean;
