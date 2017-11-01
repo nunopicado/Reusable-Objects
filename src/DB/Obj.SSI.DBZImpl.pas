@@ -33,6 +33,7 @@ uses
   , ZDataset
   , ZDbcIntfs
   , DB
+  , SysUtils
   ;
 
 type
@@ -68,12 +69,10 @@ type
       function ServerType: TServerType;
       function TypeAsString: String;
     End;
+    function NewQuery(const Statement: ISQLStatement; out Destination: IDBQuery): IDatabase; overload;
 
 implementation
 
-uses
-    SysUtils
-  ;
 
 type
     TDBZQuery = class(TInterfacedObject, IDBQuery)
@@ -259,9 +258,11 @@ begin
      Result := Create(Server, Database, ClientCodePage, LibraryLocation);
 end;
 
-function TDBZDatabase.NewQuery(Statement: ISQLStatement): IDBQuery;
+function TDBZDatabase.NewQuery(const Statement: ISQLStatement;
+ out Destination: IDBQuery): IDatabase;
 begin
-     Result := TDBZQuery.Create(FConnection, Statement);
+  Result := Self;
+  Destination := NewQuery(Statement);
 end;
 
 function TDBZDatabase.Run(SQLStatement: ISQLStatement): IDatabase;
