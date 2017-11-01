@@ -34,6 +34,8 @@ type
   TEmailAddress = class(TInterfacedObject, IEmailAddress)
   private
     FEmailAddress: string;
+    FIsValid: IBoolean;
+    function CheckIfValid: Boolean;
   public
     constructor Create(EmailAddress: string);
     class function New(EmailAddress: string): IEMailAddress; overload;
@@ -48,6 +50,7 @@ uses
     SysUtils
   , Obj.SSI.IStringStat
   , Obj.SSI.TStringStat
+  , Obj.SSI.TValue
   ;
 
 { TMailAddress }
@@ -56,6 +59,12 @@ constructor TEmailAddress.Create(EmailAddress: string);
 begin
   inherited Create;
   FEmailAddress := EmailAddress;
+  FIsValid := TBoolean.NewDelayed(CheckIfValid);
+end;
+
+function TEmailAddress.IsValid: Boolean;
+begin
+  Result := FIsValid.Value;
 end;
 
 function TEmailAddress.Value: string;
@@ -65,7 +74,7 @@ begin
   Result := FEmailAddress;
 end;
 
-function TEmailAddress.IsValid: Boolean;
+function TEmailAddress.CheckIfValid: Boolean;
 const
   Allowed: TCharSet = ['a'..'z', 'A'..'Z', '0'..'9', '_', '-', '.'];
 var
