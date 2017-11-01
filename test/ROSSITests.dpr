@@ -87,7 +87,8 @@ uses
   uTBase64Test in 'uTBase64Test.pas',
   uTCryptStringTest in 'uTCryptStringTest.pas',
   uTRandomKeyTest in 'uTRandomKeyTest.pas',
-  TZDB in '..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.pas';
+  TZDB in '..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.pas',
+  uTEmailAddressTest in 'uTEmailAddressTest.pas';
 
 var
   runner : ITestRunner;
