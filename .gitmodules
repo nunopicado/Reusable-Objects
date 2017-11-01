@@ -1,0 +1,3 @@
+[submodule "src/ThirdParty/tzdb"]
+	path = src/ThirdParty/tzdb
+	url = https://github.com/pavkam/tzdb

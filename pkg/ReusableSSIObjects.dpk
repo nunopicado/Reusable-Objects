@@ -84,5 +84,6 @@ contains
   Obj.SSI.TMail in '..\src\SSI\Communication\Obj.SSI.TMail.pas',
   Obj.SSI.Helpers in '..\src\SSI\Helpers\Obj.SSI.Helpers.pas',
   Obj.SSI.TConstraints in '..\src\SSI\Flow Control\Obj.SSI.TConstraints.pas';
+  TZDB in '..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.pas';
 
 end.
