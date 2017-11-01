@@ -168,7 +168,6 @@
         <DCCReference Include="..\src\SSI\Validation\Obj.SSI.TPTVATNumber.pas"/>
         <DCCReference Include="..\src\SSI\Helpers\LibEay.Ext.pas"/>
         <DCCReference Include="..\src\ThirdParty\OpenSSL\libeay32.pas"/>
-        <DCCReference Include="..\src\ThirdParty\TZDB\TZDB.pas"/>
         <DCCReference Include="..\src\SSI\Communication\Obj.SSI.IZDate.pas"/>
         <DCCReference Include="..\src\SSI\Communication\Obj.SSI.TZDate.pas"/>
         <DCCReference Include="uTDataStreamTest.pas"/>
@@ -177,7 +176,8 @@
         <DCCReference Include="uTBase64Test.pas"/>
         <DCCReference Include="uTCryptStringTest.pas"/>
         <DCCReference Include="uTRandomKeyTest.pas"/>
-        <None Include="..\src\ThirdParty\TZDB\TZDB.inc"/>
+        <DCCReference Include="..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.pas"/>
+        <None Include="..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.inc"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -231,7 +231,16 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                </DeployClass>
                 <DeployClass Name="ProjectOSXResource">
                     <Platform Name="OSX32">
                         <RemoteDir>Contents\Resources</RemoteDir>
@@ -573,16 +582,7 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="DependencyModule">
-                    <Platform Name="Win32">
-                        <Operation>0</Operation>
-                        <Extensions>.dll;.bpl</Extensions>
-                    </Platform>
-                    <Platform Name="OSX32">
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>

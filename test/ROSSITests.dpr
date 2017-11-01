@@ -79,7 +79,6 @@ uses
   Obj.SSI.TPTVATNumber in '..\src\SSI\Validation\Obj.SSI.TPTVATNumber.pas',
   LibEay.Ext in '..\src\SSI\Helpers\LibEay.Ext.pas',
   libeay32 in '..\src\ThirdParty\OpenSSL\libeay32.pas',
-  TZDB in '..\src\ThirdParty\TZDB\TZDB.pas',
   Obj.SSI.IZDate in '..\src\SSI\Communication\Obj.SSI.IZDate.pas',
   Obj.SSI.TZDate in '..\src\SSI\Communication\Obj.SSI.TZDate.pas',
   uTDataStreamTest in 'uTDataStreamTest.pas',
@@ -87,7 +86,8 @@ uses
   uTAES128Test in 'uTAES128Test.pas',
   uTBase64Test in 'uTBase64Test.pas',
   uTCryptStringTest in 'uTCryptStringTest.pas',
-  uTRandomKeyTest in 'uTRandomKeyTest.pas';
+  uTRandomKeyTest in 'uTRandomKeyTest.pas',
+  TZDB in '..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.pas';
 
 var
   runner : ITestRunner;
