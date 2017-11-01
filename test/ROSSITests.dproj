@@ -178,6 +178,7 @@
         <DCCReference Include="uTRandomKeyTest.pas"/>
         <DCCReference Include="..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.pas"/>
         <DCCReference Include="uTEmailAddressTest.pas"/>
+        <DCCReference Include="uTGeoCoordinateTest.pas"/>
         <None Include="..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.inc"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
