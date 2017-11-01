@@ -59,7 +59,7 @@ constructor TEmailAddress.Create(EmailAddress: string);
 begin
   inherited Create;
   FEmailAddress := EmailAddress;
-  FIsValid := TBoolean.NewDelayed(CheckIfValid);
+  FIsValid      := TBoolean.NewDelayed(CheckIfValid);
 end;
 
 function TEmailAddress.IsValid: Boolean;
