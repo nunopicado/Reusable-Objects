@@ -3,7 +3,7 @@ unit uTClipboardTest;
 interface
 uses
   DUnitX.TestFramework,
-  Obj.FMX.TClipboard;
+  RO.FMX.TClipboard;
 
 type
   [TestFixture]

@@ -32,13 +32,13 @@ requires
   fmx;
 
 contains
-  Obj.FMX.IClipboard in '..\src\FMX\OS\Obj.FMX.IClipboard.pas',
-  Obj.FMX.TClipboard in '..\src\FMX\OS\Obj.FMX.TClipboard.pas',
-  Obj.FMX.ISliderMsg in '..\src\FMX\GUI\Obj.FMX.ISliderMsg.pas',
-  Obj.FMX.TSliderMsg in '..\src\FMX\GUI\Obj.FMX.TSliderMsg.pas',
+  RO.FMX.IClipboard in '..\src\FMX\OS\RO.FMX.IClipboard.pas',
+  RO.FMX.TClipboard in '..\src\FMX\OS\RO.FMX.TClipboard.pas',
+  RO.FMX.ISliderMsg in '..\src\FMX\GUI\RO.FMX.ISliderMsg.pas',
+  RO.FMX.TSliderMsg in '..\src\FMX\GUI\RO.FMX.TSliderMsg.pas',
   FMX.Ani.Ext in '..\src\FMX\Helpers\FMX.Ani.Ext.pas',
-  Obj.FMX.TLightBox in '..\src\FMX\GUI\Obj.FMX.TLightBox.pas',
-  Obj.FMX.TShadowRectangle in '..\src\FMX\GUI\Obj.FMX.TShadowRectangle.pas',
+  RO.FMX.TLightBox in '..\src\FMX\GUI\RO.FMX.TLightBox.pas',
+  RO.FMX.TShadowRectangle in '..\src\FMX\GUI\RO.FMX.TShadowRectangle.pas',
   FMX.StdCtrls.Ext in '..\src\FMX\Helpers\FMX.StdCtrls.Ext.pas';
 
 end.

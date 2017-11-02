@@ -33,7 +33,7 @@ type
 implementation
 
 uses
-    Obj.SSI.TCryptString
+    RO.TCryptString
   ;
 
 { TCryptStringTest }

@@ -98,71 +98,72 @@
         <DCCReference Include="xmlrtl.dcp"/>
         <DCCReference Include="inet.dcp"/>
         <DCCReference Include="soaprtl.dcp"/>
-        <DCCReference Include="..\src\SSI\Business\Obj.SSI.IBMReference.pas"/>
-        <DCCReference Include="..\src\SSI\Business\Obj.SSI.TMBReference.pas"/>
-        <DCCReference Include="..\src\SSI\Communication\Obj.SSI.ICertificate.pas"/>
-        <DCCReference Include="..\src\SSI\Communication\Obj.SSI.IMail.pas"/>
-        <DCCReference Include="..\src\SSI\Communication\Obj.SSI.INetworkNode.pas"/>
-        <DCCReference Include="..\src\SSI\Communication\Obj.SSI.ISNTPTime.pas"/>
-        <DCCReference Include="..\src\SSI\Communication\Obj.SSI.ISoapRequest.pas"/>
-        <DCCReference Include="..\src\SSI\Communication\Obj.SSI.IURL.pas"/>
-        <DCCReference Include="..\src\SSI\Communication\Obj.SSI.IZDate.pas"/>
-        <DCCReference Include="..\src\SSI\Communication\Obj.SSI.TCertificate.pas"/>
-        <DCCReference Include="..\src\SSI\Communication\Obj.SSI.TMail.pas"/>
-        <DCCReference Include="..\src\SSI\Communication\Obj.SSI.TNetworkNode.pas"/>
-        <DCCReference Include="..\src\SSI\Communication\Obj.SSI.TSNTPTime.pas"/>
-        <DCCReference Include="..\src\SSI\Communication\Obj.SSI.TSoapRequest.pas"/>
-        <DCCReference Include="..\src\SSI\Communication\Obj.SSI.TURL.pas"/>
-        <DCCReference Include="..\src\SSI\Communication\Obj.SSI.TZDate.pas"/>
-        <DCCReference Include="..\src\SSI\Data Constructs\Obj.SSI.IDataStream.pas"/>
-        <DCCReference Include="..\src\SSI\Data Constructs\Obj.SSI.IFile.pas"/>
-        <DCCReference Include="..\src\SSI\Data Constructs\Obj.SSI.IMatrix.pas"/>
-        <DCCReference Include="..\src\SSI\Data Constructs\Obj.SSI.IRange.pas"/>
-        <DCCReference Include="..\src\SSI\Data Constructs\Obj.SSI.TDataStream.pas"/>
-        <DCCReference Include="..\src\SSI\Data Constructs\Obj.SSI.TFile.pas"/>
-        <DCCReference Include="..\src\SSI\Data Constructs\Obj.SSI.TMatrix.pas"/>
-        <DCCReference Include="..\src\SSI\Data Constructs\Obj.SSI.TRange.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.ICurrency.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.IDate.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.IEnum.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.IFactory.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.IStringStat.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.IValue.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TCurrency.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TDate.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TEnum.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TFactory.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TString.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TStringStat.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TValue.pas"/>
-        <DCCReference Include="..\src\SSI\Data Types\Obj.SSI.TZipString.pas"/>
-        <DCCReference Include="..\src\SSI\Encryption\Obj.SSI.ICryptString.pas"/>
-        <DCCReference Include="..\src\SSI\Encryption\Obj.SSI.IRandomKey.pas"/>
-        <DCCReference Include="..\src\SSI\Encryption\Obj.SSI.IRSASignature.pas"/>
-        <DCCReference Include="..\src\SSI\Encryption\Obj.SSI.TAES128.pas"/>
-        <DCCReference Include="..\src\SSI\Encryption\Obj.SSI.TBase64.pas"/>
-        <DCCReference Include="..\src\SSI\Encryption\Obj.SSI.TCryptString.pas"/>
-        <DCCReference Include="..\src\SSI\Encryption\Obj.SSI.TRandomKey.pas"/>
-        <DCCReference Include="..\src\SSI\Encryption\Obj.SSI.TRSASignature.pas"/>
-        <DCCReference Include="..\src\SSI\Flow Control\Obj.SSI.IConstraints.pas"/>
-        <DCCReference Include="..\src\SSI\Flow Control\Obj.SSI.IIf.pas"/>
-        <DCCReference Include="..\src\SSI\Flow Control\Obj.SSI.TConstraints.pas"/>
-        <DCCReference Include="..\src\SSI\Flow Control\Obj.SSI.TIf.pas"/>
-        <DCCReference Include="..\src\SSI\Flow Control\Obj.SSI.Using.pas"/>
+        <DCCReference Include="..\src\SSI\Business\RO.IBMReference.pas"/>
+        <DCCReference Include="..\src\SSI\Business\RO.TMBReference.pas"/>
+        <DCCReference Include="..\src\SSI\Communication\RO.ICertificate.pas"/>
+        <DCCReference Include="..\src\SSI\Communication\RO.IMail.pas"/>
+        <DCCReference Include="..\src\SSI\Communication\RO.INetworkNode.pas"/>
+        <DCCReference Include="..\src\SSI\Communication\RO.ISNTPTime.pas"/>
+        <DCCReference Include="..\src\SSI\Communication\RO.ISoapRequest.pas"/>
+        <DCCReference Include="..\src\SSI\Communication\RO.IURL.pas"/>
+        <DCCReference Include="..\src\SSI\Communication\RO.IZDate.pas"/>
+        <DCCReference Include="..\src\SSI\Communication\RO.TCertificate.pas"/>
+        <DCCReference Include="..\src\SSI\Communication\RO.TMail.pas"/>
+        <DCCReference Include="..\src\SSI\Communication\RO.TNetworkNode.pas"/>
+        <DCCReference Include="..\src\SSI\Communication\RO.TSNTPTime.pas"/>
+        <DCCReference Include="..\src\SSI\Communication\RO.TSoapRequest.pas"/>
+        <DCCReference Include="..\src\SSI\Communication\RO.TURL.pas"/>
+        <DCCReference Include="..\src\SSI\Communication\RO.TZDate.pas"/>
+        <DCCReference Include="..\src\SSI\Data Constructs\RO.IDataStream.pas"/>
+        <DCCReference Include="..\src\SSI\Data Constructs\RO.IFile.pas"/>
+        <DCCReference Include="..\src\SSI\Data Constructs\RO.IMatrix.pas"/>
+        <DCCReference Include="..\src\SSI\Data Constructs\RO.IRange.pas"/>
+        <DCCReference Include="..\src\SSI\Data Constructs\RO.TDataStream.pas"/>
+        <DCCReference Include="..\src\SSI\Data Constructs\RO.TFile.pas"/>
+        <DCCReference Include="..\src\SSI\Data Constructs\RO.TMatrix.pas"/>
+        <DCCReference Include="..\src\SSI\Data Constructs\RO.TRange.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\RO.ICurrency.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\RO.IDate.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\RO.IEnum.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\RO.IFactory.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\RO.IStringStat.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\RO.IValue.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\RO.TCurrency.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\RO.TDate.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\RO.TEnum.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\RO.TFactory.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\RO.TString.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\RO.TStringStat.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\RO.TValue.pas"/>
+        <DCCReference Include="..\src\SSI\Data Types\RO.TZipString.pas"/>
+        <DCCReference Include="..\src\SSI\Encryption\RO.ICryptString.pas"/>
+        <DCCReference Include="..\src\SSI\Encryption\RO.IRandomKey.pas"/>
+        <DCCReference Include="..\src\SSI\Encryption\RO.IRSASignature.pas"/>
+        <DCCReference Include="..\src\SSI\Encryption\RO.TAES128.pas"/>
+        <DCCReference Include="..\src\SSI\Encryption\RO.TBase64.pas"/>
+        <DCCReference Include="..\src\SSI\Encryption\RO.TCryptString.pas"/>
+        <DCCReference Include="..\src\SSI\Encryption\RO.TRandomKey.pas"/>
+        <DCCReference Include="..\src\SSI\Encryption\RO.TRSASignature.pas"/>
+        <DCCReference Include="..\src\SSI\Flow Control\RO.IConstraints.pas"/>
+        <DCCReference Include="..\src\SSI\Flow Control\RO.IIf.pas"/>
+        <DCCReference Include="..\src\SSI\Flow Control\RO.TConstraints.pas"/>
+        <DCCReference Include="..\src\SSI\Flow Control\RO.TIf.pas"/>
+        <DCCReference Include="..\src\SSI\Flow Control\RO.Using.pas"/>
         <DCCReference Include="..\src\SSI\Helpers\LibEay.Ext.pas"/>
-        <DCCReference Include="..\src\SSI\Helpers\Obj.SSI.Helpers.pas"/>
-        <DCCReference Include="..\src\SSI\Validation\Obj.SSI.IEmailAddress.pas"/>
-        <DCCReference Include="..\src\SSI\Validation\Obj.SSI.IGeoCoordinate.pas"/>
-        <DCCReference Include="..\src\SSI\Validation\Obj.SSI.IPostalAddress.pas"/>
-        <DCCReference Include="..\src\SSI\Validation\Obj.SSI.IPostalCode.pas"/>
-        <DCCReference Include="..\src\SSI\Validation\Obj.SSI.IPTVATNumber.pas"/>
-        <DCCReference Include="..\src\SSI\Validation\Obj.SSI.TEmailAddress.pas"/>
-        <DCCReference Include="..\src\SSI\Validation\Obj.SSI.TGeoCoordinate.pas"/>
-        <DCCReference Include="..\src\SSI\Validation\Obj.SSI.TPostalAddress.pas"/>
-        <DCCReference Include="..\src\SSI\Validation\Obj.SSI.TPostalAddressOnline.pas"/>
-        <DCCReference Include="..\src\SSI\Validation\Obj.SSI.TPTPostalCode.pas"/>
-        <DCCReference Include="..\src\SSI\Validation\Obj.SSI.TPTVATNumber.pas"/>
+        <DCCReference Include="..\src\SSI\Helpers\RO.Helpers.pas"/>
+        <DCCReference Include="..\src\SSI\Validation\RO.IEmailAddress.pas"/>
+        <DCCReference Include="..\src\SSI\Validation\RO.IGeoCoordinate.pas"/>
+        <DCCReference Include="..\src\SSI\Validation\RO.IPostalAddress.pas"/>
+        <DCCReference Include="..\src\SSI\Validation\RO.IPostalCode.pas"/>
+        <DCCReference Include="..\src\SSI\Validation\RO.IPTVATNumber.pas"/>
+        <DCCReference Include="..\src\SSI\Validation\RO.TEmailAddress.pas"/>
+        <DCCReference Include="..\src\SSI\Validation\RO.TGeoCoordinate.pas"/>
+        <DCCReference Include="..\src\SSI\Validation\RO.TPostalAddress.pas"/>
+        <DCCReference Include="..\src\SSI\Validation\RO.TPostalAddressOnline.pas"/>
+        <DCCReference Include="..\src\SSI\Validation\RO.TPTPostalCode.pas"/>
+        <DCCReference Include="..\src\SSI\Validation\RO.TPTVATNumber.pas"/>
         <DCCReference Include="..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.pas"/>
+        <DCCReference Include="..\src\ThirdParty\OpenSSL\libeay32.pas"/>
         <None Include="..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.inc"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -218,7 +219,16 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                </DeployClass>
                 <DeployClass Name="ProjectOSXResource">
                     <Platform Name="OSX32">
                         <RemoteDir>Contents\Resources</RemoteDir>
@@ -560,16 +570,7 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="DependencyModule">
-                    <Platform Name="Win32">
-                        <Operation>0</Operation>
-                        <Extensions>.dll;.bpl</Extensions>
-                    </Platform>
-                    <Platform Name="OSX32">
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>

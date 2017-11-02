@@ -39,9 +39,9 @@ type
 implementation
 
 uses
-    Obj.SSI.TString
-  , Obj.SSI.IValue
-  , Obj.SSI.TValue
+    RO.TString
+  , RO.IValue
+  , RO.TValue
   , Delphi.Mocks
   ;
 

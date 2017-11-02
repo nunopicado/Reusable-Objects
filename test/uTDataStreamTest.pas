@@ -44,8 +44,8 @@ type
 implementation
 
 uses
-    Obj.SSI.TDataStream
-  , Obj.SSI.TValue
+    RO.TDataStream
+  , RO.TValue
   , Classes
   ;
 

@@ -17,7 +17,7 @@ type
 implementation
 
 uses
-    Obj.SSI.TIf
+    RO.TIf
   ;
 
 { TIfTest }

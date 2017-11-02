@@ -30,7 +30,7 @@ type
 implementation
 
 uses
-    Obj.SSI.TEmailAddress
+    RO.TEmailAddress
   ;
 
 { TEmailAddressTest }

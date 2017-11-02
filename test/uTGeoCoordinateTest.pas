@@ -35,8 +35,8 @@ type
 implementation
 
 uses
-    Obj.SSI.IGeoCoordinate
-  , Obj.SSI.TGeoCoordinate
+    RO.IGeoCoordinate
+  , RO.TGeoCoordinate
   ;
 
 { TGeoCoordinateTest }

@@ -23,7 +23,7 @@ type
 implementation
 
 uses
-    Obj.SSI.TRandomKey
+    RO.TRandomKey
   ;
 
 { TRandomKeyTest }

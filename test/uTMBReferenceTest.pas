@@ -3,7 +3,7 @@ unit uTMBReferenceTest;
 interface
 uses
     DUnitX.TestFramework
-  , Obj.SSI.TMBReference
+  , RO.TMBReference
   ;
 
 type
@@ -19,7 +19,7 @@ type
 implementation
 
 uses
-    Obj.SSI.TValue
+    RO.TValue
   ;
 
 procedure TMBReferenceTest.AsStringTest(const Expected: string; const Entity: Integer; const ID: Int64; const Value: Currency);

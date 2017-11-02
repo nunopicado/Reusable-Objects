@@ -39,9 +39,9 @@ requires
   unidac230;
 
 contains
-  Obj.SSI.DBConnectionIntf in '..\src\DB\Obj.SSI.DBConnectionIntf.pas',
-  Obj.SSI.DBGenericImpl in '..\src\DB\Obj.SSI.DBGenericImpl.pas',
-  Obj.SSI.DBUniImpl in '..\src\DB\Obj.SSI.DBUniImpl.pas',
-  Obj.SSI.DBZImpl in '..\src\DB\Obj.SSI.DBZImpl.pas';
+  RO.DBConnectionIntf in '..\src\DB\RO.DBConnectionIntf.pas',
+  RO.DBGenericImpl in '..\src\DB\RO.DBGenericImpl.pas',
+  RO.DBUniImpl in '..\src\DB\RO.DBUniImpl.pas',
+  RO.DBZImpl in '..\src\DB\RO.DBZImpl.pas';
 
 end.

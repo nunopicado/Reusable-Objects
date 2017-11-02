@@ -56,7 +56,7 @@ type
 implementation
 
 uses
-    Obj.SSI.TPTPostalCode
+    RO.TPTPostalCode
   ;
 
 { TPTPostalCodeTest }

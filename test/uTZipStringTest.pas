@@ -17,8 +17,8 @@ type
 implementation
 
 uses
-    Obj.SSI.TZipString
-  , Obj.SSI.TValue
+    RO.TZipString
+  , RO.TValue
   ;
 
 { TZipStringTest }

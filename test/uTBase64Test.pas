@@ -28,8 +28,8 @@ type
 implementation
 
 uses
-    Obj.SSI.TBase64
-  , Obj.SSI.TValue
+    RO.TBase64
+  , RO.TValue
   ;
 
 { TBase64Test }

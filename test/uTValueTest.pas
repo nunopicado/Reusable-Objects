@@ -3,7 +3,7 @@ unit uTValueTest;
 interface
 uses
     DUnitX.TestFramework
-  , Obj.SSI.TMBReference
+  , RO.TMBReference
   ;
 
 type
@@ -60,7 +60,7 @@ type
 implementation
 
 uses
-    Obj.SSI.TValue
+    RO.TValue
   ;
 
 procedure TValueTest._Boolean(const Value: Boolean);
