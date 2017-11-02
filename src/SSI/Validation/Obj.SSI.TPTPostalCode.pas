@@ -111,7 +111,7 @@ begin
          end;
 
   if not Valid
-    then raise exception.Create(Format('"%s" is not a valid portuguese postal code.', [FPostalCode]));
+    then raise Exception.Create(Format('"%s" is not a valid portuguese postal code.', [FPostalCode]));
 end;
 
 class function TPTPostalCode.New(const PostalCode: IString): IPostalCode;
