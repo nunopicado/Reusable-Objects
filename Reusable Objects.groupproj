@@ -3,7 +3,7 @@
         <ProjectGuid>{E689B781-91E8-4AF9-A16C-F38AA3673E64}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="pkg\ReusableSSIObjects.dproj">
+        <Projects Include="pkg\ReusableObjects.dproj">
             <Dependencies/>
         </Projects>
         <Projects Include="pkg\ReusableFMXObjects.dproj">
@@ -15,7 +15,7 @@
         <Projects Include="pkg\ReusableDBObjects.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="test\ROSSITests.dproj">
+        <Projects Include="test\ROTests.dproj">
             <Dependencies/>
         </Projects>
         <Projects Include="test\ROFMXTests.dproj">
@@ -29,14 +29,14 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="ReusableSSIObjects">
-        <MSBuild Projects="pkg\ReusableSSIObjects.dproj"/>
+    <Target Name="ReusableObjects">
+        <MSBuild Projects="pkg\ReusableObjects.dproj"/>
     </Target>
-    <Target Name="ReusableSSIObjects:Clean">
-        <MSBuild Projects="pkg\ReusableSSIObjects.dproj" Targets="Clean"/>
+    <Target Name="ReusableObjects:Clean">
+        <MSBuild Projects="pkg\ReusableObjects.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ReusableSSIObjects:Make">
-        <MSBuild Projects="pkg\ReusableSSIObjects.dproj" Targets="Make"/>
+    <Target Name="ReusableObjects:Make">
+        <MSBuild Projects="pkg\ReusableObjects.dproj" Targets="Make"/>
     </Target>
     <Target Name="ReusableFMXObjects">
         <MSBuild Projects="pkg\ReusableFMXObjects.dproj"/>
@@ -65,14 +65,14 @@
     <Target Name="ReusableDBObjects:Make">
         <MSBuild Projects="pkg\ReusableDBObjects.dproj" Targets="Make"/>
     </Target>
-    <Target Name="ROSSITests">
-        <MSBuild Projects="test\ROSSITests.dproj"/>
+    <Target Name="ROTests">
+        <MSBuild Projects="test\ROTests.dproj"/>
     </Target>
-    <Target Name="ROSSITests:Clean">
-        <MSBuild Projects="test\ROSSITests.dproj" Targets="Clean"/>
+    <Target Name="ROTests:Clean">
+        <MSBuild Projects="test\ROTests.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ROSSITests:Make">
-        <MSBuild Projects="test\ROSSITests.dproj" Targets="Make"/>
+    <Target Name="ROTests:Make">
+        <MSBuild Projects="test\ROTests.dproj" Targets="Make"/>
     </Target>
     <Target Name="ROFMXTests">
         <MSBuild Projects="test\ROFMXTests.dproj"/>
@@ -84,13 +84,13 @@
         <MSBuild Projects="test\ROFMXTests.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="ReusableSSIObjects;ReusableFMXObjects;ReusableVCLObjects;ReusableDBObjects;ROSSITests;ROFMXTests"/>
+        <CallTarget Targets="ReusableObjects;ReusableFMXObjects;ReusableVCLObjects;ReusableDBObjects;ROTests;ROFMXTests"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ReusableSSIObjects:Clean;ReusableFMXObjects:Clean;ReusableVCLObjects:Clean;ReusableDBObjects:Clean;ROSSITests:Clean;ROFMXTests:Clean"/>
+        <CallTarget Targets="ReusableObjects:Clean;ReusableFMXObjects:Clean;ReusableVCLObjects:Clean;ReusableDBObjects:Clean;ROTests:Clean;ROFMXTests:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ReusableSSIObjects:Make;ReusableFMXObjects:Make;ReusableVCLObjects:Make;ReusableDBObjects:Make;ROSSITests:Make;ROFMXTests:Make"/>
+        <CallTarget Targets="ReusableObjects:Make;ReusableFMXObjects:Make;ReusableVCLObjects:Make;ReusableDBObjects:Make;ROTests:Make;ROFMXTests:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

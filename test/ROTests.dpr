@@ -1,4 +1,4 @@
-program ROSSITests;
+program ROTests;
 
 {$IFNDEF TESTINSIGHT}
 {$APPTYPE CONSOLE}
