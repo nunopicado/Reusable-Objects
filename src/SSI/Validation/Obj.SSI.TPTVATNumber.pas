@@ -33,7 +33,8 @@ uses
 type
   TPTVATNumber = class(TInterfacedObject, IPTVATNumber)
   private
-    FPTVATNumber: string;
+    FPTVATNumber: IString;
+    FValid: IBoolean;
     function CalcCheckDigit: Integer;
   public
     constructor Create(const PTVATNumber: string);
@@ -50,6 +51,7 @@ uses
     SysUtils
   , RegularExpressions
   , StrUtils
+  , Obj.SSI.TValue
   {$IF CompilerVersion <= 24.0}
   , Obj.SSI.Helpers
   {$ENDIF}
@@ -62,8 +64,8 @@ var
   i: Integer;
 begin
   Result := 0;
-  for i := 1 to Pred(FPTVATNumber.Length) do
-    Inc(Result, (10 - i) * Copy(FPTVATNumber, i, 1).ToInteger);
+  for i := 1 to Pred(FPTVATNumber.Value.Length) do
+    Inc(Result, (10 - i) * Copy(FPTVATNumber.Value, i, 1).ToInteger);
   Result := 11 - (Result mod 11);
   if Result >= 10
     then Result := 0;
@@ -71,18 +73,29 @@ end;
 
 function TPTVATNumber.AsString: string;
 begin
-  Result := FPTVATNumber;
+  Result := FPTVATNumber.Value;
 end;
 
 constructor TPTVATNumber.Create(const PTVATNumber: string);
 begin
-  FPTVATNumber := StringReplace(PTVATNumber, ' ', '', [rfReplaceAll]);
+  FValid := TBoolean.New(
+    function: Boolean
+    begin
+      Result := TRegEx.IsMatch(FPTVATNumber.Value, '^(?!\s*$)[0-9]{9}$') and
+               (RightStr(FPTVATNumber.Value, 1).ToInteger = CalcCheckDigit);
+    end
+  );
+  FPTVATNumber := TString.New(
+    function: string
+    begin
+      Result := StringReplace(PTVATNumber, ' ', '', [rfReplaceAll]);
+    end
+  );
 end;
 
 function TPTVATNumber.IsValid: Boolean;
 begin
-  Result := TRegEx.IsMatch(FPTVATNumber, '^(?!\s*$)[0-9]{9}$') and
-            (RightStr(FPTVATNumber, 1).ToInteger = CalcCheckDigit);
+  Result := FValid.Value;
 end;
 
 class function TPTVATNumber.New(const PTVATNumber: IInteger): IPTVATNumber;
