@@ -42,7 +42,6 @@ type
     class function New(const PTVATNumber: IInteger): IPTVATNumber; overload;
     function IsValid: Boolean;
     function AsString: string;
-    function AsInteger: Integer;
   end;
 
 implementation
@@ -57,12 +56,6 @@ uses
   ;
 
 { TPTVATNumber }
-
-function TPTVATNumber.AsInteger: Integer;
-begin
-  if IsValid
-    then Result := FPTVATNumber.ToInteger();
-end;
 
 function TPTVATNumber.CalcCheckDigit: Integer;
 var
