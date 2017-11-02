@@ -89,7 +89,8 @@ uses
   uTRandomKeyTest in 'uTRandomKeyTest.pas',
   TZDB in '..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.pas',
   uTEmailAddressTest in 'uTEmailAddressTest.pas',
-  uTGeoCoordinateTest in 'uTGeoCoordinateTest.pas';
+  uTGeoCoordinateTest in 'uTGeoCoordinateTest.pas',
+  uPTPostalCodeTest in 'uPTPostalCodeTest.pas';
 
 var
   runner : ITestRunner;
