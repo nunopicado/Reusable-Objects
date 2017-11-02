@@ -73,7 +73,7 @@ uses
   , Obj.SSI.TValue
   ;
 
-{ TMailAddress }
+{ TPTPostalCode }
 
 constructor TPTPostalCode.Create(const PostalCode: string);
 begin
