@@ -53,17 +53,17 @@ type
 
   TPTCP7 = class(TDecorablePostalCode, IPostalCode)
   public
-    function AsString: string;
+    function AsString: string; override;
   end;
 
   TPTCP4 = class(TDecorablePostalCode, IPostalCode)
   public
-    function AsString: string;
+    function AsString: string; override;
   end;
 
   TPTCP3 = class(TDecorablePostalCode, IPostalCode)
   public
-    function AsString: string;
+    function AsString: string; override;
   end;
 
 implementation
