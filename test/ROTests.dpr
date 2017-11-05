@@ -77,8 +77,6 @@ uses
   RO.TPostalAddressOnline in '..\src\SSI\Validation\RO.TPostalAddressOnline.pas',
   RO.TPTPostalCode in '..\src\SSI\Validation\RO.TPTPostalCode.pas',
   RO.TPTVATNumber in '..\src\SSI\Validation\RO.TPTVATNumber.pas',
-  LibEay.Ext in '..\src\SSI\Helpers\LibEay.Ext.pas',
-  libeay32 in '..\src\ThirdParty\OpenSSL\libeay32.pas',
   RO.IZDate in '..\src\SSI\Communication\RO.IZDate.pas',
   RO.TZDate in '..\src\SSI\Communication\RO.TZDate.pas',
   uTDataStreamTest in 'uTDataStreamTest.pas',
@@ -90,7 +88,8 @@ uses
   TZDB in '..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.pas',
   uTEmailAddressTest in 'uTEmailAddressTest.pas',
   uTGeoCoordinateTest in 'uTGeoCoordinateTest.pas',
-  uPTPostalCodeTest in 'uPTPostalCodeTest.pas';
+  uPTPostalCodeTest in 'uPTPostalCodeTest.pas',
+  libeay32 in '..\src\ThirdParty\libeay32\libeay32.pas';
 
 var
   runner : ITestRunner;
