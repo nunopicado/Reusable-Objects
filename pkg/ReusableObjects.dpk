@@ -90,7 +90,6 @@ contains
   RO.TConstraints in '..\src\SSI\Flow Control\RO.TConstraints.pas',
   RO.TIf in '..\src\SSI\Flow Control\RO.TIf.pas',
   RO.Using in '..\src\SSI\Flow Control\RO.Using.pas',
-  LibEay.Ext in '..\src\SSI\Helpers\LibEay.Ext.pas',
   RO.Helpers in '..\src\SSI\Helpers\RO.Helpers.pas',
   RO.IEmailAddress in '..\src\SSI\Validation\RO.IEmailAddress.pas',
   RO.IGeoCoordinate in '..\src\SSI\Validation\RO.IGeoCoordinate.pas',
@@ -104,6 +103,6 @@ contains
   RO.TPTPostalCode in '..\src\SSI\Validation\RO.TPTPostalCode.pas',
   RO.TPTVATNumber in '..\src\SSI\Validation\RO.TPTVATNumber.pas',
   TZDB in '..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.pas',
-  libeay32 in '..\src\ThirdParty\OpenSSL\libeay32.pas';
+  libeay32 in '..\src\ThirdParty\libeay32\libeay32.pas';
 
 end.

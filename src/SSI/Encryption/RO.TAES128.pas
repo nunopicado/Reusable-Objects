@@ -28,7 +28,7 @@ interface
 uses
     RO.IValue
   , RO.TString
-  , LibEay.Ext
+  , LibEay32
   ;
 
 type
@@ -55,7 +55,6 @@ uses
     RO.TBase64
   , RO.TValue
   , SysUtils
-  , LibEay32
   ;
 
 { TAES }
