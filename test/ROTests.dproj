@@ -174,11 +174,9 @@
         <DCCReference Include="uTBase64Test.pas"/>
         <DCCReference Include="uTCryptStringTest.pas"/>
         <DCCReference Include="uTRandomKeyTest.pas"/>
-        <DCCReference Include="..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.pas"/>
         <DCCReference Include="uTEmailAddressTest.pas"/>
         <DCCReference Include="uTGeoCoordinateTest.pas"/>
         <DCCReference Include="uPTPostalCodeTest.pas"/>
-        <DCCReference Include="..\src\ThirdParty\libeay32\libeay32.pas"/>
         <None Include="..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.inc"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -233,16 +231,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployClass Name="DependencyModule">
-                    <Platform Name="Win32">
-                        <Operation>0</Operation>
-                        <Extensions>.dll;.bpl</Extensions>
-                    </Platform>
-                    <Platform Name="OSX32">
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
                 <DeployClass Name="ProjectOSXResource">
                     <Platform Name="OSX32">
                         <RemoteDir>Contents\Resources</RemoteDir>
@@ -584,7 +573,16 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                </DeployClass>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>

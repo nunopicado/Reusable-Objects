@@ -36,6 +36,13 @@ External Dependencies
 
 There is no common dependency for every object class. Each one will have different
 requirements, and will state them in the unit itself.
+However, in order to compile the whole project as a package, you will require to 
+have them all availble in the path.
+As of now, you will require the following:
+
+* LibEay Extended (https://github.com/nunopicado/libeay32)
+
+* TZDB (https://github.com/pavkam/tzdb)
 
 
 Use Guide

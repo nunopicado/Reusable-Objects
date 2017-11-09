@@ -101,8 +101,6 @@ contains
   RO.TPostalAddress in '..\src\SSI\Validation\RO.TPostalAddress.pas',
   RO.TPostalAddressOnline in '..\src\SSI\Validation\RO.TPostalAddressOnline.pas',
   RO.TPTPostalCode in '..\src\SSI\Validation\RO.TPTPostalCode.pas',
-  RO.TPTVATNumber in '..\src\SSI\Validation\RO.TPTVATNumber.pas',
-  TZDB in '..\src\ThirdParty\tzdb\src\TZDBPK\TZDB.pas',
-  libeay32 in '..\src\ThirdParty\libeay32\libeay32.pas';
+  RO.TPTVATNumber in '..\src\SSI\Validation\RO.TPTVATNumber.pas';
 
 end.
