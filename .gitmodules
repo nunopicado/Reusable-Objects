@@ -1,6 +1,0 @@
-[submodule "src/ThirdParty/tzdb"]
-	path = src/ThirdParty/tzdb
-	url = https://github.com/pavkam/tzdb
-[submodule "src/ThirdParty/libeay32"]
-	path = src/ThirdParty/libeay32
-	url = https://github.com/nunopicado/libeay32
