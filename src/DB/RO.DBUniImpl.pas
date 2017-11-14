@@ -271,7 +271,9 @@ end;
 function TDBUniDatabase.Run(SQLStatement: ISQLStatement): IDatabase;
 begin
   Result := Self;
-  FConnection.ExecSQL(SQLStatement.AsString, SQLStatement.ParamList.AsVariantArray);
+  if not Assigned(SQLStatement.ParamList)
+    then FConnection.ExecSQL(SQLStatement.AsString)
+    else FConnection.ExecSQL(SQLStatement.AsString, SQLStatement.ParamList.AsVariantArray);
 end;
 
 function TDBUniDatabase.StartTransaction: IDatabase;
