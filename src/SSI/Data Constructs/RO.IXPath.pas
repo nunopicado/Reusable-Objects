@@ -1,10 +1,10 @@
 (******************************************************************************)
 (** Suite         : Reusable Objects                                         **)
-(** Object        : IXMLPath                                                 **)
+(** Object        : IXPath                                                   **)
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado, based on original code by Tor Helland       **)
 (******************************************************************************)
-(** Interfaces    : IXMLPath                                                 **)
+(** Interfaces    : IXPath                                                   **)
 (******************************************************************************)
 (** Dependencies  :                                                          **)
 (******************************************************************************)
@@ -21,7 +21,7 @@
 (**	                terms                                                    **)
 (******************************************************************************)
 
-unit RO.IXMLPath;
+unit RO.IXPath;
 
 interface
 
@@ -30,7 +30,7 @@ uses
   ;
 
 type
-  IXMLPath = interface
+  IXPath = interface
   ['{22B6E31E-869C-478A-9325-E6365EFC6B53}']
     function SelectNode(const NodePath: WideString): IXMLNode;
     function SelectNodes(const NodePath: WideString): IXMLNodeList;

@@ -1,10 +1,10 @@
 (******************************************************************************)
 (** Suite         : Reusable Objects                                         **)
-(** Object        : TXMLPath                                                 **)
+(** Object        : TXPath                                                   **)
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado, based on original code by Tor Helland       **)
 (******************************************************************************)
-(** Interfaces    : IXMLPath                                                 **)
+(** Interfaces    : IXPath                                                   **)
 (******************************************************************************)
 (** Dependencies  :                                                          **)
 (******************************************************************************)
@@ -21,23 +21,23 @@
 (**	                terms                                                    **)
 (******************************************************************************)
 
-unit RO.TXMLPath;
+unit RO.TXPath;
 
 interface
 
 uses
-    RO.IXMLPath
+    RO.IXPath
   , XMLIntf
   ;
 
 type
-  TXMLPath = class(TInterfacedObject, IXMLPath)
+  TXPath = class(TInterfacedObject, IXPath)
   private
     FRoot: IXMLNode;
   public
     constructor Create(Root: IXMLNode);
-    class function New(Root: IXMLNode): IXMLPath; overload;
-    class function New(const XMLData: string): IXMLPath; overload;
+    class function New(Root: IXMLNode): IXPath; overload;
+    class function New(const XMLData: string): IXPath; overload;
     function SelectNode(const NodePath: WideString): IXMLNode;
     function SelectNodes(const NodePath: WideString): IXMLNodeList;
   end;
@@ -51,26 +51,26 @@ uses
   , RO.TIf
   ;
 
-{ TXMLPath }
+{ TXPath }
 
-constructor TXMLPath.Create(Root: IXMLNode);
+constructor TXPath.Create(Root: IXMLNode);
 begin
   FRoot := Root;
 end;
 
-class function TXMLPath.New(Root: IXMLNode): IXMLPath;
+class function TXPath.New(Root: IXMLNode): IXPath;
 begin
   Result := Create(Root);
 end;
 
-class function TXMLPath.New(const XMLData: string): IXMLPath;
+class function TXPath.New(const XMLData: string): IXPath;
 begin
   Result := New(
     LoadXMLData(XMLData).DocumentElement
   );
 end;
 
-function TXMLPath.SelectNode(const NodePath: WideString): IXmlNode;
+function TXPath.SelectNode(const NodePath: WideString): IXmlNode;
 var
   intfSelect    : IDomNodeSelect;
   dnResult      : IDomNode;
@@ -96,7 +96,7 @@ begin
     end;
 end;
 
-function TXMLPath.SelectNodes(const NodePath: WideString): IXMLNodeList;
+function TXPath.SelectNodes(const NodePath: WideString): IXMLNodeList;
 resourcestring
   rcErrSelectNodesNoRoot = 'Called SelectNodes without specifying proper root.';
 var
