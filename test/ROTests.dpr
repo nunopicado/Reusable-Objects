@@ -89,7 +89,10 @@ uses
   uTEmailAddressTest in 'uTEmailAddressTest.pas',
   uTGeoCoordinateTest in 'uTGeoCoordinateTest.pas',
   uPTPostalCodeTest in 'uPTPostalCodeTest.pas',
-  libeay32;
+  libeay32,
+  uTXPathTest in 'uTXPathTest.pas',
+  RO.IXPath in '..\src\SSI\Data Constructs\RO.IXPath.pas',
+  RO.TXPath in '..\src\SSI\Data Constructs\RO.TXPath.pas';
 
 var
   runner : ITestRunner;
