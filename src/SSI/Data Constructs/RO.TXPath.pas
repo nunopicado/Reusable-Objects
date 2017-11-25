@@ -28,6 +28,7 @@ interface
 uses
     RO.IXPath
   , XMLIntf
+  , WinAPI.ActiveX
   ;
 
 type
@@ -131,5 +132,11 @@ begin
             )
           );
 end;
+
+initialization
+  CoInitialize(nil);
+
+finalization
+  CoUninitialize;
 
 end.
