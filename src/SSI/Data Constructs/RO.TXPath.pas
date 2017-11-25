@@ -83,7 +83,7 @@ begin
 
   dnResult := intfSelect.selectNode(nodePath);
   if Assigned(dnResult)
-    then begin
+    then
       Result := TXMLNode.Create(
         dnResult,
         nil,
@@ -93,7 +93,6 @@ begin
           nil
         ).Eval
       );
-    end;
 end;
 
 function TXPath.SelectNodes(const NodePath: WideString): IXMLNodeList;
