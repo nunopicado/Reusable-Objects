@@ -96,9 +96,7 @@ var
   intfAccess    : IXmlNodeAccess;
   dnlResult     : IDomNodeList;
   intfDocAccess : IXmlDocumentAccess;
-  doc           : TXmlDocument;
   i             : Integer;
-  dn            : IDomNode;
 begin
   // Always return a node list, even if empty.
   if not Assigned(FRoot)
@@ -111,18 +109,20 @@ begin
 
   dnlResult := intfSelect.selectNodes(nodePath);
   if Assigned(dnlResult)
-    then begin
-      doc := TIf<TXMLDocument>.New(
-        Supports(FRoot.OwnerDocument, IXmlDocumentAccess, intfDocAccess),
-        intfDocAccess.DocumentObject,
-        nil
-      ).Eval;
-      for i := 0 to Pred(dnlResult.length) do
-        begin
-          dn := dnlResult.item[i];
-          Result.Add(TXmlNode.Create(dn, nil, doc));
-        end;
-    end;
+    then
+      with TIf<TXMLDocument>.New(
+            Supports(FRoot.OwnerDocument, IXmlDocumentAccess, intfDocAccess),
+            intfDocAccess.DocumentObject,
+            nil
+          ) do
+        for i := 0 to Pred(dnlResult.length) do
+          Result.Add(
+            TXmlNode.Create(
+              dnlResult.item[i],
+              nil,
+              Eval
+            )
+          );
 end;
 
 end.
