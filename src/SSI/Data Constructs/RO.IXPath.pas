@@ -30,7 +30,7 @@ uses
   ;
 
 type
-  IXPath = interface
+  IXPath = interface(IInvokable)
   ['{22B6E31E-869C-478A-9325-E6365EFC6B53}']
     function SelectNode(const NodePath: WideString): IXMLNode;
     function SelectNodes(const NodePath: WideString): IXMLNodeList;
