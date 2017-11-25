@@ -101,6 +101,8 @@ contains
   RO.TPostalAddress in '..\src\SSI\Validation\RO.TPostalAddress.pas',
   RO.TPostalAddressOnline in '..\src\SSI\Validation\RO.TPostalAddressOnline.pas',
   RO.TPTPostalCode in '..\src\SSI\Validation\RO.TPTPostalCode.pas',
-  RO.TPTVATNumber in '..\src\SSI\Validation\RO.TPTVATNumber.pas';
+  RO.TPTVATNumber in '..\src\SSI\Validation\RO.TPTVATNumber.pas',
+  RO.IXPath in '..\src\SSI\Data Constructs\RO.IXPath.pas',
+  RO.TXPath in '..\src\SSI\Data Constructs\RO.TXPath.pas';
 
 end.
