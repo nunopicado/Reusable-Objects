@@ -36,7 +36,8 @@ type
     FRoot: IXMLNode;
   public
     constructor Create(Root: IXMLNode);
-    class function New(Root: IXMLNode): IXMLPath;
+    class function New(Root: IXMLNode): IXMLPath; overload;
+    class function New(const XMLData: string): IXMLPath; overload;
     function SelectNode(const NodePath: WideString): IXMLNode;
     function SelectNodes(const NodePath: WideString): IXMLNodeList;
   end;
@@ -60,6 +61,13 @@ end;
 class function TXMLPath.New(Root: IXMLNode): IXMLPath;
 begin
   Result := Create(Root);
+end;
+
+class function TXMLPath.New(const XMLData: string): IXMLPath;
+begin
+  Result := New(
+    LoadXMLData(XMLData).DocumentElement
+  );
 end;
 
 function TXMLPath.SelectNode(const NodePath: WideString): IXmlNode;
