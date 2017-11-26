@@ -33,6 +33,10 @@ type
     [TestCase('XPath SelectNode 2','/bookstore/book[3]/year,2006')]
     procedure SelectNodeTest(const NodePath, Expected: string);
     [Test]
+    [TestCase('XPath SelectNode Attr 1','/bookstore/book[2]/title[1],lang,eng')]
+    [TestCase('XPath SelectNode Attr 2','/bookstore/book[2]/title[2],lang,por')]
+    procedure SelectNodeAttrTest(const NodePath, Attr, Expected: string);
+    [Test]
     [TestCase('XPath SelectNodes 1','/bookstore,1')]
     [TestCase('XPath SelectNodes 2','/bookstore/book,4')]
     [TestCase('XPath SelectNodes 2','/bookstore/book[2]/title,2')]
@@ -46,6 +50,16 @@ uses
   ;
 
 { TXPathTest }
+
+procedure TXPathTest.SelectNodeAttrTest(const NodePath, Attr, Expected: string);
+begin
+  Assert.AreEqual<string>(
+    Expected,
+    TXPath.New(XML)
+      .SelectNode(NodePath)
+        .Attributes[Attr]
+  );
+end;
 
 procedure TXPathTest.SelectNodesTest(const NodePath: string; const Count: Integer);
 begin
