@@ -13,6 +13,7 @@ const
     '     </book> ' +
     '     <book> ' +
     '       <title lang="eng">Learning XML</title> ' +
+    '       <title lang="por">Aprendendo XML</title> ' +
     '     </book> ' +
     '     <book> ' +
     '       <title lang="slo">Z OmniXML v lepso prihodnost</title> ' +
@@ -28,12 +29,13 @@ type
   TXPathTest = class(TObject)
   public
     [Test]
-    [TestCase('XPath SelectNode 1','/bookstore/book[2]/title,Learning XML')]
+    [TestCase('XPath SelectNode 1','/bookstore/book[2]/title[1],Learning XML')]
     [TestCase('XPath SelectNode 2','/bookstore/book[3]/year,2006')]
     procedure SelectNodeTest(const NodePath, Expected: string);
     [Test]
     [TestCase('XPath SelectNodes 1','/bookstore,1')]
     [TestCase('XPath SelectNodes 2','/bookstore/book,4')]
+    [TestCase('XPath SelectNodes 2','/bookstore/book[2]/title,2')]
     procedure SelectNodesTest(const NodePath: string; const Count: Integer);
   end;
 
