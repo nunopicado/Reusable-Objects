@@ -32,8 +32,8 @@ type
     [TestCase('XPath SelectNode 2','/bookstore/book[3]/year,2006')]
     procedure SelectNodeTest(const NodePath, Expected: string);
     [Test]
-    [TestCase('XPath SelectNodes 1','/bookstore,4')]
-    [TestCase('XPath SelectNodes 2','/bookstore/book[3],2')]
+    [TestCase('XPath SelectNodes 1','/bookstore,1')]
+    [TestCase('XPath SelectNodes 2','/bookstore/book,4')]
     procedure SelectNodesTest(const NodePath: string; const Count: Integer);
   end;
 
@@ -50,7 +50,7 @@ begin
   Assert.AreEqual<Integer>(
     Count,
     TXPath.New(XML)
-      .SelectNodes(NodePath).Nodes[0].ChildNodes
+      .SelectNodes(NodePath)
         .Count
   );
 end;
