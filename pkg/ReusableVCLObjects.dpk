@@ -38,5 +38,7 @@ contains
   RO.IIf in '..\src\SSI\Flow Control\RO.IIf.pas',
   RO.VCL.IPrinters in '..\src\VCL\RO.VCL.IPrinters.pas',
   RO.VCL.TPrinters in '..\src\VCL\RO.VCL.TPrinters.pas',
+  RO.VCL.ITimer in '..\src\VCL\RO.VCL.ITimer.pas',
+  RO.VCL.TTimer in '..\src\VCL\RO.VCL.TTimer.pas';
 
 end.
