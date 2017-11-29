@@ -36,7 +36,7 @@ contains
   RO.TValue in '..\src\SSI\Data Types\RO.TValue.pas',
   RO.TIf in '..\src\SSI\Flow Control\RO.TIf.pas',
   RO.IIf in '..\src\SSI\Flow Control\RO.IIf.pas',
-  RO.VCL.IPrinters in '..\src\VCL\Hardware\RO.VCL.IPrinters.pas',
-  RO.VCL.TPrinters in '..\src\VCL\Hardware\RO.VCL.TPrinters.pas';
+  RO.VCL.IPrinters in '..\src\VCL\RO.VCL.IPrinters.pas',
+  RO.VCL.TPrinters in '..\src\VCL\RO.VCL.TPrinters.pas',
 
 end.
