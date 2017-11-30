@@ -190,7 +190,8 @@ end;
 {$REGION TAutoRequest}
 function TAutoRequest.Connect: IScale;
 begin
-  Result := FOrigin.Connect;
+  Result := Self;
+  FOrigin.Connect;
   FTimer.Start(RequestTimer);
 end;
 
@@ -212,7 +213,8 @@ end;
 
 function TAutoRequest.Disconnect: IScale;
 begin
-  Result := FOrigin.Disconnect;
+  Result := Self;
+  FOrigin.Disconnect;
 end;
 
 class function TAutoRequest.New(const Origin: IScale; const Timer: ITimer): IScale;
@@ -222,7 +224,8 @@ end;
 
 function TAutoRequest.Request: IScale;
 begin
-  Result := FOrigin.Request;
+  Result := Self;
+  FOrigin.Request;
 end;
 {$ENDREGION}
 
