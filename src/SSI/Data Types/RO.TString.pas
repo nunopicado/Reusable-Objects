@@ -216,7 +216,8 @@ end;
 
 function TDecorableIString.Refresh: IString;
 begin
-  Result := FOrigin.Refresh;
+  Result := Self;
+  FOrigin.Refresh;
 end;
 
 function TDecorableIString.Value: string;

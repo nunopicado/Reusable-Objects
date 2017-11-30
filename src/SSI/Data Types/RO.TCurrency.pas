@@ -117,7 +117,8 @@ end;
 
 function TDecorableCurrency.Add(const Value: Currency): ICurrency;
 begin
-  Result := FOrigin.Add(Value);
+  Result := Self;
+  FOrigin.Add(Value);
 end;
 
 function TDecorableCurrency.AsString: string;
@@ -127,12 +128,14 @@ end;
 
 function TDecorableCurrency.Reset: ICurrency;
 begin
-  Result := FOrigin.Reset;
+  Result := Self;
+  FOrigin.Reset;
 end;
 
 function TDecorableCurrency.Sub(const Value: Currency): ICurrency;
 begin
-  Result := FOrigin.Sub(Value);
+  Result := Self;
+  FOrigin.Sub(Value);
 end;
 
 function TDecorableCurrency.Value: Currency;

@@ -89,7 +89,8 @@ end;
 
 function TBase64.Refresh: IValue<AnsiString>;
 begin
-  Result := FOrigin.Refresh;
+  Result := Self;
+  FOrigin.Refresh;
 end;
 
 constructor TBase64.Create(const Origin: IValue<AnsiString>);
@@ -107,7 +108,8 @@ end;
 
 function TUnBase64.Refresh: IValue<AnsiString>;
 begin
-  Result := FOrigin.Refresh;
+  Result := Self;
+  FOrigin.Refresh;
 end;
 
 function TUnBase64.Value: AnsiString;
