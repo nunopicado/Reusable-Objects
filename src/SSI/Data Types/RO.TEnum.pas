@@ -157,7 +157,7 @@ begin
   inherited;
 end;
 
-class function TNamedEnum<TEnumerator>.New(Origin: IEnum<TEnumerator>; Names: Array of String): IEnum<TEnumerator>;
+class function TNamedEnum<TEnumerator>.New(Origin: IEnum<TEnumerator>; Names: array of string): IEnum<TEnumerator>;
 begin
   Result := Create(Origin, Names);
 end;
