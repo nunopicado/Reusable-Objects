@@ -28,33 +28,22 @@ interface
 uses
     RO.VCL.IScale
   , RO.VCL.ITimer
-  , CPort
+  , RO.ICOMPort
   ;
 
 type
-  TBaudRate    = CPort.TBaudRate;
-  TStopBits    = CPort.TStopBits;
-  TDataBits    = CPort.TDataBits;
-  TParityBits  = CPort.TParityBits;
-  TFlowControl = CPort.TFlowControl;
-
   TScale = class(TInterfacedObject, IScale)
   private var
     FOutput: IScaleOutput;
-    FScale: TComPort;
+    FPort: IComPort;
     FTXSequence: string;
     FRXMask: string;
   private
-    procedure DataReception(Sender: TObject; Count: Integer);
+    procedure DataReception(Str: string);
     function ParseScaleData(RxData: string): Real;
   public
-    constructor Create(const ScaleOutput: IScaleOutput; const Port: Byte; const BaudRate: TBaudRate;
-      const ParityBits: TParityBits; const DataBits: TDataBits; const StopBits: TStopBits;
-      const FlowControl: TFlowControl; const ReadInterval: Word; const TXSequence, RXMask: string);
-    destructor Destroy; override;
-    class function New(const ScaleOutput: IScaleOutput; const Port: Byte; const BaudRate: TBaudRate;
-      const ParityBits: TParityBits; const DataBits: TDataBits; const StopBits: TStopBits;
-      const FlowControl: TFlowControl; const ReadInterval: Word; const TXSequence, RXMask: string): IScale;
+    constructor Create(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence, RXMask: string);
+    class function New(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence, RXMask: string): IScale;
     function Connect: IScale;
     function Disconnect: IScale;
     function Request: IScale;
@@ -83,53 +72,24 @@ uses
 
 { TScale }
 {$REGION TScale}
-constructor TScale.Create(const ScaleOutput: IScaleOutput; const Port: Byte; const BaudRate: TBaudRate;
-  const ParityBits: TParityBits; const DataBits: TDataBits; const StopBits: TStopBits;
-  const FlowControl: TFlowControl; const ReadInterval: Word; const TXSequence, RXMask: string);
+constructor TScale.Create(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence, RXMask: string);
 resourcestring
   ScaleInitError = 'An output implementation is required';
 begin
-  // Scale Output
   if not Assigned(ScaleOutput)
     then raise Exception.Create(ScaleInitError);
-  FOutput := ScaleOutput;
 
-  // Sequences
+  FOutput     := ScaleOutput;
   FTXSequence := TXSequence;
   FRXMask     := RXMask;
-
-  // Scale connection
-  FScale                         := TComPort.Create(nil);
-  FScale.Port                    := Format('COM%d', [Port]);
-  FScale.BaudRate                := BaudRate;
-  FScale.Parity.Bits             := ParityBits;
-  FScale.DataBits                := DataBits;
-  FScale.StopBits                := StopBits;
-  FScale.FlowControl.FlowControl := FlowControl;
-  FScale.Timeouts.ReadInterval   := ReadInterval;
-  FScale.OnRxChar                := DataReception;
+  FPort       := COMPort.ReadStr(DataReception);
 end;
 
-destructor TScale.Destroy;
-begin
-  if Assigned(FScale)
-    then FScale.Free;
-  inherited;
-end;
-
-class function TScale.New(const ScaleOutput: IScaleOutput; const Port: Byte; const BaudRate: TBaudRate;
-  const ParityBits: TParityBits; const DataBits: TDataBits; const StopBits: TStopBits;
-  const FlowControl: TFlowControl; const ReadInterval: Word; const TXSequence, RXMask: string): IScale;
+class function TScale.New(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence, RXMask: string): IScale;
 begin
   Result := Create(
     ScaleOutput,
-    Port,
-    BaudRate,
-    ParityBits,
-    DataBits,
-    StopBits,
-    FlowControl,
-    ReadInterval,
+    COMPort,
     TXSequence,
     RXMask
   );
@@ -137,29 +97,24 @@ end;
 
 function TScale.Connect: IScale;
 begin
-  Result           := Self;
-  FScale.Connected := True;
-  FScale.Open;
+  Result := Self;
+  FPort.Open;
 end;
 
 function TScale.Request: IScale;
 begin
   Result := Self;
-  FScale.WriteStr(FTXSequence);
+  FPort.WriteStr(FTXSequence);
 end;
 
-procedure TScale.DataReception(Sender: TObject; Count: Integer);
-var
-  RxData: string;
+procedure TScale.DataReception(Str: string);
 begin
-  // Lê e formata o resultado da balança
-  FScale.ReadStr(RxData, Count);
-  if (not RxData.IsEmpty)
-      and (RxData <> #13#10)
+  if (not Str.IsEmpty)
+      and (Str <> #13#10)
     then begin
       FOutput.ReportWeight(
         ParseScaleData(
-          RxData
+          Str
         )
       );
     end;
@@ -181,8 +136,7 @@ end;
 function TScale.Disconnect: IScale;
 begin
   Result := Self;
-  FScale.Close;
-  FScale.Connected := False;
+  FPort.Close;
 end;
 {$ENDREGION}
 
