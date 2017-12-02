@@ -71,7 +71,7 @@ uses
 
 { TDisplay }
 
-function TDisplay.ClrLine(Y: Byte): IDisplay;
+function TDisplay.ClrLine(const Y: Byte): IDisplay;
 begin
   Result := Self;
   Write(cClearCurrentLine, 1, Y);
@@ -120,7 +120,7 @@ begin
   inherited;
 end;
 
-function TDisplay.GotoXY(X, Y: Byte): IDisplay;
+function TDisplay.GotoXY(const X, Y: Byte): IDisplay;
 var
   i:Byte;
 begin
@@ -149,14 +149,14 @@ begin
   );
 end;
 
-function TDisplay.Write(Text: string; X, Y: Byte): IDisplay;
+function TDisplay.Write(const Text: string; const X, Y: Byte): IDisplay;
 begin
   Result := Self;
   GotoXY(X,Y);
   Write(Text);
 end;
 
-function TDisplay.Write(Text: string; Alignment: TAlignment; Y: Byte): IDisplay;
+function TDisplay.Write(const Text: string; const Alignment: TAlignment; const Y: Byte): IDisplay;
 begin
   Result := Self;
   Write(
@@ -170,7 +170,7 @@ begin
   );
 end;
 
-function TDisplay.Write(Text: string): IDisplay;
+function TDisplay.Write(const Text: string): IDisplay;
 begin
   Result := Self;
   FDisplay.WriteStr(Text);
