@@ -47,11 +47,11 @@ type
       const ReadInterval: Word; const Columns, Lines: Byte): IDisplay;
     function Connect: IDisplay;
     function ClrScr: IDisplay;
-    function ClrLine(Y: Byte): IDisplay;
-    function Write(Text: string): IDisplay; overload;
-    function Write(Text: string; Alignment: TAlignment; Y: Byte): IDisplay; overload;
-    function Write(Text: string; X, Y: Byte): IDisplay; overload;
-    function GotoXY(X, Y: Byte): IDisplay;
+    function ClrLine(const Y: Byte): IDisplay;
+    function Write(const Text: string): IDisplay; overload;
+    function Write(const Text: string; const Alignment: TAlignment; const Y: Byte): IDisplay; overload;
+    function Write(const Text: string; const X, Y: Byte): IDisplay; overload;
+    function GotoXY(const X, Y: Byte): IDisplay;
   end;
 
 implementation
