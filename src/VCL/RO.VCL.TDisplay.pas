@@ -33,8 +33,16 @@ uses
 
 type
   TDisplay = class(TInterfacedObject, IDisplay)
-  private
     FDisplay: TComPort;
+  private const
+    cClearCurrentLine     = #$18;
+    cClearDisplay         = #$0C;
+    cEpsonInitialization  = #$1B#$40;
+    cCP860                = #$1B#$52'3';
+    cMoveHome             = #$0B;
+    cMoveDown             = #$0A;
+    cMoveRight            = #$09;
+  private var
     FLines: Byte;
     FColumns: Byte;
   public
@@ -66,13 +74,13 @@ uses
 function TDisplay.ClrLine(Y: Byte): IDisplay;
 begin
   Result := Self;
-  Write(#$18, 1, Y);                    // Clear current line
+  Write(cClearCurrentLine, 1, Y);
 end;
 
 function TDisplay.ClrScr: IDisplay;
 begin
   Result := Self;
-  FDisplay.WriteStr(#$0C);              // Clear display
+  FPort.WriteStr(cClearDisplay);
 end;
 
 function TDisplay.Connect: IDisplay;
@@ -81,8 +89,9 @@ begin
   if FDisplay.Connected
     then begin
       FDisplay.Open;
-      FDisplay.WriteStr(#$1B#$40);      // EPSON initialization
-      FDisplay.WriteStr(#$1B#$52'3');   // CP860
+      FPort
+        .WriteStr(cEpsonInitialization)
+        .WriteStr(cCP860);
       ClrScr;
     end;
 end;
@@ -116,11 +125,11 @@ var
   i:Byte;
 begin
   Result := Self;
-  FDisplay.WriteStr(#$0B);              // Home position
+  FPort.WriteStr(cMoveHome);
   for i := 1 to Pred(Y) do
-    FDisplay.WriteStr(#$0A);            // Move cursor down
+    FPort.WriteStr(cMoveDown);
   for i := 1 to Pred(X) do
-    FDisplay.WriteStr(#$09);            // Move cursor right
+    FPort.WriteStr(cMoveRight);
 end;
 
 class function TDisplay.New(const Port: Byte; const BaudRate: TBaudRate; const ParityBits: TParityBits;
