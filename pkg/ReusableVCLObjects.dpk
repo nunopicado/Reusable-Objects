@@ -41,6 +41,8 @@ contains
   RO.VCL.IScale in '..\src\VCL\RO.VCL.IScale.pas',
   RO.VCL.TScale in '..\src\VCL\RO.VCL.TScale.pas',
   RO.VCL.ITimer in '..\src\VCL\RO.VCL.ITimer.pas',
-  RO.VCL.TTimer in '..\src\VCL\RO.VCL.TTimer.pas';
+  RO.VCL.TTimer in '..\src\VCL\RO.VCL.TTimer.pas',
+  RO.VCL.IDisplay in '..\src\VCL\RO.VCL.IDisplay.pas',
+  RO.VCL.TDisplay in '..\src\VCL\RO.VCL.TDisplay.pas';
 
 end.
