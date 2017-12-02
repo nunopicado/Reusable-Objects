@@ -43,6 +43,8 @@ contains
   RO.VCL.ITimer in '..\src\VCL\RO.VCL.ITimer.pas',
   RO.VCL.TTimer in '..\src\VCL\RO.VCL.TTimer.pas',
   RO.VCL.IDisplay in '..\src\VCL\RO.VCL.IDisplay.pas',
-  RO.VCL.TDisplay in '..\src\VCL\RO.VCL.TDisplay.pas';
+  RO.VCL.TDisplay in '..\src\VCL\RO.VCL.TDisplay.pas',
+  RO.VCL.ICOMPort in '..\src\VCL\RO.VCL.ICOMPort.pas',
+  RO.VCL.TCOMPort in '..\src\VCL\RO.VCL.TCOMPort.pas';
 
 end.
