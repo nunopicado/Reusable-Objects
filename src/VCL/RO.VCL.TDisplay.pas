@@ -27,13 +27,12 @@ interface
 
 uses
     RO.VCL.IDisplay
+  , RO.ICOMPort
   , Classes
-  , CPort
   ;
 
 type
   TDisplay = class(TInterfacedObject, IDisplay)
-    FDisplay: TComPort;
   private const
     cClearCurrentLine     = #$18;
     cClearDisplay         = #$0C;
@@ -43,16 +42,12 @@ type
     cMoveDown             = #$0A;
     cMoveRight            = #$09;
   private var
+    FPort: IComPort;
     FLines: Byte;
     FColumns: Byte;
   public
-    constructor Create(const Port: Byte; const BaudRate: TBaudRate; const ParityBits: TParityBits;
-      const DataBits: TDataBits; const StopBits: TStopBits; const FlowControl: TFlowControl;
-      const ReadInterval: Word; const Columns, Lines: Byte);
-    destructor Destroy; override;
-    class function New(const Port: Byte; const BaudRate: TBaudRate; const ParityBits: TParityBits;
-      const DataBits: TDataBits; const StopBits: TStopBits; const FlowControl: TFlowControl;
-      const ReadInterval: Word; const Columns, Lines: Byte): IDisplay;
+    constructor Create(const COMPort: ICOMPort; const Columns, Lines: Byte);
+    class function New(const COMPort: ICOMPort; const Columns, Lines: Byte): IDisplay;
     function Connect: IDisplay;
     function ClrScr: IDisplay;
     function ClrLine(const Y: Byte): IDisplay;
@@ -85,10 +80,8 @@ end;
 
 function TDisplay.Connect: IDisplay;
 begin
-  FDisplay.Connected := True;
-  if FDisplay.Connected
+  if FPort.Open
     then begin
-      FDisplay.Open;
       FPort
         .WriteStr(cEpsonInitialization)
         .WriteStr(cCP860);
@@ -96,28 +89,11 @@ begin
     end;
 end;
 
-constructor TDisplay.Create(const Port: Byte; const BaudRate: TBaudRate; const ParityBits: TParityBits;
-  const DataBits: TDataBits; const StopBits: TStopBits; const FlowControl: TFlowControl; const ReadInterval: Word;
-  const Columns, Lines: Byte);
+constructor TDisplay.Create(const COMPort: ICOMPort; const Columns, Lines: Byte);
 begin
-  // Display connection
-  FDisplay                         := TComPort.Create(nil);
-  FDisplay.Port                    := Format('COM%d', [Port]);
-  FDisplay.BaudRate                := BaudRate;
-  FDisplay.Parity.Bits             := ParityBits;
-  FDisplay.DataBits                := DataBits;
-  FDisplay.StopBits                := StopBits;
-  FDisplay.FlowControl.FlowControl := FlowControl;
-  FDisplay.Timeouts.ReadInterval   := ReadInterval;
-
+  FPort    := COMPort;
   FColumns := Columns;
   FLines   := Lines;
-end;
-
-destructor TDisplay.Destroy;
-begin
-  FDisplay.Free;
-  inherited;
 end;
 
 function TDisplay.GotoXY(const X, Y: Byte): IDisplay;
@@ -132,18 +108,10 @@ begin
     FPort.WriteStr(cMoveRight);
 end;
 
-class function TDisplay.New(const Port: Byte; const BaudRate: TBaudRate; const ParityBits: TParityBits;
-  const DataBits: TDataBits; const StopBits: TStopBits; const FlowControl: TFlowControl; const ReadInterval: Word;
-  const Columns, Lines: Byte): IDisplay;
+class function TDisplay.New(const COMPort: ICOMPort; const Columns, Lines: Byte): IDisplay;
 begin
   Result := Create(
-    Port,
-    BaudRate,
-    ParityBits,
-    DataBits,
-    StopBits,
-    FlowControl,
-    ReadInterval,
+    COMPort,
     Columns,
     Lines
   );
@@ -173,7 +141,7 @@ end;
 function TDisplay.Write(const Text: string): IDisplay;
 begin
   Result := Self;
-  FDisplay.WriteStr(Text);
+  FPort.WriteStr(Text);
 end;
 
 end.
