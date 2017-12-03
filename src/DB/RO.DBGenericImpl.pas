@@ -227,7 +227,6 @@ end;
 function TSQLParams.AsVariantArray: TVariantArray;
 var
   i: Integer;
-  Param: ISQLParam;
 begin
   SetLength(Result, FList.Count * 2);
   if FList.Count > 0 then begin
