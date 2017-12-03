@@ -57,7 +57,10 @@ uses
   RO.IPostalCode in '..\src\Intf\RO.IPostalCode.pas',
   RO.TPTPostalCode in '..\src\SSI\RO.TPTPostalCode.pas',
   RO.IXPath in '..\src\Intf\RO.IXPath.pas',
-  RO.TXPath in '..\src\SSI\RO.TXPath.pas';
+  RO.TXPath in '..\src\SSI\RO.TXPath.pas',
+  RO.IStringMask in '..\src\Intf\RO.IStringMask.pas',
+  RO.TStringMask in '..\src\SSI\RO.TStringMask.pas',
+  uTStringMaskTest in 'uTStringMaskTest.pas';
 
 var
   runner : ITestRunner;
