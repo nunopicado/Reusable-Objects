@@ -42,6 +42,10 @@ contains
   RO.DBConnectionIntf in '..\src\DB\RO.DBConnectionIntf.pas',
   RO.DBGenericImpl in '..\src\DB\RO.DBGenericImpl.pas',
   RO.DBUniImpl in '..\src\DB\RO.DBUniImpl.pas',
-  RO.DBZImpl in '..\src\DB\RO.DBZImpl.pas';
+  RO.DBZImpl in '..\src\DB\RO.DBZImpl.pas',
+  RO.IIf in '..\src\Intf\RO.IIf.pas',
+  RO.IValue in '..\src\Intf\RO.IValue.pas',
+  RO.TIf in '..\src\SSI\RO.TIf.pas',
+  RO.TValue in '..\src\SSI\RO.TValue.pas';
 
 end.

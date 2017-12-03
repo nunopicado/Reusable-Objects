@@ -32,19 +32,15 @@ requires
   vcl;
 
 contains
-  RO.IValue in '..\src\SSI\Data Types\RO.IValue.pas',
-  RO.TValue in '..\src\SSI\Data Types\RO.TValue.pas',
-  RO.TIf in '..\src\SSI\Flow Control\RO.TIf.pas',
-  RO.IIf in '..\src\SSI\Flow Control\RO.IIf.pas',
-  RO.VCL.IPrinters in '..\src\VCL\RO.VCL.IPrinters.pas',
+  RO.VCL.TCOMPort in '..\src\VCL\RO.VCL.TCOMPort.pas',
   RO.VCL.TPrinters in '..\src\VCL\RO.VCL.TPrinters.pas',
-  RO.VCL.IScale in '..\src\VCL\RO.VCL.IScale.pas',
-  RO.VCL.TScale in '..\src\VCL\RO.VCL.TScale.pas',
-  RO.VCL.ITimer in '..\src\VCL\RO.VCL.ITimer.pas',
   RO.VCL.TTimer in '..\src\VCL\RO.VCL.TTimer.pas',
-  RO.VCL.IDisplay in '..\src\VCL\RO.VCL.IDisplay.pas',
-  RO.VCL.TDisplay in '..\src\VCL\RO.VCL.TDisplay.pas',
-  RO.VCL.ICOMPort in '..\src\VCL\RO.VCL.ICOMPort.pas',
-  RO.VCL.TCOMPort in '..\src\VCL\RO.VCL.TCOMPort.pas';
+  RO.IIf in '..\src\Intf\RO.IIf.pas',
+  RO.IValue in '..\src\Intf\RO.IValue.pas',
+  RO.TIf in '..\src\SSI\RO.TIf.pas',
+  RO.TValue in '..\src\SSI\RO.TValue.pas',
+  RO.ICOMPort in '..\src\Intf\RO.ICOMPort.pas',
+  RO.IPrinters in '..\src\Intf\RO.IPrinters.pas',
+  RO.ITimer in '..\src\Intf\RO.ITimer.pas';
 
 end.

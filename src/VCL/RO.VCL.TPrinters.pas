@@ -4,9 +4,19 @@
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Classes       : TPrinters, Implements IPrinters                          **)
+(** Interfaces    :                                                          **)
 (******************************************************************************)
-(** Dependencies  : RTL, WinSpool                                            **)
+(** Enumerators   :                                                          **)
+(******************************************************************************)
+(** Classes       : TPrinters                                                **)
+(******************************************************************************)
+(** Decorators    :                                                          **)
+(******************************************************************************)
+(** Extensions    :                                                          **)
+(******************************************************************************)
+(** Other types   :                                                          **)
+(******************************************************************************)
+(** Dependencies  : WinSpool, VCL                                            **)
 (******************************************************************************)
 (** Description   : Represents the list of printers registered in the        **)
 (**                 Windows Spooler. Can send direct escape sequences to a   **)
@@ -31,7 +41,7 @@ uses
     WinSpool
   , Spring.Collections
   , RO.IValue
-  , RO.VCL.IPrinters
+  , RO.IPrinters
   ;
 
 type

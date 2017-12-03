@@ -12,8 +12,8 @@ uses
   DUnitX.Loggers.Xml.NUnit,
   DUnitX.TestFramework,
   uTClipboardTest in 'uTClipboardTest.pas',
-  RO.FMX.TClipboard in '..\src\FMX\OS\RO.FMX.TClipboard.pas',
-  RO.FMX.IClipboard in '..\src\FMX\OS\RO.FMX.IClipboard.pas';
+  RO.FMX.TClipboard in '..\src\FMX\RO.FMX.TClipboard.pas',
+  RO.IClipboard in '..\src\Intf\RO.IClipboard.pas';
 
 var
   runner : ITestRunner;
