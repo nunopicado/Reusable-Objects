@@ -58,7 +58,9 @@ type
       const DataBits: TDataBits; const StopBits: TStopBits; const FlowControl: TFlowControl; const ReadInterval: Word);
     destructor Destroy; override;
     class function New(const Port: Byte; const BaudRate: TBaudRate; const ParityBits: TParityBits;
-      const DataBits: TDataBits; const StopBits: TStopBits; const FlowControl: TFlowControl; const ReadInterval: Word): ICOMPort;
+      const DataBits: TDataBits; const StopBits: TStopBits; const FlowControl: TFlowControl;
+      const ReadInterval: Word): ICOMPort;  overload;
+    class function New(const Port: Byte; const PortSettings: string): ICOMPort; overload;
     function Open: Boolean;
     function Close: ICOMPort;
     function ReadStr(const Action: TProc<string>): ICOMPort;
@@ -66,6 +68,36 @@ type
   end;
 
 implementation
+
+uses
+    RO.IValue
+  , RO.TValue
+  , Classes
+  ;
+
+type
+  TCOMSettings = class
+  private const
+    cBaudRate    = '110,300,600,1200,2400,4800,9600,14400,19200,38400,56000,57600,115200,128000,256000,';
+    cParityBits  = 'NOEMS'; // None, Odd, Even, Mark, Space
+    cStopBits    = '152';   // One, Five, Two
+    cFlowControl = 'HSN';   // Hardware, Software, None
+  private var
+    FBaudRate: IValue<TBaudRate>;
+    FParityBits: IValue<TParityBits>;
+    FDataBits: IValue<TDataBits>;
+    FStopBits: IValue<TStopBits>;
+    FFlowControl: IValue<TFlowControl>;
+    FReadInterval: IByte;
+  public
+    constructor Create(const COMSettings: string);
+    function BaudRate: TBaudRate;
+    function ParityBits: TParityBits;
+    function DataBits: TDataBits;
+    function StopBits: TStopBits;
+    function FlowControl: TFlowControl;
+    function ReadInterval: Byte;
+  end;
 
 { TCOMPort }
 
@@ -141,6 +173,139 @@ destructor TCOMPort.Destroy;
 begin
   FPort.Free;
   inherited;
+end;
+
+class function TCOMPort.New(const Port: Byte; const PortSettings: string): ICOMPort;
+begin
+  with TCOMSettings.Create(PortSettings) do
+    try
+      Result := New(
+        Port,
+        BaudRate,
+        ParityBits,
+        DataBits,
+        StopBits,
+        FlowControl,
+        ReadInterval
+      );
+    finally
+      Free;
+    end
+
+end;
+
+{ TCOMSettings }
+
+function TCOMSettings.BaudRate: TBaudRate;
+begin
+  Result := FBaudRate.Value;
+end;
+
+constructor TCOMSettings.Create(const COMSettings: string);
+begin
+  with TStringList.Create do
+    begin
+      Delimiter       := ',';
+      StrictDelimiter := True;
+      DelimitedText   := COMSettings;
+      while Count < 6 do
+        Add('');
+
+      FBaudRate := TValue<TBaudRate>.New(
+        function : TBaudRate
+        begin
+          Result := TBaudRate(
+            Pos(
+              ValueFromIndex[0] + ',',
+              cBaudRate
+            ) div 7 + 1
+          );
+        end
+      );
+
+      FParityBits := TValue<TParityBits>.New(
+        function : TParityBits
+        begin
+          Result := TParityBits(
+            Pos(
+              UpperCase(ValueFromIndex[1]),
+              cParityBits
+            ) - 1
+          );
+        end
+      );
+
+      FDataBits := TValue<TDataBits>.New(
+        function : TDataBits
+        begin
+          Result := TDataBits(
+            StrToInt(
+              ValueFromIndex[2]
+            ) - 5
+          );
+        end
+      );
+
+      FStopBits := TValue<TStopBits>.New(
+        function : TStopBits
+        begin
+          Result := TStopBits(
+            Pos(
+              ValueFromIndex[3],
+              cStopBits
+            ) - 1
+          );
+        end
+      );
+
+      FFlowControl := TValue<TFlowControl>.New(
+        function : TFlowControl
+        begin
+          Result := TFlowControl(
+            Pos(
+              UpperCase(ValueFromIndex[4]),
+              cFlowControl
+            ) - 1
+          );
+        end
+      );
+
+      FReadInterval := TByte.New(
+        function : Byte
+        begin
+          Result := StrToInt(
+            ValueFromIndex[5]
+          );
+        end
+      );
+
+      Free;
+    end;
+end;
+
+function TCOMSettings.DataBits: TDataBits;
+begin
+  Result := FDataBits.Value;
+end;
+
+function TCOMSettings.FlowControl: TFlowControl;
+begin
+  Result := FFlowControl.Value;
+end;
+
+function TCOMSettings.ParityBits: TParityBits;
+begin
+  Result := FParityBits.Value;
+end;
+
+function TCOMSettings.ReadInterval: Byte;
+begin
+  Result := FReadInterval.Value;
+end;
+
+function TCOMSettings.StopBits: TStopBits;
+begin
+  Result := FStopBits.Value;
 end;
 
 end.
