@@ -39,6 +39,7 @@ uses
     RO.IScale
   , RO.ITimer
   , RO.ICOMPort
+  , RO.IStringMask
   ;
 
 type
@@ -47,13 +48,15 @@ type
     FOutput: IScaleOutput;
     FPort: IComPort;
     FTXSequence: string;
-    FRXMask: string;
+    FRXMask: IStringMask;
   private
     procedure DataReception(Str: string);
     function ParseScaleData(RxData: string): Real;
   public
-    constructor Create(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence, RXMask: string);
-    class function New(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence, RXMask: string): IScale;
+    constructor Create(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence: string;
+      const RXMask: IStringMask);
+    class function New(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence: string;
+      const RXMask: IStringMask): IScale;
     function Connect: IScale;
     function Disconnect: IScale;
     function Request: IScale;
@@ -77,12 +80,13 @@ implementation
 
 uses
     SysUtils
-  , Math
+  , RO.TStringMask
   ;
 
 { TScale }
 {$REGION TScale}
-constructor TScale.Create(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence, RXMask: string);
+constructor TScale.Create(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence: string;
+  const RXMask: IStringMask);
 resourcestring
   ScaleInitError = 'An output implementation is required';
 begin
@@ -95,7 +99,8 @@ begin
   FPort       := COMPort.ReadStr(DataReception);
 end;
 
-class function TScale.New(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence, RXMask: string): IScale;
+class function TScale.New(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence: string;
+  const RXMask: IStringMask): IScale;
 begin
   Result := Create(
     ScaleOutput,
@@ -131,16 +136,18 @@ begin
 end;
 
 function TScale.ParseScaleData(RxData: string): Real;
-var
-  Valor: string;
-  i: Byte;
 begin
-  Valor := '';
-  for i := 1 to Min(RxData.Length, FRXMask.Length) do
-    if CharInSet(FRXMask[i], ['#', FormatSettings.DecimalSeparator])
-      then Valor := Valor + RxData[i];
-  Valor  := StringReplace(Valor, '.', FormatSettings.DecimalSeparator, [rfReplaceAll]);
-  Result := StrToFloatDef(Trim(Valor), 0);
+  Result := StrToFloatDef(
+    Trim(
+      StringReplace(
+        FRxMask.Parse(RxData),
+        '.',
+        FormatSettings.DecimalSeparator,
+        [rfReplaceAll]
+      )
+    ),
+    0
+  );
 end;
 
 function TScale.Disconnect: IScale;
