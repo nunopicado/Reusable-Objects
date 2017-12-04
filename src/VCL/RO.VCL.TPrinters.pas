@@ -117,10 +117,15 @@ begin
 end;
 
 function TPrinters.AsList: IEnumerable<string>;
+var
+  List : IList<string>;
+  i    : Integer;
 begin
-  Result := TCollections.CreateList<string>(
-    Printer.Printers.ToStringArray
-  );
+  List := TCollections.CreateList<string>;
+  with Printer.Printers do
+    for i := 0 to Pred(Count) do
+      List.Add(ValueFromIndex[i]);
+  Result := List;
 end;
 
 function TPrinters.Default: string;
