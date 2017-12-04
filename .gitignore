@@ -100,7 +100,7 @@ Thumbs.db
 Device.ini
 *.tmp
 *.dSYM
-Android
+bin
 iOSDevice32
 iOSDevice64
 iOSSimulator
@@ -113,3 +113,5 @@ Win64
 src/ThirdParty/
 *.dproj
 src/Intf/__recovery/
+
+pkg/AndroidManifest\.template\.xml
