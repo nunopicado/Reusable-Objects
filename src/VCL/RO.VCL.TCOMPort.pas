@@ -72,13 +72,13 @@ implementation
 uses
     RO.IValue
   , RO.TValue
-  , Classes
+  , RO.TCSVString
   ;
 
 type
   TCOMSettings = class
   private const
-    cBaudRate    = '110,300,600,1200,2400,4800,9600,14400,19200,38400,56000,57600,115200,128000,256000,';
+    cBaudRate    = '   110,   300,   600,  1200,  2400,  4800,  9600, 14400, 19200, 38400, 56000, 57600,115200,128000,256000,';
     cParityBits  = 'NOEMS'; // None, Odd, Even, Mark, Space
     cStopBits    = '152';   // One, Five, Two
     cFlowControl = 'HSN';   // Hardware, Software, None
@@ -203,20 +203,14 @@ end;
 
 constructor TCOMSettings.Create(const COMSettings: string);
 begin
-  with TStringList.Create do
+  with TCSVString.New(COMSettings, ',') do
     begin
-      Delimiter       := ',';
-      StrictDelimiter := True;
-      DelimitedText   := COMSettings;
-      while Count < 6 do
-        Add('');
-
       FBaudRate := TValue<TBaudRate>.New(
         function : TBaudRate
         begin
           Result := TBaudRate(
             Pos(
-              ValueFromIndex[0] + ',',
+              Field(1, '9600') + ',',
               cBaudRate
             ) div 7 + 1
           );
@@ -228,7 +222,7 @@ begin
         begin
           Result := TParityBits(
             Pos(
-              UpperCase(ValueFromIndex[1]),
+              UpperCase(Field(2, 'n')),
               cParityBits
             ) - 1
           );
@@ -240,7 +234,7 @@ begin
         begin
           Result := TDataBits(
             StrToInt(
-              ValueFromIndex[2]
+              Field(3, '8')
             ) - 5
           );
         end
@@ -251,7 +245,7 @@ begin
         begin
           Result := TStopBits(
             Pos(
-              ValueFromIndex[3],
+              Field(4, '1'),
               cStopBits
             ) - 1
           );
@@ -263,7 +257,7 @@ begin
         begin
           Result := TFlowControl(
             Pos(
-              UpperCase(ValueFromIndex[4]),
+              UpperCase(Field(5, 'N')),
               cFlowControl
             ) - 1
           );
@@ -274,12 +268,10 @@ begin
         function : Byte
         begin
           Result := StrToInt(
-            ValueFromIndex[5]
+            Field(6, '10')
           );
         end
       );
-
-      Free;
     end;
 end;
 
