@@ -40,6 +40,7 @@ uses
   , RO.ITimer
   , RO.ICOMPort
   , RO.IStringMask
+  , RO.IByteSequence
   ;
 
 type
@@ -47,15 +48,15 @@ type
   private var
     FOutput: IScaleOutput;
     FPort: IComPort;
-    FTXSequence: string;
+    FTXSequence: IByteSequence;
     FRXMask: IStringMask;
   private
     procedure DataReception(Str: string);
     function ParseScaleData(RxData: string): Real;
   public
-    constructor Create(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence: string;
+    constructor Create(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence: IByteSequence;
       const RXMask: IStringMask);
-    class function New(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence: string;
+    class function New(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence: IByteSequence;
       const RXMask: IStringMask): IScale;
     function Connect: IScale;
     function Disconnect: IScale;
@@ -85,7 +86,7 @@ uses
 
 { TScale }
 {$REGION TScale}
-constructor TScale.Create(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence: string;
+constructor TScale.Create(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence: IByteSequence;
   const RXMask: IStringMask);
 resourcestring
   ScaleInitError = 'An output implementation is required';
@@ -99,7 +100,7 @@ begin
   FPort       := COMPort.ReadStr(DataReception);
 end;
 
-class function TScale.New(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence: string;
+class function TScale.New(const ScaleOutput: IScaleOutput; const COMPort: ICOMPort; const TXSequence: IByteSequence;
   const RXMask: IStringMask): IScale;
 begin
   Result := Create(
@@ -119,7 +120,7 @@ end;
 function TScale.Request: IScale;
 begin
   Result := Self;
-  FPort.WriteStr(FTXSequence);
+  FPort.WriteStr(FTXSequence.AsString);
 end;
 
 procedure TScale.DataReception(Str: string);
