@@ -15,6 +15,9 @@
         <Projects Include="pkg\ReusableDBObjects.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="pkg\ReusableAndroidObjects.dproj">
+            <Dependencies/>
+        </Projects>
         <Projects Include="test\ROTests.dproj">
             <Dependencies/>
         </Projects>
@@ -65,6 +68,15 @@
     <Target Name="ReusableDBObjects:Make">
         <MSBuild Projects="pkg\ReusableDBObjects.dproj" Targets="Make"/>
     </Target>
+    <Target Name="ReusableAndroidObjects">
+        <MSBuild Projects="pkg\ReusableAndroidObjects.dproj"/>
+    </Target>
+    <Target Name="ReusableAndroidObjects:Clean">
+        <MSBuild Projects="pkg\ReusableAndroidObjects.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ReusableAndroidObjects:Make">
+        <MSBuild Projects="pkg\ReusableAndroidObjects.dproj" Targets="Make"/>
+    </Target>
     <Target Name="ROTests">
         <MSBuild Projects="test\ROTests.dproj"/>
     </Target>
@@ -84,13 +96,13 @@
         <MSBuild Projects="test\ROFMXTests.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="ReusableObjects;ReusableFMXObjects;ReusableVCLObjects;ReusableDBObjects;ROTests;ROFMXTests"/>
+        <CallTarget Targets="ReusableObjects;ReusableFMXObjects;ReusableVCLObjects;ReusableDBObjects;ReusableAndroidObjects;ROTests;ROFMXTests"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ReusableObjects:Clean;ReusableFMXObjects:Clean;ReusableVCLObjects:Clean;ReusableDBObjects:Clean;ROTests:Clean;ROFMXTests:Clean"/>
+        <CallTarget Targets="ReusableObjects:Clean;ReusableFMXObjects:Clean;ReusableVCLObjects:Clean;ReusableDBObjects:Clean;ReusableAndroidObjects:Clean;ROTests:Clean;ROFMXTests:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ReusableObjects:Make;ReusableFMXObjects:Make;ReusableVCLObjects:Make;ReusableDBObjects:Make;ROTests:Make;ROFMXTests:Make"/>
+        <CallTarget Targets="ReusableObjects:Make;ReusableFMXObjects:Make;ReusableVCLObjects:Make;ReusableDBObjects:Make;ReusableAndroidObjects:Make;ROTests:Make;ROFMXTests:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
