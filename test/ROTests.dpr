@@ -60,7 +60,10 @@ uses
   RO.TXPath in '..\src\SSI\RO.TXPath.pas',
   RO.IStringMask in '..\src\Intf\RO.IStringMask.pas',
   RO.TStringMask in '..\src\SSI\RO.TStringMask.pas',
-  uTStringMaskTest in 'uTStringMaskTest.pas';
+  uTStringMaskTest in 'uTStringMaskTest.pas',
+  RO.IByteSequence in '..\src\Intf\RO.IByteSequence.pas',
+  RO.TByteSequence in '..\src\SSI\RO.TByteSequence.pas',
+  uTByteSequenceTest in 'uTByteSequenceTest.pas';
 
 var
   runner : ITestRunner;

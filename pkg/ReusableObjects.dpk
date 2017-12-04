@@ -114,6 +114,8 @@ contains
   RO.TZipString in '..\src\SSI\RO.TZipString.pas',
   RO.Using in '..\src\SSI\RO.Using.pas',
   RO.TStringMask in '..\src\SSI\RO.TStringMask.pas',
-  RO.IStringMask in '..\src\Intf\RO.IStringMask.pas';
+  RO.IStringMask in '..\src\Intf\RO.IStringMask.pas',
+  RO.IByteSequence in '..\src\Intf\RO.IByteSequence.pas',
+  RO.TByteSequence in '..\src\SSI\RO.TByteSequence.pas';
 
 end.
