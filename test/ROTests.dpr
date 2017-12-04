@@ -63,7 +63,8 @@ uses
   uTStringMaskTest in 'uTStringMaskTest.pas',
   RO.IByteSequence in '..\src\Intf\RO.IByteSequence.pas',
   RO.TByteSequence in '..\src\SSI\RO.TByteSequence.pas',
-  uTByteSequenceTest in 'uTByteSequenceTest.pas';
+  uTByteSequenceTest in 'uTByteSequenceTest.pas',
+  uTCSVStringTest in 'uTCSVStringTest.pas';
 
 var
   runner : ITestRunner;
