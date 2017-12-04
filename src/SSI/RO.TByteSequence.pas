@@ -45,12 +45,14 @@ type
   TByteSequence = class(TInterfacedObject, IByteSequence)
   private
     FSequence: IValue<IEnumerable<Byte>>;
+    FStr: IValue<AnsiString>;
   public
     constructor Create(const Sequence: IValue<IEnumerable<Byte>>);
     class function New(const Sequence: IValue<IEnumerable<Byte>>): IByteSequence;
     class function NewFromString(const Sequence: AnsiString): IByteSequence; overload;
     class function NewFromDecimal(const Sequence: string): IByteSequence; overload;
     function AsEnumerable: IEnumerable<Byte>;
+    function AsString: AnsiString;
   end;
 
 implementation
@@ -67,9 +69,28 @@ begin
   Result := FSequence.Value;
 end;
 
+function TByteSequence.AsString: AnsiString;
+begin
+  Result := FStr.Value;
+end;
+
 constructor TByteSequence.Create(const Sequence: IValue<IEnumerable<Byte>>);
 begin
   FSequence := Sequence;
+  FStr      := TValue<AnsiString>.New(
+    function : AnsiString
+    var
+      Sequence: AnsiString;
+    begin
+      FSequence.Value.ForEach(
+        procedure (const Arg: Byte)
+        begin
+          Sequence := Sequence + Chr(Arg);
+        end
+      );
+      Result := Sequence;
+    end
+  );
 end;
 
 class function TByteSequence.New(const Sequence: IValue<IEnumerable<Byte>>): IByteSequence;

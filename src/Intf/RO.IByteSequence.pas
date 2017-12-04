@@ -43,6 +43,7 @@ type
   IByteSequence = interface
   ['{96AAB705-984B-420A-AAAE-186CC1F45633}']
     function AsEnumerable: IEnumerable<Byte>;
+    function AsString: AnsiString;
   end;
 
 implementation

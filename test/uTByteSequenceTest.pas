@@ -20,12 +20,26 @@ type
     [TestCase('NewFromDecimal 2','065066067,1,66')]
     [TestCase('NewFromDecimal 3','065066067,2,67')]
     procedure NewTest(const Sequence: AnsiString; const Index, Expected: Byte);
+    [Test]
+    [TestCase('AsString 1','065066067,ABC')]
+    [TestCase('AsString 2','065066067049050051,ABC123')]
+    procedure AsStringTest(const Sequence: AnsiString; const Expected: AnsiString);
   end;
 
 implementation
 
 
 { TByteSequenceTest }
+
+procedure TByteSequenceTest.AsStringTest(const Sequence, Expected: AnsiString);
+begin
+  Assert.AreEqual<AnsiString>(
+    Expected,
+    TByteSequence.NewFromDecimal(
+      Sequence
+    ).AsString
+  );
+end;
 
 procedure TByteSequenceTest.NewFromStringTest(const Sequence: AnsiString; const Index, Expected: Byte);
 begin
