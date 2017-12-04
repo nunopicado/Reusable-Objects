@@ -39,16 +39,17 @@ interface
 
 uses
     RO.IValue
+  , RO.IByteSequence
   , Spring.Collections
   ;
 
 type
   IPrinters = interface(IInvokable)
   ['{AD15718B-BFAD-4094-87A5-440C430A5709}']
-    function SendSequence(const Sequence: IList<Byte>): IPrinters;
-    function AsList(const List: IList<String>): IPrinters;
-    function Select(const Name: IString): IPrinters;
-    function Default: IString;
+    function SendSequence(const Sequence: IByteSequence): IPrinters;
+    function AsList: IEnumerable<string>;
+    function Select(const Name: string): IPrinters;
+    function Default: string;
   end;
 
 implementation

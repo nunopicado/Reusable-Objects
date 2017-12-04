@@ -42,25 +42,23 @@ uses
   , Spring.Collections
   , RO.IValue
   , RO.IPrinters
+  , RO.IByteSequence
   ;
 
 type
   TPrinters = class(TInterfacedObject, IPrinters)
+  private var
+    FSelected : string;
+    FDocInfo1 : TDocInfo1;
   private
-    type
-      TByteArray = array of Byte;
-    var
-      FSelected : IString;
-      FDocInfo1 : TDocInfo1;
-  private
-    procedure PrepareBuffer(const Sequence: IList<Byte>; Buffer: TByteArray);
+    function DecodeSequence(const Sequence: AnsiString): IEnumerable<Byte>;
   public
-    constructor Create;
-    class function New: IPrinters;
-    function SendSequence(const Sequence: IList<Byte>): IPrinters;
-    function AsList(const List: IList<string>): IPrinters;
-    function Select(const Name: IString): IPrinters;
-    function Default: IString;
+    constructor Create(const PrinterName: string);
+    class function New(const PrinterName: string = ''): IPrinters;
+    function SendSequence(const Sequence: IByteSequence): IPrinters;
+    function AsList: IEnumerable<string>;
+    function Select(const Name: string): IPrinters;
+    function Default: string;
   end;
 
 implementation
@@ -72,75 +70,79 @@ uses
   , RO.TIf
   ;
 
-constructor TPrinters.Create;
+constructor TPrinters.Create(const PrinterName: string);
 begin
   with FDocInfo1 do begin
     pDocName    := nil;
     pOutputFile := nil;
     pDataType   := 'RAW';
   end;
-  FSelected := Default;
+  if not PrinterName.IsEmpty
+    then Select(PrinterName)
+    else Select(Default);
 end;
 
-class function TPrinters.New: IPrinters;
+class function TPrinters.New(const PrinterName: string): IPrinters;
 begin
-  Result := Create;
+  Result := Create(PrinterName);
 end;
 
-function TPrinters.Select(const Name: IString): IPrinters;
+function TPrinters.Select(const Name: string): IPrinters;
+resourcestring
+  cInvalidPrinter = 'Failed to find %s printer.';
 begin
   Result := Self;
-  if Printer.Printers.IndexOfName(Name.Value) = -1
-    then Raise Exception.Create(Format('Failed to find %s printer.', [QuotedStr(Name.Value)]));
+  if Printer.Printers.IndexOfName(Name) = -1
+    then raise Exception.Create(Format(cInvalidPrinter, [QuotedStr(Name)]));
   FSelected := Name;
 end;
 
-procedure TPrinters.PrepareBuffer(const Sequence: IList<Byte>; Buffer: TByteArray);
+function TPrinters.SendSequence(const Sequence: IByteSequence): IPrinters;
 var
-  i: Byte;
-begin
-  SetLength(Buffer, Sequence.Count);
-  for i := 0 to Pred(Sequence.Count) do
-    Buffer[i] := Sequence.Items[i]
-end;
-
-function TPrinters.SendSequence(const Sequence: IList<Byte>): IPrinters;
-var
-  Buffer : TByteArray;
   Handle : THandle;
   N      : Cardinal;
 begin
   Result := Self;
-  PrepareBuffer(Sequence, Buffer);
-  if not OpenPrinter(PChar(FSelected), Handle, nil) then begin
-    raise exception.Create(Format('Failed opening printer: %d', [GetLastError]))
-  end
-  else begin
-    StartDocPrinter(Handle, 1, @FDocInfo1);
-    WritePrinter(Handle, Pointer(Buffer), Length(Buffer), N);
-    EndDocPrinter(Handle);
-    ClosePrinter(Handle);
-  end;
+  if not OpenPrinter(PChar(FSelected), Handle, nil)
+    then raise exception.Create(Format('Failed opening printer: %d', [GetLastError]))
+    else begin
+      StartDocPrinter(Handle, 1, @FDocInfo1);
+      WritePrinter(
+        Handle,
+        Pointer(Sequence.AsEnumerable.ToArray),
+        Sequence.AsEnumerable.Count,
+        N
+      );
+      EndDocPrinter(Handle);
+      ClosePrinter(Handle);
+    end;
 end;
 
-function TPrinters.AsList(const List: IList<string>): IPrinters;
-var
-  i: Byte;
+function TPrinters.AsList: IEnumerable<string>;
 begin
-  Result := Self;
-  for i := 0 to Pred(Printer.Printers.Count) do
-    List.Add(Printer.Printers[i]);
-end;
-
-function TPrinters.Default: IString;
-begin
-  Result := TString.New(
-    TIf<string>.New(
-      Printer.PrinterIndex > 0,
-      PChar(Printer.Printers[Printer.PrinterIndex]),
-      ''
-    ).Eval
+  Result := TCollections.CreateList<string>(
+    Printer.Printers.ToStringArray
   );
+end;
+
+function TPrinters.DecodeSequence(const Sequence: AnsiString): IEnumerable<Byte>;
+var
+  Buffer : IList<Byte>;
+  i      : Byte;
+begin
+  Buffer := TCollections.CreateList<Byte>;
+  for i := 1 to Length(Sequence) do
+    Buffer.Add(Ord(Sequence[i]));
+  Result := Buffer;
+end;
+
+function TPrinters.Default: string;
+begin
+  Result := TIf<string>.New(
+    Printer.PrinterIndex > 0,
+    PChar(Printer.Printers[Printer.PrinterIndex]),
+    ''
+  ).Eval;
 end;
 
 end.
