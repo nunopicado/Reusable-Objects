@@ -112,3 +112,4 @@ Win64
 *.skincfg
 src/ThirdParty/
 *.dproj
+src/Intf/__recovery/
