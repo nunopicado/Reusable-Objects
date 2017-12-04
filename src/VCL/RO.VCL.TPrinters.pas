@@ -50,8 +50,6 @@ type
   private var
     FSelected : string;
     FDocInfo1 : TDocInfo1;
-  private
-    function DecodeSequence(const Sequence: AnsiString): IEnumerable<Byte>;
   public
     constructor Create(const PrinterName: string);
     class function New(const PrinterName: string = ''): IPrinters;
@@ -123,17 +121,6 @@ begin
   Result := TCollections.CreateList<string>(
     Printer.Printers.ToStringArray
   );
-end;
-
-function TPrinters.DecodeSequence(const Sequence: AnsiString): IEnumerable<Byte>;
-var
-  Buffer : IList<Byte>;
-  i      : Byte;
-begin
-  Buffer := TCollections.CreateList<Byte>;
-  for i := 1 to Length(Sequence) do
-    Buffer.Add(Ord(Sequence[i]));
-  Result := Buffer;
 end;
 
 function TPrinters.Default: string;
