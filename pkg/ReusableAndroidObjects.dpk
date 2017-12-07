@@ -32,6 +32,8 @@ requires
 
 contains
   RO.ISMS in '..\src\Intf\RO.ISMS.pas',
-  RO.Android.TSMS in '..\src\Android\RO.Android.TSMS.pas';
+  RO.Android.TSMS in '..\src\Android\RO.Android.TSMS.pas',
+  RO.Android.ISMSReport in '..\src\Intf\RO.Android.ISMSReport.pas',
+  RO.Android.TSMSReport in '..\src\Android\RO.Android.TSMSReport.pas';
 
 end.
