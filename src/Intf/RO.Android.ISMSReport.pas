@@ -1,14 +1,14 @@
 (******************************************************************************)
 (** Suite         : Reusable Objects                                         **)
-(** Object        : ISMS                                                     **)
+(** Object        : ISMSReport                                               **)
 (** Framework     : FMX                                                      **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    :                                                          **)
+(** Interfaces    : ISMSReport, ISMSReportOutput                             **)
 (******************************************************************************)
-(** Enumerators   :                                                          **)
+(** Enumerators   : TSMSSentResultCode, TSMSDeliveredResultCode              **)
 (******************************************************************************)
-(** Classes       : TSMS                                                     **)
+(** Classes       : TSMSReport                                               **)
 (******************************************************************************)
 (** Decorators    :                                                          **)
 (******************************************************************************)
@@ -18,7 +18,7 @@
 (******************************************************************************)
 (** Dependencies  :                                                          **)
 (******************************************************************************)
-(** Description   : Handles sending SMS                                      **)
+(** Description   : Handles sent and delivery report for ISMS                **)
 (******************************************************************************)
 (** Licence       : GNU LGPLv3 (http://www.gnu.org/licenses/lgpl-3.0.html)   **)
 (** Contributions : You can create pull request for all your desired         **)
@@ -31,77 +31,31 @@
 (**                 terms                                                    **)
 (******************************************************************************)
 
-unit RO.Android.TSMS;
+unit RO.Android.ISMSReport;
 
 interface
 
 uses
-    RO.ISMS
-  , RO.Android.ISMSReport
-  , Androidapi.JNI.Telephony
-  , Androidapi.JNI.JavaTypes
+    Androidapi.JNI.App
   ;
 
 type
-  TSMS = class(TInterfacedObject, ISMS)
-  private var
-    FMsg: JString;
-    FSmsMgr: JSmsManager;
-    FReport: ISMSReport;
-  public
-    constructor Create(const Msg: string; const Report: ISMSReport = nil);
-    class function New(const Msg: string; const Report: ISMSReport = nil): ISMS;
-    function Send(const Destination: string): ISMS;
+  TSMSSentResultCode      = (srcSent, srcRadioOff, srcGenericFailure, srcNoService, srcNullPDU, srcUnknown);
+  TSMSDeliveredResultCode = (drcDelivered, drcCanceled);
+
+  ISMSReportOutput = interface(IInvokable)
+  ['{BF6D6705-5DCD-4B6E-839B-D9FA24B06406}']
+    function Sent(const Destination: string; const ResultCode: TSMSSentResultCode): ISMSReportOutput;
+    function Delivered(const Destination: string; const ResultCode: TSMSDeliveredResultCode): ISMSReportOutput;
+  end;
+
+  ISMSReport = interface(IInvokable)
+  ['{B726CD3F-0A2C-44AA-8530-CFEE6A731B4C}']
+    function PendingSentIntent: JPendingIntent;
+    function PendingDeliveredIntent: JPendingIntent;
+    function Destination(const aDestination: string): string;
   end;
 
 implementation
-
-uses
-    Androidapi.Helpers
-  , Androidapi.JNI.App
-  ;
-
-{ TSMS }
-
-constructor TSMS.Create(const Msg: string; const Report: ISMSReport = nil);
-begin
-  FMsg    := StringToJString(Msg);
-  FReport := Report;
-  FSmsMgr := TJSmsManager.JavaClass.getDefault;
-end;
-
-class function TSMS.New(const Msg: string; const Report: ISMSReport = nil): ISMS;
-begin
-  Result := Create(Msg, Report);
-end;
-
-function TSMS.Send(const Destination: string): ISMS;
-var
-  smsTo: JString;
-  PendingSentIntent: JPendingIntent;
-  PendingDeliveredIntent: JPendingIntent;
-begin
-  Result := Self;
-
-  if Assigned(FReport)
-    then begin
-      FReport.Destination(Destination);
-      PendingSentIntent      := FReport.PendingSentIntent;
-      PendingDeliveredIntent := FReport.PendingDeliveredIntent;
-    end
-    else begin
-      PendingSentIntent      := nil;
-      PendingDeliveredIntent := nil;
-    end;
-
-  smsTo := StringToJString(Destination);
-  FSmsMgr.sendTextMessage(
-    smsTo,
-    nil,
-    FMsg,
-    PendingSentIntent,
-    PendingDeliveredIntent
-  );
-end;
 
 end.

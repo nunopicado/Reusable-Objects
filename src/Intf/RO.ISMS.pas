@@ -36,16 +36,6 @@ unit RO.ISMS;
 interface
 
 type
-  TSMSSentResultCode      = (srcSent, srcRadioOff, srcGenericFailure, srcNoService, srcNullPDU, srcUnknown);
-  TSMSDeliveredResultCode = (drcDelivered, drcCanceled);
-
-  ISMSReport = interface(IInvokable)
-  ['{BF6D6705-5DCD-4B6E-839B-D9FA24B06406}']
-    function Sent(const Destination: string; const ResultCode: TSMSSentResultCode): ISMSReport;
-    function Delivered(const Destination: string; const ResultCode: TSMSDeliveredResultCode): ISMSReport;
-    function Log(const Text: string): ISMSReport;
-  end;
-
   ISMS = interface(IInvokable)
   ['{FF4999F0-7DA3-4793-9A3A-506B6A795772}']
     function Send(const Destination: string): ISMS;
