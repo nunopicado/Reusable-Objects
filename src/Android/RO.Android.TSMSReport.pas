@@ -185,32 +185,36 @@ begin
     then begin
       FOutput.Delivered(
         Destination,
-        TIf<TSMSDeliveredResultCode>.New(
-          aResultCode = TJActivity.JavaClass.RESULT_OK,
-          drcDelivered,
-          drcCanceled
-        ).Eval
-      );
+        TSMSDeliveredResultCode(
+          Succ(
+            TIf<Integer>.New(
+              (aResultCode >= -1) and (aResultCode <= 0),
+              aResultCode,
+              0
+            ).Eval
+          )
+        )
+      )
     end;
 end;
 
 procedure TSMSReport.ReportSendAction(const Destination: string; const aResultCode: Integer);
-var
-  ResultCode: TSMSSentResultCode;
 begin
-  ResultCode   := srcUnknown;
-  if aResultCode = TJActivity.JavaClass.RESULT_OK
-    then ResultCode := srcSent;
-  if aResultCode = TJSmsManager.JavaClass.RESULT_ERROR_RADIO_OFF
-    then ResultCode := srcRadioOff;
-  if aResultCode = TJSmsManager.JavaClass.RESULT_ERROR_GENERIC_FAILURE
-    then ResultCode := srcGenericFailure;
-  if aResultCode = TJSmsManager.JavaClass.RESULT_ERROR_NO_SERVICE
-    then ResultCode := srcNoService;
-  if aResultCode = TJSmsManager.JavaClass.RESULT_ERROR_NULL_PDU
-    then ResultCode := srcNullPDU;
   if Assigned(FOutput)
-    then FOutput.Sent(Destination, ResultCode);
+    then begin
+      FOutput.Sent(
+        Destination,
+        TSMSSentResultCode(
+          Succ(
+            TIf<Integer>.New(
+              (aResultCode >= -1) and (aResultCode <= 4),
+              aResultCode,
+              0
+            ).Eval
+          )
+        )
+      )
+    end;
 end;
 
 end.

@@ -40,7 +40,7 @@ uses
   ;
 
 type
-  TSMSSentResultCode      = (srcSent, srcRadioOff, srcGenericFailure, srcNoService, srcNullPDU, srcUnknown);
+  TSMSSentResultCode      = (srcSent, srcUnknown, srcGenericFailure, srcRadioOff, srcNullPDU, srcNoService);
   TSMSDeliveredResultCode = (drcDelivered, drcCanceled);
 
   ISMSReportOutput = interface(IInvokable)
