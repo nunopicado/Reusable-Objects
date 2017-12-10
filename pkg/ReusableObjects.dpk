@@ -118,6 +118,7 @@ contains
   RO.IByteSequence in '..\src\Intf\RO.IByteSequence.pas',
   RO.TByteSequence in '..\src\SSI\RO.TByteSequence.pas',
   RO.ICSVString in '..\src\Intf\RO.ICSVString.pas',
-  RO.TCSVString in '..\src\SSI\RO.TCSVString.pas';
+  RO.TCSVString in '..\src\SSI\RO.TCSVString.pas',
+  RO.TGetHTTP in '..\src\SSI\RO.TGetHTTP.pas';
 
 end.
