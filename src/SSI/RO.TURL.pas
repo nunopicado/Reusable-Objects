@@ -50,6 +50,7 @@ type
     constructor Create(const URL: string);
     class function New(const URL: string): IURL;
     function IsValid: Boolean;
+    function AsString: string;
   end;
 
 implementation
@@ -60,6 +61,11 @@ uses
   ;
 
 { TURL }
+
+function TURL.AsString: string;
+begin
+  Result := FURL;
+end;
 
 constructor TURL.Create(const URL: string);
 begin
