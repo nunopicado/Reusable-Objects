@@ -18,7 +18,7 @@
 (******************************************************************************)
 (** Dependencies  :                                                          **)
 (******************************************************************************)
-(** Description   : Generates MB (Portuguese ATM) payment references         **)
+(** Description   : Generates an MB (Portuguese ATM) payment reference       **)
 (******************************************************************************)
 (** Licence       : GNU LGPLv3 (http://www.gnu.org/licenses/lgpl-3.0.html)   **)
 (** Contributions : You can create pull request for all your desired         **)
