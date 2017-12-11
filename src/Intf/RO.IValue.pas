@@ -45,17 +45,18 @@ type
     function Refresh: IValue<T>;
   end;
 
-  IBoolean  = IValue<Boolean>;
-  IChar     = IValue<Char>;
-  IString   = IValue<string>;
-  IByte     = IValue<Byte>;
-  IWord     = IValue<Word>;
-  ILongWord = IValue<LongWord>;
-  IInteger  = IValue<Integer>;
-  IInt64    = IValue<Int64>;
-  IReal     = IValue<Real>;
-  ISingle   = IValue<Single>;
-  IDouble   = IValue<Double>;
+  IBoolean    = IValue<Boolean>;
+  IChar       = IValue<Char>;
+  IString     = IValue<string>;
+  IAnsiString = IValue<AnsiString>;
+  IByte       = IValue<Byte>;
+  IWord       = IValue<Word>;
+  ILongWord   = IValue<LongWord>;
+  IInteger    = IValue<Integer>;
+  IInt64      = IValue<Int64>;
+  IReal       = IValue<Real>;
+  ISingle     = IValue<Single>;
+  IDouble     = IValue<Double>;
 
 implementation
 

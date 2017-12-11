@@ -59,17 +59,18 @@ type
     function Refresh: IValue<T>;
   end;
 
-  TBoolean  = TValue<Boolean>;
-  TChar     = TValue<Char>;
-  TString   = TValue<string>;
-  TByte     = TValue<Byte>;
-  TWord     = TValue<Word>;
-  TLongWord = TValue<LongWord>;
-  TInteger  = TValue<Integer>;
-  TInt64    = TValue<Int64>;
-  TReal     = TValue<Real>;
-  TSingle   = TValue<Single>;
-  TDouble   = TValue<Double>;
+  TBoolean    = TValue<Boolean>;
+  TChar       = TValue<Char>;
+  TString     = TValue<string>;
+  TAnsiString = TValue<AnsiString>;
+  TByte       = TValue<Byte>;
+  TWord       = TValue<Word>;
+  TLongWord   = TValue<LongWord>;
+  TInteger    = TValue<Integer>;
+  TInt64      = TValue<Int64>;
+  TReal       = TValue<Real>;
+  TSingle     = TValue<Single>;
+  TDouble     = TValue<Double>;
 
 implementation
 
