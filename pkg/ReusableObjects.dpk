@@ -61,7 +61,6 @@ contains
   RO.IPostalAddress in '..\src\Intf\RO.IPostalAddress.pas',
   RO.IPostalCode in '..\src\Intf\RO.IPostalCode.pas',
   RO.IPrinters in '..\src\Intf\RO.IPrinters.pas',
-  RO.IPTVATNumber in '..\src\Intf\RO.IPTVATNumber.pas',
   RO.IRandomKey in '..\src\Intf\RO.IRandomKey.pas',
   RO.IRange in '..\src\Intf\RO.IRange.pas',
   RO.IRSASignature in '..\src\Intf\RO.IRSASignature.pas',
@@ -75,7 +74,6 @@ contains
   RO.IXPath in '..\src\Intf\RO.IXPath.pas',
   RO.IZDate in '..\src\Intf\RO.IZDate.pas',
   RO.Helpers in '..\src\SSI\RO.Helpers.pas',
-  RO.ISliderMsg in '..\src\Intf\RO.ISliderMsg.pas',
   RO.TAES128 in '..\src\SSI\RO.TAES128.pas',
   RO.TBase64 in '..\src\SSI\RO.TBase64.pas',
   RO.TCertificate in '..\src\SSI\RO.TCertificate.pas',
@@ -119,6 +117,8 @@ contains
   RO.TByteSequence in '..\src\SSI\RO.TByteSequence.pas',
   RO.ICSVString in '..\src\Intf\RO.ICSVString.pas',
   RO.TCSVString in '..\src\SSI\RO.TCSVString.pas',
-  RO.TGetHTTP in '..\src\SSI\RO.TGetHTTP.pas';
+  RO.TGetHTTP in '..\src\SSI\RO.TGetHTTP.pas',
+  RO.IVATNumber in '..\src\Intf\RO.IVATNumber.pas',
+  RO.IHideable in '..\src\Intf\RO.IHideable.pas';
 
 end.

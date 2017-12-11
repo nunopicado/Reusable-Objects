@@ -37,7 +37,6 @@ uses
   RO.TString in '..\src\SSI\RO.TString.pas',
   RO.TIf in '..\src\SSI\RO.TIf.pas',
   RO.IIf in '..\src\Intf\RO.IIf.pas',
-  RO.IPTVATNumber in '..\src\Intf\RO.IPTVATNumber.pas',
   RO.TPTVATNumber in '..\src\SSI\RO.TPTVATNumber.pas',
   RO.TDataStream in '..\src\SSI\RO.TDataStream.pas',
   RO.IDataStream in '..\src\Intf\RO.IDataStream.pas',
@@ -64,7 +63,8 @@ uses
   RO.IByteSequence in '..\src\Intf\RO.IByteSequence.pas',
   RO.TByteSequence in '..\src\SSI\RO.TByteSequence.pas',
   uTByteSequenceTest in 'uTByteSequenceTest.pas',
-  uTCSVStringTest in 'uTCSVStringTest.pas';
+  uTCSVStringTest in 'uTCSVStringTest.pas',
+  RO.IVATNumber in '..\src\Intf\RO.IVATNumber.pas';
 
 var
   runner : ITestRunner;

@@ -1,6 +1,6 @@
 ﻿(******************************************************************************)
 (** Suite         : Reusable Objects                                         **)
-(** Object        : IPTVATNumber                                             **)
+(** Object        : IVATNumber                                               **)
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
@@ -37,20 +37,20 @@ interface
 
 uses
     RO.IValue
-  , RO.IPTVATNumber
+  , RO.IVATNumber
   ;
 
 type
-  TPTVATNumber = class(TInterfacedObject, IPTVATNumber)
+  TPTVATNumber = class(TInterfacedObject, IVATNumber)
   private
     FPTVATNumber: IString;
     FValid: IBoolean;
     function CalcCheckDigit: Integer;
   public
     constructor Create(const PTVATNumber: string);
-    class function New(const PTVATNumber: string): IPTVATNumber; overload;
-    class function New(const PTVATNumber: IString): IPTVATNumber; overload;
-    class function New(const PTVATNumber: IInteger): IPTVATNumber; overload;
+    class function New(const PTVATNumber: string): IVATNumber; overload;
+    class function New(const PTVATNumber: IString): IVATNumber; overload;
+    class function New(const PTVATNumber: IInteger): IVATNumber; overload;
     function IsValid: Boolean;
     function AsString: string;
   end;
@@ -108,17 +108,17 @@ begin
   Result := FValid.Value;
 end;
 
-class function TPTVATNumber.New(const PTVATNumber: IInteger): IPTVATNumber;
+class function TPTVATNumber.New(const PTVATNumber: IInteger): IVATNumber;
 begin
   Result := New(PTVATNumber.Value.ToString);
 end;
 
-class function TPTVATNumber.New(const PTVATNumber: string): IPTVatNumber;
+class function TPTVATNumber.New(const PTVATNumber: string): IVatNumber;
 begin
   Result := Create(PTVATNumber);
 end;
 
-class function TPTVATNumber.New(const PTVATNumber: IString): IPTVATNumber;
+class function TPTVATNumber.New(const PTVATNumber: IString): IVATNumber;
 begin
   Result := New(PTVATNumber.Value);
 end;

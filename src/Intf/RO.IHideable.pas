@@ -1,10 +1,10 @@
 (******************************************************************************)
 (** Suite         : Reusable Objects                                         **)
-(** Object        : ISliderMsg                                               **)
+(** Object        : IHideable                                                **)
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : ISliderMsg                                               **)
+(** Interfaces    : IHideable                                                **)
 (******************************************************************************)
 (** Enumerators   :                                                          **)
 (******************************************************************************)
@@ -18,8 +18,8 @@
 (******************************************************************************)
 (** Dependencies  :                                                          **)
 (******************************************************************************)
-(** Description   : A message pop-up interface, to be used with a slider     **)
-(**                 message component                                        **)
+(** Description   : Represents an hideable object, to be used with any       **)
+(**                 visual component                                         **)
 (******************************************************************************)
 (** Licence       : GNU LGPLv3 (http://www.gnu.org/licenses/lgpl-3.0.html)   **)
 (** Contributions : You can create pull request for all your desired         **)
@@ -32,15 +32,15 @@
 (**                 terms                                                    **)
 (******************************************************************************)
 
-unit RO.ISliderMsg;
+unit RO.IHideable;
 
 interface
 
 type
-  ISliderMsg = interface(IInvokable)
+  IHideable = interface(IInvokable)
   ['{FE0C3FD7-CCC4-4B48-88AD-90286B4E0BBA}']
-    function Show: ISliderMsg;
-    function Hide: ISliderMsg;
+    function Show: IHideable;
+    function Hide: IHideable;
   end;
 
 implementation

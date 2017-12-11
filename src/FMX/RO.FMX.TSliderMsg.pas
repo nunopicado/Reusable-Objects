@@ -42,11 +42,11 @@ uses
   , FMX.Effects
   , FMX.StdCtrls
   , FMX.Graphics
-  , RO.ISliderMsg
+  , RO.IHideable
   ;
 
 type
-  TSliderMsg = class(TComponent, ISliderMsg)
+  TSliderMsg = class(TComponent, IHideable)
   strict private
     LightBox     : TRectangle;
     MsgBox       : TRectangle;
@@ -70,9 +70,9 @@ type
     procedure Setup;
   public
     constructor Create(AOwner: TComponent); Override;
-    class function New(AOwner: TComponent; AParent: TCustomForm; Msg: String; Width, Height: Single; OnHide: TNotifyEvent=nil): ISliderMsg;
-    function Show: ISliderMsg;
-    function Hide: ISliderMsg;
+    class function New(AOwner: TComponent; AParent: TCustomForm; Msg: String; Width, Height: Single; OnHide: TNotifyEvent=nil): IHideable;
+    function Show: IHideable;
+    function Hide: IHideable;
   end;
 
 implementation
@@ -122,7 +122,7 @@ begin
   LightBox.Free;
 end;
 
-function TSliderMsg.Hide: ISliderMsg;
+function TSliderMsg.Hide: IHideable;
 begin
   Result := Self;
   TFloatAnimation.Create(FOwner, MsgBox, 'Position.X', MsgBox.Position.X, -MsgBox.Width-10);
@@ -140,12 +140,12 @@ begin
   Button   := TButton.Create(FOwner, MsgBox, 'OK', 35, 10, 20, Click);
 end;
 
-class function TSliderMsg.New(AOwner: TComponent; AParent: TCustomForm; Msg: String; Width, Height: Single; OnHide: TNotifyEvent=nil): ISliderMsg;
+class function TSliderMsg.New(AOwner: TComponent; AParent: TCustomForm; Msg: String; Width, Height: Single; OnHide: TNotifyEvent=nil): IHideable;
 begin
   Result := CreatePrivate(AOwner, AParent, Msg, Width, Height, OnHide);
 end;
 
-function TSliderMsg.Show: ISliderMsg;
+function TSliderMsg.Show: IHideable;
 begin
   Result := Self;
   Setup;

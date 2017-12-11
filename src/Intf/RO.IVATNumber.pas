@@ -1,10 +1,10 @@
 ﻿(******************************************************************************)
 (** Suite         : Reusable Objects                                         **)
-(** Object        : IPTVATNumber                                             **)
+(** Object        : IVATNumber                                               **)
 (** Framework     :                                                          **)
 (** Developed by  : Nuno Picado                                              **)
 (******************************************************************************)
-(** Interfaces    : IPTVATNumber                                             **)
+(** Interfaces    : IVATNumber                                               **)
 (******************************************************************************)
 (** Enumerators   :                                                          **)
 (******************************************************************************)
@@ -31,12 +31,12 @@
 (**                 terms                                                    **)
 (******************************************************************************)
 
-unit RO.IPTVATNumber;
+unit RO.IVATNumber;
 
 interface
 
 type
-  IPTVATNumber = interface(IInvokable)
+  IVATNumber = interface(IInvokable)
   ['{60BEF117-FF0B-4F36-A69E-A8CB147EF87C}']
     function IsValid: Boolean;
     function AsString: string;
