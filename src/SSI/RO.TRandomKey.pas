@@ -18,7 +18,7 @@
 (******************************************************************************)
 (** Dependencies  :                                                          **)
 (******************************************************************************)
-(** Description   : Generates a ransom key with a determined number of bits  **)
+(** Description   : Generates a random key with a determined number of bits  **)
 (******************************************************************************)
 (** Licence       : GNU LGPLv3 (http://www.gnu.org/licenses/lgpl-3.0.html)   **)
 (** Contributions : You can create pull request for all your desired         **)
