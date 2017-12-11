@@ -60,7 +60,7 @@ uses
     SysUtils
   ;
 
-{ TStringMatrix }
+{ TMatrix }
 
 function TMatrix<T>.Cell(const Col, Row: Integer): T;
 begin
