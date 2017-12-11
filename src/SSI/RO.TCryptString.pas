@@ -18,7 +18,7 @@
 (******************************************************************************)
 (** Dependencies  : Jedi WinAPI, WinCrypt                                    **)
 (******************************************************************************)
-(** Description   : Handles Currency values and calculations                 **)
+(** Description   : Encrypts and decrypts a string                           **)
 (******************************************************************************)
 (** Licence       : GNU LGPLv3 (http://www.gnu.org/licenses/lgpl-3.0.html)   **)
 (** Contributions : You can create pull request for all your desired         **)
