@@ -53,6 +53,12 @@ type
     function AsString: string;
   end;
 
+  TNullPostalCode = class(TInterfacedObject, IPostalCode)
+  public
+    class function New: IPostalCode;
+    function AsString: string;
+  end;
+
   TDecorablePostalCode = class(TInterfacedObject, IPostalCode)
   protected
     FOrigin: IPostalCode;
@@ -170,6 +176,18 @@ function TPTCP3.AsString: string;
 begin
   Result := FOrigin.AsString;
   Delete(Result, 1, 5);
+end;
+
+{ TNullPostalCode }
+
+function TNullPostalCode.AsString: string;
+begin
+  Result := '';
+end;
+
+class function TNullPostalCode.New: IPostalCode;
+begin
+  Result := Create;
 end;
 
 end.

@@ -54,6 +54,13 @@ type
     function AsDouble: Double;
   end;
 
+  TNullCoordinate = class(TInterfacedObject, IGeoCoordinate)
+  public
+    class function New: IGeoCoordinate;
+    function AsString: string;
+    function AsDouble: Double;
+  end;
+
 implementation
 
 uses
@@ -101,6 +108,25 @@ end;
 class function TGeoCoordinate.New(const CoordinateType: TGeoCoordinateType; const Coordinate: IDouble): IGeoCoordinate;
 begin
   Result := New(CoordinateType, Coordinate.Value);
+end;
+
+{ TNullCoordinate }
+
+function TNullCoordinate.AsDouble: Double;
+resourcestring
+  cNullCoordinate = 'Invalid coordinate value';
+begin
+  raise Exception.Create(cNullCoordinate);
+end;
+
+function TNullCoordinate.AsString: string;
+begin
+  Result := '';
+end;
+
+class function TNullCoordinate.New: IGeoCoordinate;
+begin
+  Result := Create;
 end;
 
 end.
