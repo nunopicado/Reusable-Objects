@@ -252,12 +252,14 @@ begin
       Format(
         '%s-%s',
         [
-          FXML.Value
-            .SelectNode('/OK/Localidade/Arruamentos/Rua/CodPos/CP4')
-              .Text,
-          FXML.Value
-            .SelectNode('/OK/Localidade/Arruamentos/Rua/CodPos/CP3')
-              .Text
+          TSafeNodeText.New(
+            FXML.Value.SelectNode('/OK/Localidade/Arruamentos/Rua/CodPos/CP4'),
+            ''
+          ).Value,
+          TSafeNodeText.New(
+            FXML.Value.SelectNode('/OK/Localidade/Arruamentos/Rua/CodPos/CP3'),
+            ''
+          ).Value
         ]
       )
     )
@@ -268,9 +270,10 @@ function TPTPostalAddressOnline.TCTTAddress.Region: string;
 begin
   if FValid.Value
     then
-      Result := FXML.Value
-        .SelectNode('/OK/Localidade/Distrito')
-          .Text
+      Result := TSafeNodeText.New(
+        FXML.Value.SelectNode('/OK/Localidade/Distrito'),
+        ''
+      ).Value
     else
       Result := '';
 end;
