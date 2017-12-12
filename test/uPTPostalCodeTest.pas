@@ -13,17 +13,22 @@ type
     [TestCase('PTPostalCode AsString 2','3750-123,3750-123')]
     procedure PTPostalCodeAsStringTest(const ValueIn, ValueOut: string);
     [Test]
-    [TestCase('PTPostalCode Invalid 1','')]
-    [TestCase('PTPostalCode Invalid 2','3750')]
-    [TestCase('PTPostalCode Invalid 3','3750-')]
-    [TestCase('PTPostalCode Invalid 4','3750-1')]
-    [TestCase('PTPostalCode Invalid 5','3750-12')]
-    [TestCase('PTPostalCode Invalid 6','375-123')]
-    [TestCase('PTPostalCode Invalid 7','37-123')]
-    [TestCase('PTPostalCode Invalid 8','3-123')]
-    [TestCase('PTPostalCode Invalid 9','-123')]
-    [TestCase('PTPostalCode Invalid 10','AAAA-BBB')]
-    procedure PTPostalCodeInvalidTest(const ValueIn: string);
+    [TestCase('PTPostalCode IsValid 1',',False')]
+    [TestCase('PTPostalCode IsValid 2','3750,False')]
+    [TestCase('PTPostalCode IsValid 3','3750-,False')]
+    [TestCase('PTPostalCode IsValid 4','3750-1,False')]
+    [TestCase('PTPostalCode IsValid 5','3750-12,False')]
+    [TestCase('PTPostalCode IsValid 6','375-123,False')]
+    [TestCase('PTPostalCode IsValid 7','37-123,False')]
+    [TestCase('PTPostalCode IsValid 8','3-123,False')]
+    [TestCase('PTPostalCode IsValid 9','-123,False')]
+    [TestCase('PTPostalCode IsValid 10','AAAA-BBB,False')]
+    [TestCase('PTPostalCode IsValid 11','3750-143,True')]
+    [TestCase('PTPostalCode IsValid 12','1450-122,True')]
+    [TestCase('PTPostalCode IsValid 13','AAAA-BBBB,False')]
+    [TestCase('PTPostalCode IsValid 14','0000-123,False')]
+    [TestCase('PTPostalCode IsValid 15','1111-2222,False')]
+    procedure PTPostalCodeIsValidTest(const ValueIn: string; const Valid: Boolean);
   end;
 
   [TestFixture]
@@ -70,13 +75,12 @@ begin
   );
 end;
 
-procedure TPTPostalCodeTest.PTPostalCodeInvalidTest(const ValueIn: string);
+procedure TPTPostalCodeTest.PTPostalCodeIsValidTest(const ValueIn: string; const Valid: Boolean);
 begin
-  Assert.WillRaise(
-    procedure
-    begin
-      TPTPostalCode.New(ValueIn);
-    end
+  Assert.AreEqual<Boolean>(
+    Valid,
+    TPTPostalCode.New(ValueIn)
+      .IsValid
   );
 end;
 
