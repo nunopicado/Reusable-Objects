@@ -42,24 +42,24 @@ uses
   ;
 
 type
-  TBase64 = class(TInterfacedObject, IValue<AnsiString>)
+  TBase64 = class(TInterfacedObject, IAnsiString)
   private
-    FOrigin: IValue<AnsiString>;
+    FOrigin: IAnsiString;
   public
-    constructor Create(const Origin: IValue<AnsiString>);
-    class function New(const Origin: IValue<AnsiString>): IValue<AnsiString>;
+    constructor Create(const Origin: IAnsiString);
+    class function New(const Origin: IAnsiString): IAnsiString;
     function Value: AnsiString;
-    function Refresh: IValue<AnsiString>;
+    function Refresh: IAnsiString;
   end;
 
-  TUnBase64 = class(TInterfacedObject, IValue<AnsiString>)
+  TUnBase64 = class(TInterfacedObject, IAnsiString)
   private
-    FOrigin: IValue<AnsiString>;
+    FOrigin: IAnsiString;
   public
-    constructor Create(const Origin: IValue<AnsiString>);
-    class function New(const Origin: IValue<AnsiString>): IValue<AnsiString>;
+    constructor Create(const Origin: IAnsiString);
+    class function New(const Origin: IAnsiString): IAnsiString;
     function Value: AnsiString;
-    function Refresh: IValue<AnsiString>;
+    function Refresh: IAnsiString;
   end;
 
 implementation
@@ -93,18 +93,18 @@ begin
   end;
 end;
 
-class function TBase64.New(const Origin: IValue<AnsiString>): IValue<AnsiString>;
+class function TBase64.New(const Origin: IAnsiString): IAnsiString;
 begin
   Result := Create(Origin);
 end;
 
-function TBase64.Refresh: IValue<AnsiString>;
+function TBase64.Refresh: IAnsiString;
 begin
   Result := Self;
   FOrigin.Refresh;
 end;
 
-constructor TBase64.Create(const Origin: IValue<AnsiString>);
+constructor TBase64.Create(const Origin: IAnsiString);
 begin
   inherited Create;
   FOrigin := Origin;
@@ -112,12 +112,12 @@ end;
 
 { TUnBase64 }
 
-class function TUnBase64.New(const Origin: IValue<AnsiString>): IValue<AnsiString>;
+class function TUnBase64.New(const Origin: IAnsiString): IAnsiString;
 begin
   Result := Create(Origin);
 end;
 
-function TUnBase64.Refresh: IValue<AnsiString>;
+function TUnBase64.Refresh: IAnsiString;
 begin
   Result := Self;
   FOrigin.Refresh;
@@ -145,7 +145,7 @@ begin
   end;
 end;
 
-constructor TUnBase64.Create(const Origin: IValue<AnsiString>);
+constructor TUnBase64.Create(const Origin: IAnsiString);
 begin
   inherited Create;
   FOrigin := Origin;
