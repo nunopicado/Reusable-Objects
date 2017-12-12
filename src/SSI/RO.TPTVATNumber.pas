@@ -91,8 +91,8 @@ begin
   FValid := TBoolean.New(
     function: Boolean
     begin
-      Result := TRegEx.IsMatch(FPTVATNumber.Value, '^(?!\s*$)[0-9]{9}$') and
-               (RightStr(FPTVATNumber.Value, 1).ToInteger = CalcCheckDigit);
+      Result := TRegEx.IsMatch(FPTVATNumber.Value, '^(?!\s*$)[0-9]{9}$')
+        and (RightStr(FPTVATNumber.Value, 1).ToInteger = CalcCheckDigit);
     end
   );
   FPTVATNumber := TString.New(
