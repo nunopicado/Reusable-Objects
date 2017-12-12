@@ -94,7 +94,7 @@ contains
   RO.TMBReference in '..\src\SSI\RO.TMBReference.pas',
   RO.TNetworkNode in '..\src\SSI\RO.TNetworkNode.pas',
   RO.TPostalAddress in '..\src\SSI\RO.TPostalAddress.pas',
-  RO.TPostalAddressOnline in '..\src\SSI\RO.TPostalAddressOnline.pas',
+  RO.TPTPostalAddressOnline in '..\src\SSI\RO.TPTPostalAddressOnline.pas',
   RO.TPTPostalCode in '..\src\SSI\RO.TPTPostalCode.pas',
   RO.TPTVATNumber in '..\src\SSI\RO.TPTVATNumber.pas',
   RO.TRandomKey in '..\src\SSI\RO.TRandomKey.pas',
