@@ -42,13 +42,17 @@ uses
 
 type
   TCSVString = class(TInterfacedObject, ICSVString)
-  private
+  private const
+    cDefaultDelimiter = ';';
+  private var
     FCSV: string;
     FDelimiter: Char;
     FCount: IByte;
   public
-    constructor Create(const CSVString: string; const Delimiter: Char);
-    class function New(const CSVString: string; const Delimiter: Char): ICSVString;
+    constructor Create(const CSVString: string; const Delimiter: Char); overload;
+    constructor Create(const CSVString: string); overload;
+    class function New(const CSVString: string; const Delimiter: Char): ICSVString; overload;
+    class function New(const CSVString: string): ICSVString; overload;
     function Count: Byte;
     function Field(const FieldNumber: Byte; const Default: string = ''): string;
   end;
@@ -85,6 +89,11 @@ begin
   );
 end;
 
+constructor TCSVString.Create(const CSVString: string);
+begin
+  Create(CSVString, cDefaultDelimiter);
+end;
+
 function TCSVString.Field(const FieldNumber: Byte;
   const Default: string): string;
 var
@@ -96,6 +105,11 @@ begin
   Delete(Result, Pos(FDelimiter, Result), Result.Length);
   if Result.IsEmpty and not Default.IsEmpty
     then Result := Default;
+end;
+
+class function TCSVString.New(const CSVString: string): ICSVString;
+begin
+  Result := New(CSVString, cDefaultDelimiter);
 end;
 
 class function TCSVString.New(const CSVString: string;
