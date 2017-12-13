@@ -120,6 +120,8 @@ contains
   RO.TGetHTTP in '..\src\SSI\RO.TGetHTTP.pas',
   RO.IVATNumber in '..\src\Intf\RO.IVATNumber.pas',
   RO.IHideable in '..\src\Intf\RO.IHideable.pas',
-  RO.TSafeNodeText in '..\src\SSI\RO.TSafeNodeText.pas';
+  RO.TSafeNodeText in '..\src\SSI\RO.TSafeNodeText.pas',
+  RO.IShiftKeys in '..\src\Intf\RO.IShiftKeys.pas',
+  RO.TShiftKeys in '..\src\SSI\RO.TShiftKeys.pas';
 
 end.
