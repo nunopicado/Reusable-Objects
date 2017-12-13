@@ -2,13 +2,9 @@ unit RO.Factory.TCryptString;
 
 interface
 
-implementation
-
 uses
     RO.ICryptString
-  , RO.TCryptString
   , RO.IValue
-  , Spring.Container
   ;
 
 type
@@ -17,6 +13,13 @@ type
     function New(const Text: IAnsiString): ICryptString; overload;
     function New(const Text, Password: IAnsiString): ICryptString; overload;
   end;
+
+implementation
+
+uses
+    RO.TCryptString
+  , Spring.Container
+  ;
 
 initialization
   GlobalContainer

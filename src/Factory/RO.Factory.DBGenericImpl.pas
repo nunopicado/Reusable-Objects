@@ -2,12 +2,8 @@ unit RO.Factory.DBGenericImpl;
 
 interface
 
-implementation
-
 uses
     RO.DBConnectionIntf
-  , RO.DBGenericImpl
-  , Spring.Container
   ;
 
 type
@@ -27,6 +23,13 @@ type
     function New(Statement: string; Params: ISQLParams): ISQLStatement; overload;
     function New(Statement: string): ISQLStatement; overload;
   end;
+
+implementation
+
+uses
+    RO.DBGenericImpl
+  , Spring.Container
+  ;
 
 initialization
   GlobalContainer

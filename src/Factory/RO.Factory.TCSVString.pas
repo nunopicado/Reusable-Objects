@@ -2,12 +2,8 @@ unit RO.Factory.TCSVString;
 
 interface
 
-implementation
-
 uses
     RO.ICSVString
-  , RO.TCSVString
-  , Spring.Container
   ;
 
 type
@@ -16,6 +12,13 @@ type
     function New(const CSVString: string; const Delimiter: Char): ICSVString; overload;
     function New(const CSVString: string): ICSVString; overload;
   end;
+
+implementation
+
+uses
+    RO.TCSVString
+  , Spring.Container
+  ;
 
 initialization
   GlobalContainer
