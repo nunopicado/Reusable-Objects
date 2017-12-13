@@ -41,6 +41,8 @@ contains
   RO.TValue in '..\src\SSI\RO.TValue.pas',
   RO.ICOMPort in '..\src\Intf\RO.ICOMPort.pas',
   RO.IPrinters in '..\src\Intf\RO.IPrinters.pas',
-  RO.ITimer in '..\src\Intf\RO.ITimer.pas';
+  RO.ITimer in '..\src\Intf\RO.ITimer.pas',
+  RO.VCL.IColor in '..\src\Intf\RO.VCL.IColor.pas',
+  RO.VCL.THexColor in '..\src\VCL\RO.VCL.THexColor.pas';
 
 end.
