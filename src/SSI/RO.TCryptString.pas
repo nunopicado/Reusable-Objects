@@ -53,8 +53,8 @@ type
     constructor Create(const Text: AnsiString); overload;
     class function New(const Text, Password: AnsiString): ICryptString; overload;
     class function New(const Text: AnsiString): ICryptString; overload;
-    class function New(const Text, Password: IValue<AnsiString>): ICryptString; overload;
-    class function New(const Text: IValue<AnsiString>): ICryptString; overload;
+    class function New(const Text, Password: IAnsiString): ICryptString; overload;
+    class function New(const Text: IAnsiString): ICryptString; overload;
     function Crypt: AnsiString;
     function Decrypt: AnsiString;
   end;
@@ -188,12 +188,12 @@ begin
 end;
 
 class function TCryptString.New(const Text,
-  Password: IValue<AnsiString>): ICryptString;
+  Password: IAnsiString): ICryptString;
 begin
   Result := New(Text.Value, Password.Value);
 end;
 
-class function TCryptString.New(const Text: IValue<AnsiString>): ICryptString;
+class function TCryptString.New(const Text: IAnsiString): ICryptString;
 begin
   Result := New(Text.Value);
 end;

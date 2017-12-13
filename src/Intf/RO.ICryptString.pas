@@ -48,7 +48,7 @@ type
 
   ICryptStringFactory = interface(IInvokable)
   ['{7700A319-F560-42CC-B10F-E703BB791E89}']
-    function New(const Text: IValue<AnsiString>): ICryptString; overload;
+    function New(const Text: IAnsiString): ICryptString; overload;
     function New(const Text, Password: IValue<AnsiString>): ICryptString; overload;
   end;
 
