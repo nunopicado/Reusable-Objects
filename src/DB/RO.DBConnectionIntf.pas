@@ -57,11 +57,6 @@ type
     function Value: Variant;
   end;
 
-  ISQLParamFactory = interface(IInvokable)
-  ['{66A73342-5CF0-4A41-A292-687468A2CE0C}']
-    function New(Name: string; Value: Variant): ISQLParam;
-  end;
-
   ISQLParams = interface(IInvokable)
   ['{00AA5AE7-233B-4B7B-827B-7DF90B8A8315}']
     function Add(Param: ISQLParam): ISQLParams;
@@ -70,22 +65,10 @@ type
     function Count: Integer;
   end;
 
-  ISQLParamsFactory = interface(IInvokable)
-  ['{85A7B252-F5A4-4122-AC16-466D5F4F29B2}']
-    function New: ISQLParams; overload;
-    function New(Param: ISQLParam): ISQLParams; overload;
-  end;
-
   ISQLStatement = interface(IInvokable)
   ['{5B75AF96-FD85-465E-86DD-D537B90FA381}']
     function ParamList: ISQLParams;
     function AsString: string;
-  end;
-
-  ISQLStatementFactory = interface(IInvokable)
-  ['{50297042-E69D-4AEA-B590-BF4EED66F711}']
-    function New(Statement: string; Params: ISQLParams): ISQLStatement; overload;
-    function New(Statement: string): ISQLStatement; overload;
   end;
 
   IServer = interface(IInvokable)
@@ -128,11 +111,6 @@ type
     function NewQuery(const Statement: ISQLStatement): IDBQuery; overload;
     function NewQuery(const Statement: ISQLStatement; out Destination: IDBQuery): IDatabase; overload;
     function Run(SQLStatement: ISQLStatement): IDatabase;
-  end;
-
-  IDatabaseFactory = interface(IInvokable)
-  ['{E3813801-C68F-4F80-8081-ACC658A26A3B}']
-    function New(Server: IServer; Database: string): IDatabase;
   end;
 
 implementation

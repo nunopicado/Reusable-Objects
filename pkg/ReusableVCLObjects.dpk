@@ -43,6 +43,7 @@ contains
   RO.IPrinters in '..\src\Intf\RO.IPrinters.pas',
   RO.ITimer in '..\src\Intf\RO.ITimer.pas',
   RO.VCL.IColor in '..\src\Intf\RO.VCL.IColor.pas',
-  RO.VCL.THexColor in '..\src\VCL\RO.VCL.THexColor.pas';
+  RO.VCL.THexColor in '..\src\VCL\RO.VCL.THexColor.pas',
+  RO.Factory.THexColor in '..\src\Factory\RO.Factory.THexColor.pas';
 
 end.

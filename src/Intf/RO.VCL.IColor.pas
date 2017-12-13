@@ -12,11 +12,6 @@ type
     function AsTColor: TColor;
   end;
 
-  IColorFactory = interface(IInvokable)
-  ['{027D050D-2D9C-460E-BAC6-B4B8E0BB8F21}']
-    function New(Color: string): IColor;
-  end;
-
 implementation
 
 end.

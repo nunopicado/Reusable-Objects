@@ -46,6 +46,8 @@ contains
   RO.IIf in '..\src\Intf\RO.IIf.pas',
   RO.IValue in '..\src\Intf\RO.IValue.pas',
   RO.TIf in '..\src\SSI\RO.TIf.pas',
-  RO.TValue in '..\src\SSI\RO.TValue.pas';
+  RO.TValue in '..\src\SSI\RO.TValue.pas',
+  RO.Factory.DBGenericImpl in '..\src\Factory\RO.Factory.DBGenericImpl.pas',
+  RO.Factory.DBUniImpl in '..\src\Factory\RO.Factory.DBUniImpl.pas';
 
 end.

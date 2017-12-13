@@ -42,12 +42,6 @@ type
     function Field(const FieldNumber: Byte; const Default: string = ''): string;
   end;
 
-  ICSVStringFactory = interface(IInvokable)
-  ['{4B0630D1-1F19-4F32-BB4E-1CC6B56600C2}']
-    function New(const CSVString: string; const Delimiter: Char): ICSVString; overload;
-    function New(const CSVString: string): ICSVString; overload;
-  end;
-
 implementation
 
 end.
