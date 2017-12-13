@@ -88,7 +88,7 @@ end;
 function TCSVString.Field(const FieldNumber: Byte;
   const Default: string): string;
 var
-  i     : Byte;
+  i: Byte;
 begin
   Result := FCSV;
   for i := 1 to Pred(FieldNumber) do
