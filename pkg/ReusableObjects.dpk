@@ -124,7 +124,6 @@ contains
   RO.IShiftKeys in '..\src\Intf\RO.IShiftKeys.pas',
   RO.TShiftKeys in '..\src\SSI\RO.TShiftKeys.pas',
   RO.Factory.TCryptString in '..\src\Factory\RO.Factory.TCryptString.pas',
-  RO.Factory.TCSVString in '..\src\Factory\RO.Factory.TCSVString.pas',
-  RO.Factory.TIf in '..\src\Factory\RO.Factory.TIf.pas';
+  RO.Factory.TCSVString in '..\src\Factory\RO.Factory.TCSVString.pas';
 
 end.
