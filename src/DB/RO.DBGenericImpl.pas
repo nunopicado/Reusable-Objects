@@ -68,8 +68,7 @@ type
     FStatement: string;
     FParamList: ISQLParams;
   public
-    constructor Create(Statement: string; Params: ISQLParams); overload;
-    constructor Create(Statement: string); overload;
+    constructor Create(Statement: string; Params: ISQLParams);
     class function New(Statement: string; Params: ISQLParams): ISQLStatement; overload;
     class function New(Statement: string): ISQLStatement; overload;
     function ParamList: ISQLParams;
@@ -92,6 +91,7 @@ type
     FList: TList<ISQLParam>;
   public
     constructor Create;
+    destructor Destroy; override;
     class function New: ISQLParams; overload;
     class function New(Param: ISQLParam): ISQLParams; overload;
     function Add(Param: ISQLParam): ISQLParams;
@@ -173,14 +173,12 @@ begin
   FParamList := Params;
 end;
 
-constructor TSQLStatement.Create(Statement: string);
-begin
-  Create(Statement, nil);
-end;
-
 class function TSQLStatement.New(Statement: string): ISQLStatement;
 begin
-  Result := New(Statement, nil);
+  Result := New(
+    Statement,
+    TSQLParams.New
+  );
 end;
 
 class function TSQLStatement.New(Statement: string; Params: ISQLParams): ISQLStatement;
@@ -245,6 +243,12 @@ end;
 constructor TSQLParams.Create;
 begin
   FList := TList<ISQLParam>.Create;
+end;
+
+destructor TSQLParams.Destroy;
+begin
+  FList.Free;
+  inherited;
 end;
 
 class function TSQLParams.New: ISQLParams;

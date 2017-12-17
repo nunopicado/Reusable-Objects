@@ -133,11 +133,14 @@ begin
       Result := TUniQuery.Create(nil);
       Result.Connection := Connection;
       Result.SQL.Text := Statement.AsString;
-      if Assigned(Statement.ParamList) then begin
-        for i := 0 to Pred(Statement.ParamList.Count) do begin
-          Result.ParamByName(Statement.ParamList.Param(i).Name).Value := Statement.ParamList.Param(i).Value;
+      if Assigned(Statement.ParamList)
+          and (Statement.ParamList.Count > 0)
+        then begin
+          for i := 0 to Pred(Statement.ParamList.Count)do
+            begin
+              Result.ParamByName(Statement.ParamList.Param(i).Name).Value := Statement.ParamList.Param(i).Value;
+            end;
         end;
-      end;
     end
   );
 end;
