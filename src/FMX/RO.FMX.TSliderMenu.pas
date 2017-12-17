@@ -120,7 +120,7 @@ function TSliderMenu.Add(const Item: ISliderMenuItem = nil): ISliderMenu;
 var
   ListBoxItem: TListBoxSliderItem;
 begin
-  Result := Self;
+  Result      := Self;
   ListBoxItem := TListBoxSliderItem.Create(FMenu);
   with ListBoxItem do
     begin
@@ -299,7 +299,8 @@ begin
   Result := FAction;
 end;
 
-constructor TSliderMenuItem.Create(const Id: Byte; const Text, SubText: string; const Action: TProc<Byte>; const ImageIndex: Integer = -1);
+constructor TSliderMenuItem.Create(const Id: Byte; const Text, SubText: string; const Action: TProc<Byte>;
+  const ImageIndex: Integer = -1);
 begin
   FId         := Id;
   FText       := Text;
