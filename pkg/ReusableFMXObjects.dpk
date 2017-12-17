@@ -39,6 +39,8 @@ contains
   RO.FMX.TShadowRectangle in '..\src\FMX\RO.FMX.TShadowRectangle.pas',
   RO.FMX.TSliderMsg in '..\src\FMX\RO.FMX.TSliderMsg.pas',
   RO.IClipboard in '..\src\Intf\RO.IClipboard.pas',
-  RO.IHideable in '..\src\Intf\RO.IHideable.pas';
+  RO.IHideable in '..\src\Intf\RO.IHideable.pas',
+  RO.FMX.TSliderMenu in '..\src\FMX\RO.FMX.TSliderMenu.pas',
+  RO.ISliderMenu in '..\src\Intf\RO.ISliderMenu.pas';
 
 end.
