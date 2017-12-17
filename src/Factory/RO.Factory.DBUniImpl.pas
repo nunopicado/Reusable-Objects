@@ -22,7 +22,8 @@ uses
 initialization
   GlobalContainer
     .RegisterType<TDBUniDatabase>('TDBUniDatabase')
-    .Implements<IDatabase>;
+    .Implements<IDatabase>
+    .AsSingleton;
   GlobalContainer
     .RegisterType<IDatabaseFactory>
     .AsFactory;
