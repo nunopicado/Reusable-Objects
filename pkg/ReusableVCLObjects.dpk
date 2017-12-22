@@ -29,7 +29,8 @@ package ReusableVCLObjects;
 
 requires
   rtl,
-  vcl;
+  vcl,
+  vclimg;
 
 contains
   RO.VCL.TCOMPort in '..\src\VCL\RO.VCL.TCOMPort.pas',
@@ -44,6 +45,10 @@ contains
   RO.ITimer in '..\src\Intf\RO.ITimer.pas',
   RO.VCL.IColor in '..\src\Intf\RO.VCL.IColor.pas',
   RO.VCL.THexColor in '..\src\VCL\RO.VCL.THexColor.pas',
-  RO.Factory.THexColor in '..\src\Factory\RO.Factory.THexColor.pas';
+  RO.Factory.THexColor in '..\src\Factory\RO.Factory.THexColor.pas',
+  RO.VCL.IBitmap in '..\src\Intf\RO.VCL.IBitmap.pas',
+  RO.VCL.IIcon in '..\src\Intf\RO.VCL.IIcon.pas',
+  RO.VCL.TBitmapFromFile in '..\src\VCL\RO.VCL.TBitmapFromFile.pas',
+  RO.VCL.TIconFromBitmap in '..\src\VCL\RO.VCL.TIconFromBitmap.pas';
 
 end.
