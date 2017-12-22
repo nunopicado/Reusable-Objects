@@ -59,8 +59,8 @@ type
 
   ISQLParams = interface(IInvokable)
   ['{00AA5AE7-233B-4B7B-827B-7DF90B8A8315}']
-    function Add(Param: ISQLParam): ISQLParams;
-    function Param(Idx: Integer): ISQLParam;
+    function Add(const Param: ISQLParam): ISQLParams;
+    function Param(const Idx: Integer): ISQLParam;
     function AsVariantArray: TVariantArray;
     function Count: Integer;
   end;
@@ -83,18 +83,18 @@ type
 
   IDBQuery = interface(IInvokable)
   ['{9E4D3D8E-BE29-43CE-8A5E-2F1C9C5E58D0}']
-    procedure SetRecNo(Idx: Integer);
+    procedure SetRecNo(const Idx: Integer);
     function GetRecNo: Integer;
-    function Publish(DataSource: TDataSource): IDBQuery;
+    function Publish(const DataSource: TDataSource): IDBQuery;
     function RecordCount: Integer;
-    function FieldByName(FieldName: string): TField;
-    function ForEach(Action: TRowAction): IDBQuery;
+    function FieldByName(const FieldName: string): TField;
+    function ForEach(const Action: TRowAction): IDBQuery;
     function Run: IDBQuery;
     function Insert: IDBQuery;
     function Edit: IDBQuery;
     function Append: IDBQuery;
     function Post: IDBQuery;
-    function FieldValue(FieldName: String; Value: Variant): IDBQuery;
+    function FieldValue(const FieldName: String; const Value: Variant): IDBQuery;
     property RecNo: Integer
       read GetRecNo
       write SetRecNo;
@@ -106,11 +106,11 @@ type
     function Disconnect: IDatabase;
     function IsConnected: Boolean;
     function StartTransaction: IDatabase;
-    function StopTransaction(SaveChanges: Boolean = True): IDatabase;
+    function StopTransaction(const SaveChanges: Boolean = True): IDatabase;
     function Database: string;
     function NewQuery(const Statement: ISQLStatement): IDBQuery; overload;
     function NewQuery(const Statement: ISQLStatement; out Destination: IDBQuery): IDatabase; overload;
-    function Run(SQLStatement: ISQLStatement): IDatabase;
+    function Run(const SQLStatement: ISQLStatement): IDatabase;
   end;
 
 implementation

@@ -53,8 +53,8 @@ type
     FPassword: string;
     FServerType: TServerType;
   public
-    constructor Create(const HostName: string; const Port: Word; const Username, Password: string; ServerType: TServerType);
-    class function New(const HostName: string; const Port: Word; const Username, Password: string; ServerType: TServerType): IServer;
+    constructor Create(const HostName: string; const Port: Word; const Username, Password: string; const ServerType: TServerType);
+    class function New(const HostName: string; const Port: Word; const Username, Password: string; const ServerType: TServerType): IServer;
     function Hostname: string;
     function Port: Word;
     function Username: string;
@@ -68,9 +68,9 @@ type
     FStatement: string;
     FParamList: ISQLParams;
   public
-    constructor Create(Statement: string; Params: ISQLParams);
-    class function New(Statement: string; Params: ISQLParams): ISQLStatement; overload;
-    class function New(Statement: string): ISQLStatement; overload;
+    constructor Create(const Statement: string; const Params: ISQLParams);
+    class function New(const Statement: string; const Params: ISQLParams): ISQLStatement; overload;
+    class function New(const Statement: string): ISQLStatement; overload;
     function ParamList: ISQLParams;
     function AsString: string;
   end;
@@ -80,8 +80,8 @@ type
     FName: string;
     FValue: Variant;
   public
-    constructor Create(Name: string; Value: Variant);
-    class function New(Name: string; Value: Variant): ISQLParam;
+    constructor Create(const Name: string; const Value: Variant);
+    class function New(const Name: string; const Value: Variant): ISQLParam;
     function Name: string;
     function Value: Variant;
   end;
@@ -93,9 +93,9 @@ type
     constructor Create;
     destructor Destroy; override;
     class function New: ISQLParams; overload;
-    class function New(Param: ISQLParam): ISQLParams; overload;
-    function Add(Param: ISQLParam): ISQLParams;
-    function Param(Idx: Integer): ISQLParam;
+    class function New(const Param: ISQLParam): ISQLParams; overload;
+    function Add(const Param: ISQLParam): ISQLParams;
+    function Param(const Idx: Integer): ISQLParam;
     function AsVariantArray: TVariantArray;
     function Count: Integer;
   end;
@@ -109,7 +109,7 @@ uses
 { TServer }
 
 constructor TServer.Create(const HostName: string; const Port: Word; const Username, Password: string;
-  ServerType: TServerType);
+  const ServerType: TServerType);
 begin
   FHostname   := HostName;
   FPort       := Port;
@@ -124,7 +124,7 @@ begin
 end;
 
 class function TServer.New(const HostName: string; const Port: Word; const Username, Password: string;
-  ServerType: TServerType): IServer;
+  const ServerType: TServerType): IServer;
 begin
   Result := Create(HostName, Port, Username, Password, ServerType);
 end;
@@ -167,13 +167,13 @@ begin
   Result := FStatement;
 end;
 
-constructor TSQLStatement.Create(Statement: string; Params: ISQLParams);
+constructor TSQLStatement.Create(const Statement: string; const Params: ISQLParams);
 begin
   FStatement := Statement;
   FParamList := Params;
 end;
 
-class function TSQLStatement.New(Statement: string): ISQLStatement;
+class function TSQLStatement.New(const Statement: string): ISQLStatement;
 begin
   Result := New(
     Statement,
@@ -181,7 +181,7 @@ begin
   );
 end;
 
-class function TSQLStatement.New(Statement: string; Params: ISQLParams): ISQLStatement;
+class function TSQLStatement.New(const Statement: string; const Params: ISQLParams): ISQLStatement;
 begin
   Result := Create(Statement, Params);
 end;
@@ -193,7 +193,7 @@ end;
 
 { TSQLParam }
 
-constructor TSQLParam.Create(Name: string; Value: Variant);
+constructor TSQLParam.Create(const Name: string; const Value: Variant);
 begin
   FName  := Name;
   FValue := Value;
@@ -204,7 +204,7 @@ begin
   Result := FName;
 end;
 
-class function TSQLParam.New(Name: string; Value: Variant): ISQLParam;
+class function TSQLParam.New(const Name: string; const Value: Variant): ISQLParam;
 begin
   Result := Create(Name, Value);
 end;
@@ -216,7 +216,7 @@ end;
 
 { TSQLParams }
 
-function TSQLParams.Add(Param: ISQLParam): ISQLParams;
+function TSQLParams.Add(const Param: ISQLParam): ISQLParams;
 begin
   Result := Self;
   FList.Add(Param);
@@ -256,12 +256,12 @@ begin
   Result := Create;
 end;
 
-class function TSQLParams.New(Param: ISQLParam): ISQLParams;
+class function TSQLParams.New(const Param: ISQLParam): ISQLParams;
 begin
   Result := Create.Add(Param);
 end;
 
-function TSQLParams.Param(Idx: Integer): ISQLParam;
+function TSQLParams.Param(const Idx: Integer): ISQLParam;
 begin
   if FList.Count > 0 then begin
     Result := FList[Idx];

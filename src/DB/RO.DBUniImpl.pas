@@ -50,18 +50,18 @@ type
     FConnection: TUniConnection;
     FProvider: TUniProvider;
   public
-    constructor Create(Server: IServer; Database: string);
+    constructor Create(const Server: IServer; const Database: string);
     destructor Destroy; override;
-    class function New(Server: IServer; Database: string): IDatabase;
+    class function New(const Server: IServer; const Database: string): IDatabase;
     function Connect: IDatabase;
     function Disconnect: IDatabase;
     function StartTransaction: IDatabase;
-    function StopTransaction(SaveChanges: Boolean = True): IDatabase;
+    function StopTransaction(const SaveChanges: Boolean = True): IDatabase;
     function IsConnected: Boolean;
     function Database: string;
     function NewQuery(const Statement: ISQLStatement): IDBQuery; overload;
     function NewQuery(const Statement: ISQLStatement; out Destination: IDBQuery): IDatabase; overload;
-    function Run(SQLStatement: ISQLStatement): IDatabase;
+    function Run(const SQLStatement: ISQLStatement): IDatabase;
   end;
 
   TDatabase = TDBUniDatabase;
@@ -82,22 +82,22 @@ type
   TDBUniQuery = class(TInterfacedObject, IDBQuery)
   private
     FQuery: IValue<TUniQuery>;
-    procedure SetRecNo(Idx: Integer);
+    procedure SetRecNo(const Idx: Integer);
     function GetRecNo: Integer;
   public
-    constructor Create(Connection: TUniConnection; Statement: ISQLStatement);
+    constructor Create(const Connection: TUniConnection; const Statement: ISQLStatement);
     destructor Destroy; override;
-    class function New(Connection: TUniConnection; Statement: ISQLStatement): IDBQuery;
-    function Publish(DataSource: TDataSource): IDBQuery;
+    class function New(const Connection: TUniConnection; const Statement: ISQLStatement): IDBQuery;
+    function Publish(const DataSource: TDataSource): IDBQuery;
     function RecordCount: Integer;
-    function FieldByName(FieldName: string): TField;
-    function ForEach(Action: TRowAction): IDBQuery;
+    function FieldByName(const FieldName: string): TField;
+    function ForEach(const Action: TRowAction): IDBQuery;
     function Run: IDBQuery;
     function Insert: IDBQuery;
     function Edit: IDBQuery;
     function Append: IDBQuery;
     function Post: IDBQuery;
-    function FieldValue(FieldName: string; Value: Variant): IDBQuery;
+    function FieldValue(const FieldName: string; const Value: Variant): IDBQuery;
     property RecNo: Integer
       read GetRecNo
       write SetRecNo;
@@ -111,7 +111,7 @@ begin
   FQuery.Value.Post;
 end;
 
-function TDBUniQuery.Publish(DataSource: TDataSource): IDBQuery;
+function TDBUniQuery.Publish(const DataSource: TDataSource): IDBQuery;
 begin
   Result := Self;
   DataSource.DataSet := FQuery.Value;
@@ -123,7 +123,7 @@ begin
   FQuery.Value.Append;
 end;
 
-constructor TDBUniQuery.Create(Connection: TUniConnection; Statement: ISQLStatement);
+constructor TDBUniQuery.Create(const Connection: TUniConnection; const Statement: ISQLStatement);
 begin
   FQuery := TValue<TUniQuery>.New(
     function : TUniQuery
@@ -158,18 +158,18 @@ begin
   FQuery.Value.Edit;
 end;
 
-function TDBUniQuery.FieldByName(FieldName: string): TField;
+function TDBUniQuery.FieldByName(const FieldName: string): TField;
 begin
   Result := FQuery.Value.FieldByName(FieldName);
 end;
 
-function TDBUniQuery.FieldValue(FieldName: string; Value: Variant): IDBQuery;
+function TDBUniQuery.FieldValue(const FieldName: string; const Value: Variant): IDBQuery;
 begin
   Result := Self;
   FQuery.Value.FieldValues[FieldName] := Value;
 end;
 
-function TDBUniQuery.ForEach(Action: TRowAction): IDBQuery;
+function TDBUniQuery.ForEach(const Action: TRowAction): IDBQuery;
 begin
   Result := Self;
   FQuery.Value.First;
@@ -190,7 +190,7 @@ begin
   FQuery.Value.Insert;
 end;
 
-class function TDBUniQuery.New(Connection: TUniConnection; Statement: ISQLStatement): IDBQuery;
+class function TDBUniQuery.New(const Connection: TUniConnection; const Statement: ISQLStatement): IDBQuery;
 begin
   Result := Create(Connection, Statement);
 end;
@@ -210,7 +210,7 @@ begin
   FQuery.Value.Open;
 end;
 
-procedure TDBUniQuery.SetRecNo(Idx: Integer);
+procedure TDBUniQuery.SetRecNo(const Idx: Integer);
 begin
   FQuery.Value.RecNo := Idx;
 end;
@@ -223,7 +223,7 @@ begin
   FConnection.Connect;
 end;
 
-constructor TDBUniDatabase.Create(Server: IServer; Database: string);
+constructor TDBUniDatabase.Create(const Server: IServer; const Database: string);
 begin
   FConnection              := TUniConnection.Create(nil);
   FConnection.Server       := Server.Hostname;
@@ -264,7 +264,7 @@ begin
   Result := FConnection.Connected;
 end;
 
-class function TDBUniDatabase.New(Server: IServer; Database: string): IDatabase;
+class function TDBUniDatabase.New(const Server: IServer; const Database: string): IDatabase;
 begin
   Result := Create(Server, Database);
 end;
@@ -281,7 +281,7 @@ begin
   Result := TDBUniQuery.Create(FConnection, Statement);
 end;
 
-function TDBUniDatabase.Run(SQLStatement: ISQLStatement): IDatabase;
+function TDBUniDatabase.Run(const SQLStatement: ISQLStatement): IDatabase;
 begin
   Result := Self;
   if not Assigned(SQLStatement.ParamList)
@@ -294,7 +294,7 @@ begin
   FConnection.StartTransaction;
 end;
 
-function TDBUniDatabase.StopTransaction(SaveChanges: Boolean = True): IDatabase;
+function TDBUniDatabase.StopTransaction(const SaveChanges: Boolean = True): IDatabase;
 begin
   if SaveChanges then begin
     FConnection.Commit;
