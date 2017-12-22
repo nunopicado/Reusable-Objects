@@ -90,7 +90,8 @@ type
   strict private
     FList: TList<ISQLParam>;
   public
-    constructor Create;
+    constructor Create; overload;
+    constructor Create(const Param: ISQLParam); overload;
     destructor Destroy; override;
     class function New: ISQLParams; overload;
     class function New(const Param: ISQLParam): ISQLParams; overload;
@@ -240,6 +241,12 @@ begin
   Result := FList.Count;
 end;
 
+constructor TSQLParams.Create(const Param: ISQLParam);
+begin
+  Create;
+  Add(Param);
+end;
+
 constructor TSQLParams.Create;
 begin
   FList := TList<ISQLParam>.Create;
@@ -258,7 +265,7 @@ end;
 
 class function TSQLParams.New(const Param: ISQLParam): ISQLParams;
 begin
-  Result := Create.Add(Param);
+  Result := Create(Param);
 end;
 
 function TSQLParams.Param(const Idx: Integer): ISQLParam;
