@@ -73,24 +73,27 @@ uses
   , PngImage
   ;
 
+type
+  TVCLBitmap = Vcl.Graphics.TBitmap;
+
 { TBitmapFromFile }
 
-function TBitmapFromFile.AsBitmap: Vcl.Graphics.TBitmap;
+function TBitmapFromFile.AsBitmap: TVCLBitmap;
 begin
   Result := FBitmap.Value;
 end;
 
 constructor TBitmapFromFile.Create(const FileName: string);
 begin
-  FBitmap := TValue<Vcl.Graphics.TBitmap>.New(
-    function : Vcl.Graphics.TBitmap
+  FBitmap := TValue<TVCLBitmap>.New(
+    function : TVCLBitmap
     var
       Img : TImage;
     begin
       Img := TImage.Create(nil);
       try
         Img.Picture.LoadFromFile(FileName);
-        Result := Vcl.Graphics.TBitmap.Create;
+        Result := TVCLBitmap.Create;
         Result.Assign(Img.Picture.Graphic);
       finally
         Img.Free;
@@ -113,17 +116,17 @@ end;
 
 { TResizeBitmap }
 
-function TResize.AsBitmap: Vcl.Graphics.TBitmap;
+function TResize.AsBitmap: TVCLBitmap;
 begin
   Result := FBitmap.Value;
 end;
 
 constructor TResize.Create(const Origin: IBitmap; const Width, Height: Integer);
 begin
-  FBitmap := TValue<Vcl.Graphics.TBitmap>.New(
-    function : Vcl.Graphics.TBitmap
+  FBitmap := TValue<TVCLBitmap>.New(
+    function : TVCLBitmap
     begin
-      Result := Vcl.Graphics.TBitmap.Create;
+      Result := TVCLBitmap.Create;
       Result.SetSize(Width, Height);
       SetStretchBltMode(Result.Canvas.Handle, HALFTONE);
       StretchBlt(

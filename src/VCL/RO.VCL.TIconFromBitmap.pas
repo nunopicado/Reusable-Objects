@@ -61,6 +61,9 @@ uses
   , Windows
   ;
 
+type
+  TVCLBitmap = Vcl.Graphics.TBitmap;
+
 { TIconFromBitmap }
 
 function TIconFromBitmap.AsIcon: TIcon;
@@ -68,15 +71,15 @@ begin
   Result := FIcon.Value;
 end;
 
-constructor TIconFromBitmap.Create(const Bitmap: Vcl.Graphics.TBitmap);
+constructor TIconFromBitmap.Create(const Bitmap: TVCLBitmap);
 begin
   FIcon := TValue<TIcon>.New(
     function : TIcon
     var
-      BmpMask   : Vcl.Graphics.TBitmap;
+      BmpMask   : TVCLBitmap;
       IconInfo  : TIconInfo;
     begin
-      BmpMask := Vcl.Graphics.TBitmap.Create;
+      BmpMask := TVCLBitmap.Create;
       try
         BmpMask.Canvas.Brush.Color := clBlack;
         BmpMask.SetSize(Bitmap.Width, Bitmap.Height);
@@ -105,7 +108,7 @@ begin
   Result := Create(Bitmap.AsBitmap);
 end;
 
-class function TIconFromBitmap.New(const Bitmap: Vcl.Graphics.TBitmap): IIcon;
+class function TIconFromBitmap.New(const Bitmap: TVCLBitmap): IIcon;
 begin
   Result := Create(Bitmap);
 end;
