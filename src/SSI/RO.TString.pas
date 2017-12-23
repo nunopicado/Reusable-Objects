@@ -40,7 +40,6 @@ uses
   ;
 
 type
-  {$M+}
   TDecorableIString = class(TInterfacedObject, IString)
   protected
     FOrigin: IString;
@@ -88,7 +87,6 @@ type
     class function New(Origin: IString; Default: IString): IString; reintroduce;
     function Value: string; override;
   end;
-  {$M-}
 
 implementation
 
