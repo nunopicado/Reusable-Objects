@@ -88,6 +88,15 @@ type
     function Value: string; override;
   end;
 
+  TInitialCaps = class(TDecorableIString, IString)
+  private
+    FValue: IString;
+  public
+    constructor Create(Origin: IString); override;
+    class function New(Origin: IString): IString; override;
+    function Value: string; override;
+  end;
+
 implementation
 
 uses
@@ -224,6 +233,35 @@ end;
 function TDecorableIString.Value: string;
 begin
   Result := FOrigin.Value;
+end;
+
+{ TInitialCaps }
+
+constructor TInitialCaps.Create(Origin: IString);
+begin
+  inherited;
+  FValue := TString.New(
+    function : string
+    var
+      i: Integer;
+    begin
+      Result := Origin.Value;
+      for i := 1 to Origin.Value.Length do
+        if (i = 1) or
+            (not CharInSet(Origin.Value[Pred(i)], ['A'..'Z', 'a'..'z']))
+          then Result[i] := UpCase(Result[i]);
+    end
+  );
+end;
+
+class function TInitialCaps.New(Origin: IString): IString;
+begin
+  Result := Create(Origin);
+end;
+
+function TInitialCaps.Value: string;
+begin
+  Result := FValue.Value;
 end;
 
 end.

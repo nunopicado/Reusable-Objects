@@ -34,6 +34,11 @@ type
     [TestCase('TDefault 1', 'ghijk,,ghijk')]
     [TestCase('TDefault 2', 'abcdef,abcdef,ghijk')]
     procedure _Default(const Expected, Value, Default: string);
+    [Test]
+    [TestCase('TInitialCaps 1', 'Hello World,hello world')]
+    [TestCase('TInitialCaps 2', 'S.A.,s.a.')]
+    [TestCase('TInitialCaps 3', '[Gone],[gone]')]
+    procedure _InitialCaps(const Expected, Value: string);
   end;
 
 implementation
@@ -110,6 +115,21 @@ begin
     TGroupDigits.New(
       IStringMock,
       NumDigits
+    ).Value
+  );
+end;
+
+procedure TStringTest._InitialCaps(const Expected, Value: string);
+var
+  IStringMock: TMock<IString>;
+begin
+  IStringMock := TMock<IString>.Create;
+  IStringMock.Setup.WillReturn(Value).When.Value;
+
+  Assert.AreEqual(
+    Expected,
+    TInitialCaps.New(
+      IStringMock
     ).Value
   );
 end;
