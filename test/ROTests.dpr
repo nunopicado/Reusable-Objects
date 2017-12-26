@@ -64,7 +64,9 @@ uses
   RO.TByteSequence in '..\src\SSI\RO.TByteSequence.pas',
   uTByteSequenceTest in 'uTByteSequenceTest.pas',
   uTCSVStringTest in 'uTCSVStringTest.pas',
-  RO.IVATNumber in '..\src\Intf\RO.IVATNumber.pas';
+  RO.IVATNumber in '..\src\Intf\RO.IVATNumber.pas',
+  RO.TTriplet in '..\src\SSI\RO.TTriplet.pas',
+  uTTripletTest in 'uTTripletTest.pas';
 
 var
   runner : ITestRunner;

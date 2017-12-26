@@ -125,6 +125,7 @@ contains
   RO.TShiftKeys in '..\src\SSI\RO.TShiftKeys.pas',
   RO.Factory.TCryptString in '..\src\Factory\RO.Factory.TCryptString.pas',
   RO.Factory.TCSVString in '..\src\Factory\RO.Factory.TCSVString.pas',
-  RO.ISliderMenu in '..\src\Intf\RO.ISliderMenu.pas';
+  RO.ISliderMenu in '..\src\Intf\RO.ISliderMenu.pas',
+  RO.TTriplet in '..\src\SSI\RO.TTriplet.pas';
 
 end.
