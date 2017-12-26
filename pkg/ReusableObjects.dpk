@@ -126,6 +126,9 @@ contains
   RO.Factory.TCryptString in '..\src\Factory\RO.Factory.TCryptString.pas',
   RO.Factory.TCSVString in '..\src\Factory\RO.Factory.TCSVString.pas',
   RO.ISliderMenu in '..\src\Intf\RO.ISliderMenu.pas',
+  RO.IShell in '..\src\Intf\RO.IShell.pas',
+  RO.TPipedShell in '..\src\SSI\RO.TPipedShell.pas',
+  RO.TShell in '..\src\SSI\RO.TShell.pas',
   RO.TTriplet in '..\src\SSI\RO.TTriplet.pas';
 
 end.
