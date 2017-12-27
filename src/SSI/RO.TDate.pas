@@ -44,7 +44,7 @@ uses
 
 type
   TDate = class(TInterfacedObject, IDate)
-  private
+  private var
     FDate: TDateTime;
   public
     constructor Create(aDate: TDateTime);
@@ -57,7 +57,7 @@ type
   end;
 
   TDecorableDate = class(TInterfacedObject, IDate)
-  protected
+  protected var
     FOrigin: IDate;
   private
     constructor Create(Origin: IDate);
@@ -74,16 +74,16 @@ type
   end;
 
   TXMLTime = class(TDecorableDate, IDate)
-  private
-    const
+  private const
       cXMLTime = 'yyyy''-''mm''-''dd''T''hh'':''nn'':''ss''.''zzz''Z';
   public
     function AsString: string; override;
   end;
 
   TFormattedDate = class(TDecorableDate, IDate)
-  private
+  private var
     FMask: IString;
+  private
     constructor Create(Origin: IDate; Mask: IString); overload;
   public
     class function New(Origin: IDate; Mask: IString): IDate; overload;
