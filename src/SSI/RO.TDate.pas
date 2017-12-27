@@ -82,10 +82,11 @@ type
 
   TFormattedDate = class(TDecorableDate, IDate)
   private var
-    FMask: IString;
+    FMask: string;
   private
-    constructor Create(Origin: IDate; Mask: IString); overload;
+    constructor Create(Origin: IDate; Mask: string); overload;
   public
+    class function New(Origin: IDate; Mask: string): IDate; overload;
     class function New(Origin: IDate; Mask: IString): IDate; overload;
     function AsString: string; override;
   end;
@@ -198,18 +199,23 @@ end;
 
 function TFormattedDate.AsString: string;
 begin
-  Result := FormatDateTime(FMask.Value, FOrigin.Value);
+  Result := FormatDateTime(FMask, FOrigin.Value);
 end;
 
-constructor TFormattedDate.Create(Origin: IDate; Mask: IString);
+constructor TFormattedDate.Create(Origin: IDate; Mask: string);
 begin
   FOrigin := Origin;
   FMask   := Mask;
 end;
 
-class function TFormattedDate.New(Origin: IDate; Mask: IString): IDate;
+class function TFormattedDate.New(Origin: IDate; Mask: string): IDate;
 begin
   Result := Create(Origin, Mask);
+end;
+
+class function TFormattedDate.New(Origin: IDate; Mask: IString): IDate;
+begin
+  Result := New(Origin, Mask.Value);
 end;
 
 { TMonthsAge }
