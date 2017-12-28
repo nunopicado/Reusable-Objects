@@ -47,9 +47,9 @@ type
     FList: IValue<IList<Integer>>;
     FCriteria: string;
     function GetEnumerable: IEnumerable<Integer>;
-    function Start: Integer;
-    function Stop: Integer;
-    function Step: Integer;
+    function Start: IInteger;
+    function Stop: IInteger;
+    function Step: IInteger;
   public
     constructor Create(const Criteria: string);
     class function New(const Criteria: string): IEnumerable<Integer>;
@@ -74,11 +74,11 @@ begin
       V: Integer;
     begin
       Result  := TCollections.CreateList<Integer>;
-      V       := Start;
-      while Result.Count < Stop do
+      V       := Start.Value;
+      while Result.Count < Stop.Value do
         begin
           Result.Add(V);
-          Inc(V, Step);
+          Inc(V, Step.Value);
         end
     end
   );
@@ -94,33 +94,48 @@ begin
   Result := Create(Criteria);
 end;
 
-function TIntegerList.Start: Integer;
+function TIntegerList.Start: IInteger;
 begin
-  Result := FCriteria.Split(
-    TArray<string>.Create(',', '..')
-  )[0]
-    .ToInteger;
+  Result := TInteger.New(
+    function : Integer
+    begin
+      Result := FCriteria.Split(
+        TArray<string>.Create(',', '..')
+      )[0]
+        .ToInteger
+    end
+  );
 end;
 
-function TIntegerList.Step: Integer;
+function TIntegerList.Step: IInteger;
 begin
-  Result := StrToIntDef(
-    FCriteria.Split(
-      TArray<string>.Create('..')
-    )[0]
-      .Split(
-        TArray<string>.Create(',')
-      )[1],
-    Succ(Start)
-  ) - Start;
+  Result := TInteger.New(
+    function : Integer
+    begin
+      Result := StrToIntDef(
+        FCriteria.Split(
+          TArray<string>.Create('..')
+        )[0]
+          .Split(
+            TArray<string>.Create(',')
+          )[1],
+        Succ(Start.Value)
+      ) - Start.Value
+    end
+  );
 end;
 
-function TIntegerList.Stop: Integer;
+function TIntegerList.Stop: IInteger;
 begin
-  Result := FCriteria.Split(
-    TArray<string>.Create('..')
-  )[1]
-    .ToInteger;
+  Result := TInteger.New(
+    function : Integer
+    begin
+      FCriteria.Split(
+        TArray<string>.Create('..')
+      )[1]
+        .ToInteger
+    end
+  );
 end;
 
 end.
