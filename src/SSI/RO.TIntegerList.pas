@@ -102,7 +102,7 @@ begin
       Result := FCriteria.Split(
         TArray<string>.Create(',', '..')
       )[0]
-        .ToInteger
+        .ToInteger;
     end
   );
 end;
@@ -120,7 +120,7 @@ begin
             TArray<string>.Create(',')
           )[1],
         Succ(Start.Value)
-      ) - Start.Value
+      ) - Start.Value;
     end
   );
 end;
@@ -133,7 +133,7 @@ begin
       Result := FCriteria.Split(
         TArray<string>.Create('..')
       )[1]
-        .ToInteger
+        .ToInteger;
     end
   );
 end;
