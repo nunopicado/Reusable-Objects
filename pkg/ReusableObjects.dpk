@@ -129,6 +129,7 @@ contains
   RO.IShell in '..\src\Intf\RO.IShell.pas',
   RO.TPipedShell in '..\src\SSI\RO.TPipedShell.pas',
   RO.TShell in '..\src\SSI\RO.TShell.pas',
-  RO.TTriplet in '..\src\SSI\RO.TTriplet.pas';
+  RO.TTriplet in '..\src\SSI\RO.TTriplet.pas',
+  RO.TIntegerList in '..\src\SSI\RO.TIntegerList.pas';
 
 end.
