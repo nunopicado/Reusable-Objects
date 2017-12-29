@@ -52,7 +52,8 @@ type
     function Step: IInteger;
   public
     constructor Create(const Criteria: string);
-    class function New(const Criteria: string): IEnumerable<Integer>;
+    class function New(const Criteria: string): IEnumerable<Integer>; overload;
+    class function New(const Criteria: IString): IEnumerable<Integer>; overload;
     property AsEnumerable: IEnumerable<Integer> read GetEnumerable implements IEnumerable<Integer>;
   end;
 
@@ -87,6 +88,11 @@ end;
 function TIntegerList.GetEnumerable: IEnumerable<Integer>;
 begin
   Result := FList.Value;
+end;
+
+class function TIntegerList.New(const Criteria: IString): IEnumerable<Integer>;
+begin
+  Result := New(Criteria.Value);
 end;
 
 class function TIntegerList.New(const Criteria: string): IEnumerable<Integer>;
