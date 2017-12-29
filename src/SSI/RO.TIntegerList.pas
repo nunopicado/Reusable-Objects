@@ -56,7 +56,6 @@ implementation
 
 uses
     RO.TValue
-  , SysUtils
   ;
 
 { TIntegerList }
@@ -71,8 +70,8 @@ begin
     var
       V: Integer;
     begin
-      Result  := TCollections.CreateList<Integer>;
-      V       := FirstValue;
+      Result := TCollections.CreateList<Integer>;
+      V      := FirstValue;
       while Result.Count < ElementCount do
         begin
           Result.Add(V);
