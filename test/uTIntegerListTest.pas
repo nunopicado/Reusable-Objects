@@ -10,9 +10,12 @@ type
   TIntegerListTest = class(TObject) 
   public
     [Test]
-    [TestCase('IntegerList 1', '1..10;10', ';')]
-    [TestCase('IntegerList 2', '1,3..10;19', ';')]
-    procedure IntegerListTest(const Criteria: string; LastValue: Integer);
+    [TestCase('IntegerList 1', '1,2,10,10')]
+    [TestCase('IntegerList 2', '1,3,10,19')]
+    procedure IntegerListStepXTest(const FirstValue, SecondValue, ElementCount, LastValue: Integer);
+    [Test]
+    [TestCase('IntegerList 3', '1,10,10')]
+    procedure IntegerListStep1Test(const FirstValue, ElementCount, LastValue: Integer);
   end;
 
 implementation
@@ -23,13 +26,28 @@ uses
 
 { TIntegerListTest }
 
-procedure TIntegerListTest.IntegerListTest(const Criteria: string; LastValue: Integer);
+procedure TIntegerListTest.IntegerListStep1Test(const FirstValue, ElementCount, LastValue: Integer);
 begin
   Assert.AreEqual<Integer>(
     LastValue,
     TIntegerList.New(
-      Criteria
-    ).Last
+      FirstValue,
+      ElementCount
+    )
+      .Last
+  );
+end;
+
+procedure TIntegerListTest.IntegerListStepXTest(const FirstValue, SecondValue, ElementCount, LastValue: Integer);
+begin
+  Assert.AreEqual<Integer>(
+    LastValue,
+    TIntegerList.New(
+      FirstValue,
+      SecondValue,
+      ElementCount
+    )
+      .Last
   );
 end;
 

@@ -18,8 +18,7 @@
 (******************************************************************************)
 (** Dependencies  : Spring4D                                                 **)
 (******************************************************************************)
-(** Description   : Generates a list of integers based on a criteria string: **)
-(**                 FirstValue[,SecondValue]..LimitValue                     **)
+(** Description   : Generates a list of integers                             **)
 (******************************************************************************)
 (** Licence       : GNU LGPLv3 (http://www.gnu.org/licenses/lgpl-3.0.html)   **)
 (** Contributions : You can create pull request for all your desired         **)
@@ -45,15 +44,11 @@ type
   TIntegerList = class(TInterfacedObject, IEnumerable<Integer>)
   private
     FList: IValue<IList<Integer>>;
-    FCriteria: string;
     function GetEnumerable: IEnumerable<Integer>;
-    function Start: IInteger;
-    function Stop: IInteger;
-    function Step: IInteger;
   public
-    constructor Create(const Criteria: string);
-    class function New(const Criteria: string): IEnumerable<Integer>; overload;
-    class function New(const Criteria: IString): IEnumerable<Integer>; overload;
+    constructor Create(const FirstValue, SecondValue: Integer; const ElementCount: LongWord);
+    class function New(const FirstValue, SecondValue: Integer; const ElementCount: LongWord): IEnumerable<Integer>; overload;
+    class function New(const FirstValue: Integer; const ElementCount: LongWord): IEnumerable<Integer>; overload;
     property AsEnumerable: IEnumerable<Integer> read GetEnumerable implements IEnumerable<Integer>;
   end;
 
@@ -66,20 +61,22 @@ uses
 
 { TIntegerList }
 
-constructor TIntegerList.Create(const Criteria: string);
+constructor TIntegerList.Create(const FirstValue, SecondValue: Integer; const ElementCount: LongWord);
+var
+  Step: Integer;
 begin
-  FCriteria := Criteria;
-  FList     := TValue<IList<Integer>>.New(
+  Step  := SecondValue - FirstValue;
+  FList := TValue<IList<Integer>>.New(
     function : IList<Integer>
     var
       V: Integer;
     begin
       Result  := TCollections.CreateList<Integer>;
-      V       := Start.Value;
-      while Result.Count < Stop.Value do
+      V       := FirstValue;
+      while Result.Count < ElementCount do
         begin
           Result.Add(V);
-          Inc(V, Step.Value);
+          Inc(V, Step);
         end
     end
   );
@@ -90,58 +87,14 @@ begin
   Result := FList.Value;
 end;
 
-class function TIntegerList.New(const Criteria: IString): IEnumerable<Integer>;
+class function TIntegerList.New(const FirstValue: Integer; const ElementCount: LongWord): IEnumerable<Integer>;
 begin
-  Result := New(Criteria.Value);
+  Result := New(FirstValue, Succ(FirstValue), ElementCount);
 end;
 
-class function TIntegerList.New(const Criteria: string): IEnumerable<Integer>;
+class function TIntegerList.New(const FirstValue, SecondValue: Integer; const ElementCount: LongWord): IEnumerable<Integer>;
 begin
-  Result := Create(Criteria);
-end;
-
-function TIntegerList.Start: IInteger;
-begin
-  Result := TInteger.New(
-    function : Integer
-    begin
-      Result := FCriteria.Split(
-        TArray<string>.Create(',', '..')
-      )[0]
-        .ToInteger;
-    end
-  );
-end;
-
-function TIntegerList.Step: IInteger;
-begin
-  Result := TInteger.New(
-    function : Integer
-    begin
-      Result := StrToIntDef(
-        FCriteria.Split(
-          TArray<string>.Create('..')
-        )[0]
-          .Split(
-            TArray<string>.Create(',')
-          )[1],
-        Succ(Start.Value)
-      ) - Start.Value;
-    end
-  );
-end;
-
-function TIntegerList.Stop: IInteger;
-begin
-  Result := TInteger.New(
-    function : Integer
-    begin
-      Result := FCriteria.Split(
-        TArray<string>.Create('..')
-      )[1]
-        .ToInteger;
-    end
-  );
+  Result := Create(FirstValue, SecondValue, ElementCount);
 end;
 
 end.
