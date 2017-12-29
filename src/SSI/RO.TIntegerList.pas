@@ -130,7 +130,7 @@ begin
   Result := TInteger.New(
     function : Integer
     begin
-      FCriteria.Split(
+      Result := FCriteria.Split(
         TArray<string>.Create('..')
       )[1]
         .ToInteger
