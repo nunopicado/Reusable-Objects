@@ -66,7 +66,9 @@ uses
   uTCSVStringTest in 'uTCSVStringTest.pas',
   RO.IVATNumber in '..\src\Intf\RO.IVATNumber.pas',
   RO.TTriplet in '..\src\SSI\RO.TTriplet.pas',
-  uTTripletTest in 'uTTripletTest.pas';
+  uTTripletTest in 'uTTripletTest.pas',
+  RO.TIntegerList in '..\src\SSI\RO.TIntegerList.pas',
+  uTIntegerListTest in 'uTIntegerListTest.pas';
 
 var
   runner : ITestRunner;
