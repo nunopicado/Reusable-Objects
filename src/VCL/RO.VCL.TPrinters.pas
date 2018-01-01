@@ -51,10 +51,11 @@ type
     FSelected : string;
     FDocInfo1 : TDocInfo1;
   public
-    constructor Create(const PrinterName: string);
-    class function New(const PrinterName: string = ''): IPrinters;
+    constructor Create;
+    class function New: IPrinters;
     function SendSequence(const Sequence: IByteSequence): IPrinters;
     function AsList: IEnumerable<string>;
+    function Exists(const Name: string): Boolean;
     function Select(const Name: string): IPrinters;
     function Default: string;
   end;
@@ -68,21 +69,20 @@ uses
   , RO.TIf
   ;
 
-constructor TPrinters.Create(const PrinterName: string);
+constructor TPrinters.Create;
 begin
   with FDocInfo1 do begin
     pDocName    := nil;
     pOutputFile := nil;
     pDataType   := 'RAW';
   end;
-  if not PrinterName.IsEmpty
-    then Select(PrinterName)
-    else Select(Default);
+  if Exists(Default)
+    then Select(Default);
 end;
 
-class function TPrinters.New(const PrinterName: string): IPrinters;
+class function TPrinters.New: IPrinters;
 begin
-  Result := Create(PrinterName);
+  Result := Create;
 end;
 
 function TPrinters.Select(const Name: string): IPrinters;
@@ -90,7 +90,7 @@ resourcestring
   cInvalidPrinter = 'Failed to find %s printer.';
 begin
   Result := Self;
-  if Printer.Printers.IndexOfName(Name) = -1
+  if not Exists(Name)
     then raise Exception.Create(Format(cInvalidPrinter, [QuotedStr(Name)]));
   FSelected := Name;
 end;
@@ -135,6 +135,11 @@ begin
     PChar(Printer.Printers[Printer.PrinterIndex]),
     ''
   ).Eval;
+end;
+
+function TPrinters.Exists(const Name: string): Boolean;
+begin
+  Result := Printer.Printers.IndexOfName(Name) <> -1;
 end;
 
 end.

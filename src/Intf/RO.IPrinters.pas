@@ -48,6 +48,7 @@ type
   ['{AD15718B-BFAD-4094-87A5-440C430A5709}']
     function SendSequence(const Sequence: IByteSequence): IPrinters;
     function AsList: IEnumerable<string>;
+    function Exists(const Name: string): Boolean;
     function Select(const Name: string): IPrinters;
     function Default: string;
   end;
