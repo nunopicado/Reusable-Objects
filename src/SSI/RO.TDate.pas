@@ -106,6 +106,11 @@ type
     function Age: Integer; override;
   end;
 
+  TFullDateTime = class(TDecorableDate, IDate)
+  public
+    function AsString: string; override;
+  end;
+
 implementation
 
 uses
@@ -237,6 +242,13 @@ end;
 function TDaysAge.Age: Integer;
 begin
   Result := DaysBetween(Now, FOrigin.Value);
+end;
+
+{ TFullDateTime }
+
+function TFullDateTime.AsString: string;
+begin
+  Result := FormatDateTime('yyyy-mm-dd hh:nn:ss', Value);
 end;
 
 end.
