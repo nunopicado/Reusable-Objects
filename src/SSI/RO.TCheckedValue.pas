@@ -52,6 +52,7 @@ type
     function Value: T;
     function Refresh: IValue<T>;
     function Checked: Boolean;
+    function Swap: ICheckedValue<T>;
   end;
 
 implementation
@@ -90,6 +91,12 @@ function TCheckedValue<T>.Refresh: IValue<T>;
 begin
   Result := Self;
   FValue.Refresh;
+end;
+
+function TCheckedValue<T>.Swap: ICheckedValue<T>;
+begin
+  Result    := Self;
+  FChecked  := not FChecked;
 end;
 
 function TCheckedValue<T>.Value: T;
