@@ -38,11 +38,10 @@ interface
 uses
     RO.ICheckedValue
   , RO.IValue
-  , RO.TValue
   ;
 
 type
-  TCheckedValue<T> = class(TValue<T>, ICheckedValue<T>, IValue<T>)
+  TCheckedValue<T> = class(TInterfacedObject, ICheckedValue<T>, IValue<T>)
   private
     FValue: IValue<T>;
     FChecked: Boolean;
@@ -56,6 +55,10 @@ type
   end;
 
 implementation
+
+uses
+    RO.TValue
+  ;
 
 { TCheckedValue<T> }
 

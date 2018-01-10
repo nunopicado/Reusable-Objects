@@ -42,8 +42,6 @@ uses
 type
   ICheckedValue<T> = interface(IValue<T>)
   ['{61B2114B-989B-4A38-890C-F022699C6B93}']
-    function Value: T;
-    function Refresh: IValue<T>;
     function Checked: Boolean;
   end;
 
