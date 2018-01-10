@@ -56,12 +56,12 @@ type
     function Connect: IDatabase;
     function Disconnect: IDatabase;
     function StartTransaction: IDatabase;
-    function StopTransaction(SaveChanges: Boolean = True): IDatabase;
+    function StopTransaction(const SaveChanges: Boolean = True): IDatabase;
     function IsConnected: Boolean;
     function Database: string;
     function NewQuery(const Statement: ISQLStatement): IDBQuery; overload;
     function NewQuery(const Statement: ISQLStatement; out Destination: IDBQuery): IDatabase; overload;
-    function Run(SQLStatement: ISQLStatement): IDatabase;
+    function Run(const SQLStatement: ISQLStatement): IDatabase;
   end;
 
   TDatabase = TDBZDatabase;
@@ -92,18 +92,18 @@ type
     constructor Create(Connection: TZConnection; Statement: ISQLStatement);
     destructor Destroy; override;
     class function New(Connection: TZConnection; Statement: ISQLStatement): IDBQuery;
-    procedure SetRecNo(Idx: Integer);
+    procedure SetRecNo(const Idx: Integer);
     function GetRecNo: Integer;
-    function Publish(DataSource: TDataSource): IDBQuery;
+    function Publish(const DataSource: TDataSource): IDBQuery;
     function RecordCount: Integer;
-    function FieldByName(FieldName: string): TField;
-    function ForEach(Action: TRowAction): IDBQuery;
+    function FieldByName(const FieldName: string): TField;
+    function ForEach(const Action: TRowAction): IDBQuery;
     function Run: IDBQuery;
     function Insert: IDBQuery;
     function Edit: IDBQuery;
     function Append: IDBQuery;
     function Post: IDBQuery;
-    function FieldValue(FieldName: string; Value: Variant): IDBQuery;
+    function FieldValue(const FieldName: string; const Value: Variant): IDBQuery;
     property RecNo: Integer read GetRecNo write SetRecNo;
   end;
 
@@ -115,7 +115,7 @@ begin
   FQuery.Post;
 end;
 
-function TDBZQuery.Publish(DataSource: TDataSource): IDBQuery;
+function TDBZQuery.Publish(const DataSource: TDataSource): IDBQuery;
 begin
   Result := Self;
   DataSource.DataSet := FQuery;
@@ -147,18 +147,18 @@ begin
   FQuery.Edit;
 end;
 
-function TDBZQuery.FieldByName(FieldName: string): TField;
+function TDBZQuery.FieldByName(const FieldName: string): TField;
 begin
   Result := FQuery.FieldByName(FieldName);
 end;
 
-function TDBZQuery.FieldValue(FieldName: string; Value: Variant): IDBQuery;
+function TDBZQuery.FieldValue(const FieldName: string; const Value: Variant): IDBQuery;
 begin
   Result := Self;
   FQuery.FieldValues[FieldName] := Value;
 end;
 
-function TDBZQuery.ForEach(Action: TRowAction): IDBQuery;
+function TDBZQuery.ForEach(const Action: TRowAction): IDBQuery;
 begin
   Result := Self;
   FQuery.First;
@@ -184,7 +184,7 @@ begin
   Result := Create(Connection, Statement);
 end;
 
-procedure TDBZQuery.SetRecNo(Idx: Integer);
+procedure TDBZQuery.SetRecNo(const Idx: Integer);
 begin
   FQuery.RecNo := Idx;
 end;
@@ -281,7 +281,7 @@ begin
   Result := TDBZQuery.Create(FConnection, Statement);
 end;
 
-function TDBZDatabase.Run(SQLStatement: ISQLStatement): IDatabase;
+function TDBZDatabase.Run(const SQLStatement: ISQLStatement): IDatabase;
 begin
   Result := Self;
   FConnection.ExecuteDirect(SQLStatement.AsString);
@@ -292,7 +292,7 @@ begin
   FConnection.StartTransaction;
 end;
 
-function TDBZDatabase.StopTransaction(SaveChanges: Boolean = True): IDatabase;
+function TDBZDatabase.StopTransaction(const SaveChanges: Boolean = True): IDatabase;
 begin
   if SaveChanges then begin
     FConnection.Commit;
