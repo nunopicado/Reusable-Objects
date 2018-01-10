@@ -132,6 +132,7 @@ contains
   RO.TTriplet in '..\src\SSI\RO.TTriplet.pas',
   RO.TIntegerList in '..\src\SSI\RO.TIntegerList.pas',
   RO.IStringList in '..\src\Intf\RO.IStringList.pas',
-  RO.TStringList in '..\src\SSI\RO.TStringList.pas';
+  RO.TStringList in '..\src\SSI\RO.TStringList.pas',
+  RO.TLibrary in '..\src\SSI\RO.TLibrary.pas';
 
 end.
