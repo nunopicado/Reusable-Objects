@@ -69,7 +69,7 @@ uses
 
 function TNetworkNode.HostToIP(const Hostname: AnsiString; var IP: AnsiString): Boolean;
 var
-  aHostName: Array [0..255] of AnsiChar;
+  aHostName: array [0..255] of AnsiChar;
   pcAddr   : PAnsiChar;
   HostEnt  : PHostEnt;
   wsData   : TWSAData;

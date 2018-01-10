@@ -94,7 +94,7 @@ type
     function Edit: IDBQuery;
     function Append: IDBQuery;
     function Post: IDBQuery;
-    function FieldValue(const FieldName: String; const Value: Variant): IDBQuery;
+    function FieldValue(const FieldName: string; const Value: Variant): IDBQuery;
     property RecNo: Integer
       read GetRecNo
       write SetRecNo;
