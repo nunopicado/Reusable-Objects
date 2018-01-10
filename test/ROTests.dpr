@@ -69,7 +69,9 @@ uses
   uTTripletTest in 'uTTripletTest.pas',
   RO.TIntegerList in '..\src\SSI\RO.TIntegerList.pas',
   uTIntegerListTest in 'uTIntegerListTest.pas',
-  uTDateTest in 'uTDateTest.pas';
+  uTDateTest in 'uTDateTest.pas',
+  RO.TCheckedValue in '..\src\SSI\RO.TCheckedValue.pas',
+  uTCheckedValueTest in 'uTCheckedValueTest.pas';
 
 var
   runner : ITestRunner;
