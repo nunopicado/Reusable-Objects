@@ -42,6 +42,7 @@ uses
 type
   IFile = interface(IInvokable)
   ['{22841154-9E5C-4D64-8780-5FA2C29B4988}']
+    function Name: string;
     function Size: Int64;
     function Created: TDateTime;
     function Modified: TDateTime;

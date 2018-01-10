@@ -52,6 +52,7 @@ type
     constructor Create(const FileName: string);
     class function New(const FileName: string): IFile; overload;
     class function New(const FileName: IString): IFile; overload;
+    function Name: string;
     function Size: Int64;
     function Created: TDateTime;
     function Modified: TDateTime;
@@ -112,6 +113,11 @@ end;
 function TFile.Modified: TDateTime;
 begin
   Result := DateConversion(FAttributeData.ftLastWriteTime);
+end;
+
+function TFile.Name: string;
+begin
+  Result := FFileName;
 end;
 
 class function TFile.New(const FileName: IString): IFile;
