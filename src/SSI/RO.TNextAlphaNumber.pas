@@ -77,12 +77,9 @@ begin
           end
           else begin
             Result[Digit] := 'A';
-            if Digit > 1
-              then Dec(Digit)
-              else begin
-                Result := Result + 'A';
-                Digit  := 0;
-              end;
+            if Digit = 1
+              then Result := 'A' + Result;
+            Dec(Digit)
           end;
       until Digit = 0;
       Result := Trim(Result);
