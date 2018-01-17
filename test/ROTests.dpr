@@ -71,7 +71,8 @@ uses
   uTIntegerListTest in 'uTIntegerListTest.pas',
   uTDateTest in 'uTDateTest.pas',
   RO.TCheckedValue in '..\src\SSI\RO.TCheckedValue.pas',
-  uTCheckedValueTest in 'uTCheckedValueTest.pas';
+  uTCheckedValueTest in 'uTCheckedValueTest.pas',
+  uTNextAlphaNumberTest in 'uTNextAlphaNumberTest.pas';
 
 var
   runner : ITestRunner;
