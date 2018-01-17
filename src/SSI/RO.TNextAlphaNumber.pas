@@ -48,7 +48,7 @@ type
   public
     constructor Create(const Origin: IString); reintroduce;
     class function New(const Origin: IString): IString; reintroduce;
-    function Value: string;
+    function Value: string; override;
   end;
 
 implementation
