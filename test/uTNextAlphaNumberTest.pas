@@ -14,10 +14,11 @@ type
     [TestCase('TNextAlphaNumber Value 2','C,D')]
     [TestCase('TNextAlphaNumber Value 3','Z,AA')]
     [TestCase('TNextAlphaNumber Value 4','AZ,BA')]
-    [TestCase('TNextAlphaNumber Value 5','ZZ,AAA')]
-    [TestCase('TNextAlphaNumber Value 6','AAZ,ABA')]
-    [TestCase('TNextAlphaNumber Value 7','ZZY,ZZZ')]
-    [TestCase('TNextAlphaNumber Value 8','ZZZ,AAAA')]
+    [TestCase('TNextAlphaNumber Value 5','ZH,ZI')]
+    [TestCase('TNextAlphaNumber Value 6','ZZ,AAA')]
+    [TestCase('TNextAlphaNumber Value 7','AAZ,ABA')]
+    [TestCase('TNextAlphaNumber Value 8','ZZY,ZZZ')]
+    [TestCase('TNextAlphaNumber Value 9','ZZZ,AAAA')]
     procedure TNextAlphaNumberValueTest(const Current, Next: string);
   end;
 
