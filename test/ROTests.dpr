@@ -72,7 +72,9 @@ uses
   uTDateTest in 'uTDateTest.pas',
   RO.TCheckedValue in '..\src\SSI\RO.TCheckedValue.pas',
   uTCheckedValueTest in 'uTCheckedValueTest.pas',
-  uTNextAlphaNumberTest in 'uTNextAlphaNumberTest.pas';
+  uTNextAlphaNumberTest in 'uTNextAlphaNumberTest.pas',
+  RO.TCase in '..\src\SSI\RO.TCase.pas',
+  uTCaseTest in 'uTCaseTest.pas';
 
 var
   runner : ITestRunner;

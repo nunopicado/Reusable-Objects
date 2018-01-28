@@ -136,6 +136,8 @@ contains
   RO.TLibrary in '..\src\SSI\RO.TLibrary.pas',
   RO.ICheckedValue in '..\src\Intf\RO.ICheckedValue.pas',
   RO.TCheckedValue in '..\src\SSI\RO.TCheckedValue.pas',
-  RO.TNextAlphaNumber in '..\src\SSI\RO.TNextAlphaNumber.pas';
+  RO.TNextAlphaNumber in '..\src\SSI\RO.TNextAlphaNumber.pas',
+  RO.ICase in '..\src\Intf\RO.ICase.pas',
+  RO.TCase in '..\src\SSI\RO.TCase.pas';
 
 end.
