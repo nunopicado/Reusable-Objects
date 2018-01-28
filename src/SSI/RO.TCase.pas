@@ -105,6 +105,7 @@ end;
 
 function TCase<T>.SetupReferenceValue(const ReferenceValue: T): ICase<T>;
 begin
+  Result          := Self;
   FReferenceValue := ReferenceValue;
 end;
 
