@@ -58,6 +58,11 @@ type
     function Perform: ICase<T>;
   end;
 
+  ICaseFactory<T> = interface(IInvokable)
+  ['{702F3836-529B-4DE3-9B0D-E20C7767C11D}']
+    function New(const ReferenceValue: T): ICase<T>;
+  end;
+
 implementation
 
 { TCase<T> }
