@@ -46,14 +46,14 @@ type
   TCase<T> = class(TInterfacedObject, ICase<T>)
   private
     FReferenceValue: T;
-    FCases: IDictionary<T, TProc>;
-    FDefaultAction: TProc;
+    FCases: IDictionary<T, TProc<T>>;
+    FDefaultAction: TProc<T>;
   public
     constructor Create(const ReferenceValue: T); reintroduce;
     class function New(const ReferenceValue: T): ICase<T>;
     function SetupReferenceValue(const ReferenceValue: T): ICase<T>;
-    function AddCase(const Value: T; const Action: TProc): ICase<T>;
-    function AddElse(const DefaultAction: TProc): ICase<T>;
+    function AddCase(const Value: T; const Action: TProc<T>): ICase<T>;
+    function AddElse(const DefaultAction: TProc<T>): ICase<T>;
     function Perform: ICase<T>;
   end;
 
@@ -61,7 +61,7 @@ implementation
 
 { TCase<T> }
 
-function TCase<T>.AddCase(const Value: T; const Action: TProc): ICase<T>;
+function TCase<T>.AddCase(const Value: T; const Action: TProc<T>): ICase<T>;
 begin
   Result := Self;
   if FCases.ContainsKey(Value)
@@ -69,7 +69,7 @@ begin
   FCases.AddOrSetValue(Value, Action);
 end;
 
-function TCase<T>.AddElse(const DefaultAction: TProc): ICase<T>;
+function TCase<T>.AddElse(const DefaultAction: TProc<T>): ICase<T>;
 begin
   Result          := Self;
   FDefaultAction  := DefaultAction;
@@ -77,20 +77,20 @@ end;
 
 constructor TCase<T>.Create(const ReferenceValue: T);
 begin
-  FCases := TCollections.CreateDictionary<T, TProc>;
+  FCases := TCollections.CreateDictionary<T, TProc<T>>;
   SetupReferenceValue(ReferenceValue);
 end;
 
 function TCase<T>.Perform: ICase<T>;
 var
-  Action: TProc;
+  Action: TProc<T>;
 begin
   Result := Self;
   if FCases.ContainsKey(FReferenceValue)
     then Action := FCases.Extract(FReferenceValue)
     else Action := FDefaultAction;
   if Assigned(Action)
-    then Action();
+    then Action(FReferenceValue);
 end;
 
 function TCase<T>.SetupReferenceValue(const ReferenceValue: T): ICase<T>;

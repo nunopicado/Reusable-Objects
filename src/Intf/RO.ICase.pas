@@ -43,8 +43,8 @@ type
   ICase<T> = interface(IInvokable)
   ['{10889F44-8366-4E01-BB17-42745E4CEF76}']
     function SetupReferenceValue(const ReferenceValue: T): ICase<T>;
-    function AddCase(const Value: T; const Action: TProc): ICase<T>;
-    function AddElse(const DefaultAction: TProc): ICase<T>;
+    function AddCase(const Value: T; const Action: TProc<T>): ICase<T>;
+    function AddElse(const DefaultAction: TProc<T>): ICase<T>;
     function Perform: ICase<T>;
   end;
 

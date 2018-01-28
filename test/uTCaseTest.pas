@@ -34,21 +34,21 @@ begin
     .New(ARefValue)
     .AddCase(
       Action1,
-      procedure
+      procedure (Value: string)
       begin
         RValue := ReturnValue;
       end
     )
     .AddCase(
       Action2,
-      procedure
+      procedure (Value: string)
       begin
         RValue := ReturnValue;
       end
     )
     .AddCase(
       Action3,
-      procedure
+      procedure (Value: string)
       begin
         RValue := ReturnValue;
       end
@@ -69,14 +69,13 @@ begin
         .New('Ref')
         .AddCase(
           'V1',
-          procedure
+          procedure (Value: string)
           begin
-
           end
         )
         .AddCase(
           'V1',
-          procedure
+          procedure (Value: string)
           begin
 
           end
@@ -93,12 +92,12 @@ begin
     .New(ARefValue)
     .AddCase(
       Action,
-      procedure
+      procedure (Value: string)
       begin
       end
     )
     .AddElse(
-      procedure
+      procedure (Value: string)
       begin
         RValue := ElseValue;
       end
