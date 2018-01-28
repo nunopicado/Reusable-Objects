@@ -52,7 +52,8 @@ type
     constructor Create(const ReferenceValue: T); reintroduce;
     class function New(const ReferenceValue: T): ICase<T>;
     function SetupReferenceValue(const ReferenceValue: T): ICase<T>;
-    function AddCase(const Value: T; const Action: TProc<T>): ICase<T>;
+    function AddCase(const Value: T; const Action: TProc<T>): ICase<T>; overload;
+    function AddCase(const Values: array of T; const Action: TProc<T>): ICase<T>; overload;
     function AddElse(const DefaultAction: TProc<T>): ICase<T>;
     function Perform: ICase<T>;
   end;
@@ -67,6 +68,15 @@ begin
   if FCases.ContainsKey(Value)
     then raise Exception.Create('Can not add a duplicate case for testing.');
   FCases.AddOrSetValue(Value, Action);
+end;
+
+function TCase<T>.AddCase(const Values: array of T; const Action: TProc<T>): ICase<T>;
+var
+  i: Integer;
+begin
+  Result := Self;
+  for i := Low(Values) to High(Values) do
+    AddCase(Values[i], Action);
 end;
 
 function TCase<T>.AddElse(const DefaultAction: TProc<T>): ICase<T>;
