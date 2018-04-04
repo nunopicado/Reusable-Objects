@@ -51,24 +51,11 @@ type
   TServerType   = (stMySQL, stMSSQL, stSQLite, stPostgreSQL);
   TVariantArray = array of Variant;
 
-  ISQLParam = interface(IInvokable)
-  ['{C531EB68-5157-49E1-A498-42652239A3D7}']
-    function Name: string;
-    function Value: Variant;
-  end;
-
-  ISQLParams = interface(IInvokable)
-  ['{00AA5AE7-233B-4B7B-827B-7DF90B8A8315}']
-    function Add(const Param: ISQLParam): ISQLParams;
-    function Param(const Idx: Integer): ISQLParam;
-    function AsVariantArray: TVariantArray;
-    function Count: Integer;
-  end;
-
   ISQLStatement = interface(IInvokable)
   ['{5B75AF96-FD85-465E-86DD-D537B90FA381}']
-    function ParamList: ISQLParams;
-    function AsString: string;
+    function Statement: string;
+    function Params: TVariantArray;
+    function ParamCount: Integer;
   end;
 
   IServer = interface(IInvokable)
@@ -83,21 +70,8 @@ type
 
   IDBQuery = interface(IInvokable)
   ['{9E4D3D8E-BE29-43CE-8A5E-2F1C9C5E58D0}']
-    procedure SetRecNo(const Idx: Integer);
-    function GetRecNo: Integer;
-    function Publish(const DataSource: TDataSource): IDBQuery;
-    function RecordCount: Integer;
-    function FieldByName(const FieldName: string): TField;
-    function ForEach(const Action: TRowAction): IDBQuery;
     function Run: IDBQuery;
-    function Insert: IDBQuery;
-    function Edit: IDBQuery;
-    function Append: IDBQuery;
-    function Post: IDBQuery;
-    function FieldValue(const FieldName: string; const Value: Variant): IDBQuery;
-    property RecNo: Integer
-      read GetRecNo
-      write SetRecNo;
+    function AsDataset: TDataset;
   end;
 
   IDatabase = interface(IInvokable)

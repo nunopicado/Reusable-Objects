@@ -66,39 +66,15 @@ type
   TSQLStatement = class(TInterfacedObject, ISQLStatement)
   strict private
     FStatement: string;
-    FParamList: ISQLParams;
+    FParams: TVariantArray;
   public
-    constructor Create(const Statement: string; const Params: ISQLParams);
-    class function New(const Statement: string; const Params: ISQLParams): ISQLStatement; overload;
-    class function New(const Statement: string): ISQLStatement; overload;
-    function ParamList: ISQLParams;
-    function AsString: string;
-  end;
-
-  TSQLParam = class(TInterfacedObject, ISQLParam)
-  strict private
-    FName: string;
-    FValue: Variant;
-  public
-    constructor Create(const Name: string; const Value: Variant);
-    class function New(const Name: string; const Value: Variant): ISQLParam;
-    function Name: string;
-    function Value: Variant;
-  end;
-
-  TSQLParams = class(TInterfacedObject, ISQLParams)
-  strict private
-    FList: TList<ISQLParam>;
-  public
-    constructor Create; overload;
-    constructor Create(const Param: ISQLParam); overload;
+    constructor Create(Statement: string; Params: TVariantArray); overload;
+    constructor Create(Statement: string); overload;
+    class function New(Statement: string; Params: TVariantArray): ISQLStatement;
     destructor Destroy; override;
-    class function New: ISQLParams; overload;
-    class function New(const Param: ISQLParam): ISQLParams; overload;
-    function Add(const Param: ISQLParam): ISQLParams;
-    function Param(const Idx: Integer): ISQLParam;
-    function AsVariantArray: TVariantArray;
-    function Count: Integer;
+    function Statement: string;
+    function Params: TVariantArray;
+    function ParamCount: Integer;
   end;
 
 implementation
@@ -163,116 +139,42 @@ end;
 
 { TSQLStatement }
 
-function TSQLStatement.AsString: string;
+function TSQLStatement.Statement: string;
 begin
   Result := FStatement;
 end;
 
-constructor TSQLStatement.Create(const Statement: string; const Params: ISQLParams);
+function TSQLStatement.ParamCount: Integer;
+begin
+  Result := Length(FParams);
+end;
+
+function TSQLStatement.Params: TVariantArray;
+begin
+  Result := FParams;
+end;
+
+constructor TSQLStatement.Create(Statement: string; Params: TVariantArray);
 begin
   FStatement := Statement;
-  FParamList := Params;
+  FParams    := Params;
 end;
 
-class function TSQLStatement.New(const Statement: string): ISQLStatement;
+constructor TSQLStatement.Create(Statement: string);
 begin
-  Result := New(
-    Statement,
-    TSQLParams.New
-  );
+  Create(Statement, []);
 end;
 
-class function TSQLStatement.New(const Statement: string; const Params: ISQLParams): ISQLStatement;
+destructor TSQLStatement.Destroy;
 begin
-  Result := Create(Statement, Params);
-end;
-
-function TSQLStatement.ParamList: ISQLParams;
-begin
-  Result := FParamList;
-end;
-
-{ TSQLParam }
-
-constructor TSQLParam.Create(const Name: string; const Value: Variant);
-begin
-  FName  := Name;
-  FValue := Value;
-end;
-
-function TSQLParam.Name: string;
-begin
-  Result := FName;
-end;
-
-class function TSQLParam.New(const Name: string; const Value: Variant): ISQLParam;
-begin
-  Result := Create(Name, Value);
-end;
-
-function TSQLParam.Value: Variant;
-begin
-  Result := FValue;
-end;
-
-{ TSQLParams }
-
-function TSQLParams.Add(const Param: ISQLParam): ISQLParams;
-begin
-  Result := Self;
-  FList.Add(Param);
-end;
-
-function TSQLParams.AsVariantArray: TVariantArray;
-var
-  i: Integer;
-begin
-  SetLength(Result, FList.Count * 2);
-  if FList.Count > 0 then begin
-    for i := 0 to FList.Count-1 do begin
-      Result[(i+1)*2-2] := FList[i].Name;
-      Result[(i+1)*2-1] := FList[i].Value;
-    end;
-  end;
-end;
-
-function TSQLParams.Count: Integer;
-begin
-  Result := FList.Count;
-end;
-
-constructor TSQLParams.Create(const Param: ISQLParam);
-begin
-  Create;
-  Add(Param);
-end;
-
-constructor TSQLParams.Create;
-begin
-  FList := TList<ISQLParam>.Create;
-end;
-
-destructor TSQLParams.Destroy;
-begin
-  FList.Free;
+  SetLength(FParams, 0);
   inherited;
 end;
 
-class function TSQLParams.New: ISQLParams;
+class function TSQLStatement.New(Statement: string;
+  Params: TVariantArray): ISQLStatement;
 begin
-  Result := Create;
-end;
-
-class function TSQLParams.New(const Param: ISQLParam): ISQLParams;
-begin
-  Result := Create(Param);
-end;
-
-function TSQLParams.Param(const Idx: Integer): ISQLParam;
-begin
-  if FList.Count > 0 then begin
-    Result := FList[Idx];
-  end;
+  Result := Create(Statement, Params);
 end;
 
 end.

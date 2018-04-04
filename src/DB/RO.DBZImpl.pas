@@ -86,136 +86,58 @@ type
   TDBZQuery = class(TInterfacedObject, IDBQuery)
   private
     FQuery: TZQuery;
-    FStatement : ISQLStatement;
-    FConnection: TZConnection;
+    procedure AssignParams(SQLStatement: ISQLStatement);
   public
-    constructor Create(Connection: TZConnection; Statement: ISQLStatement);
+    constructor Create(const Connection: TZConnection; const SQLStatement: ISQLStatement);
+    class function New(const Connection: TZConnection; const SQLStatement: ISQLStatement): IDBQuery;
     destructor Destroy; override;
-    class function New(Connection: TZConnection; Statement: ISQLStatement): IDBQuery;
-    procedure SetRecNo(const Idx: Integer);
-    function GetRecNo: Integer;
-    function Publish(const DataSource: TDataSource): IDBQuery;
-    function RecordCount: Integer;
-    function FieldByName(const FieldName: string): TField;
-    function ForEach(const Action: TRowAction): IDBQuery;
     function Run: IDBQuery;
-    function Insert: IDBQuery;
-    function Edit: IDBQuery;
-    function Append: IDBQuery;
-    function Post: IDBQuery;
-    function FieldValue(const FieldName: string; const Value: Variant): IDBQuery;
-    property RecNo: Integer read GetRecNo write SetRecNo;
+    function AsDataset: TDataset;
   end;
 
 { TDBZQuery }
 
-function TDBZQuery.Post: IDBQuery;
+function TDBZQuery.AsDataset: TDataset;
 begin
-  Result := Self;
-  FQuery.Post;
+  Result := FQuery;
 end;
 
-function TDBZQuery.Publish(const DataSource: TDataSource): IDBQuery;
+procedure TDBZQuery.AssignParams(SQLStatement: ISQLStatement);
+var
+  Idx: Integer;
 begin
-  Result := Self;
-  DataSource.DataSet := FQuery;
+  Idx := 0;
+  while Idx <= Pred(SQLStatement.ParamCount) - 1 do
+    begin
+      FQuery.ParamByName(SQLStatement.Params[Idx]).Value := SQLStatement.Params[Succ(Idx)];
+      Inc(Idx, 2);
+    end;
 end;
 
-function TDBZQuery.Append: IDBQuery;
+constructor TDBZQuery.Create(const Connection: TZConnection; const SQLStatement: ISQLStatement);
 begin
-  Result := Self;
-  FQuery.Append;
-end;
-
-constructor TDBZQuery.Create(Connection: TZConnection; Statement: ISQLStatement);
-begin
-  FConnection := Connection;
-  FStatement  := Statement;
+  FQuery              := TZQuery.Create(nil);
+  FQuery.Connection   := Connection;
+  FQuery.SQL.Text     := SQLStatement.Statement;
+  AssignParams(SQLStatement);
 end;
 
 destructor TDBZQuery.Destroy;
 begin
-  if Assigned(FQuery) then begin
-    FQuery.Free;
-  end;
+  FQuery.Free;
   inherited;
 end;
 
-function TDBZQuery.Edit: IDBQuery;
+class function TDBZQuery.New(const Connection: TZConnection; const SQLStatement: ISQLStatement): IDBQuery;
 begin
-  Result := Self;
-  FQuery.Edit;
-end;
-
-function TDBZQuery.FieldByName(const FieldName: string): TField;
-begin
-  Result := FQuery.FieldByName(FieldName);
-end;
-
-function TDBZQuery.FieldValue(const FieldName: string; const Value: Variant): IDBQuery;
-begin
-  Result := Self;
-  FQuery.FieldValues[FieldName] := Value;
-end;
-
-function TDBZQuery.ForEach(const Action: TRowAction): IDBQuery;
-begin
-  Result := Self;
-  FQuery.First;
-  while not FQuery.Eof do begin
-    Action(Self);
-    FQuery.Next;
-  end;
-end;
-
-function TDBZQuery.GetRecNo: Integer;
-begin
-  Result := FQuery.RecNo;
-end;
-
-function TDBZQuery.Insert: IDBQuery;
-begin
-  Result := Self;
-  FQuery.Insert;
-end;
-
-class function TDBZQuery.New(Connection: TZConnection; Statement: ISQLStatement): IDBQuery;
-begin
-  Result := Create(Connection, Statement);
-end;
-
-procedure TDBZQuery.SetRecNo(const Idx: Integer);
-begin
-  FQuery.RecNo := Idx;
-end;
-
-function TDBZQuery.RecordCount: Integer;
-begin
-  Result := FQuery.RecordCount;
+  Result := Create(Connection, SQLStatement);
 end;
 
 function TDBZQuery.Run: IDBQuery;
-  procedure LoadParams;
-  var
-    i: Byte;
-  begin
-    if Assigned(FStatement.ParamList) then begin
-      for i := 0 to FStatement.ParamList.Count-1 do begin
-        FQuery.ParamByName(FStatement.ParamList.Param(i).Name).Value := FStatement.ParamList.Param(i).Value;
-      end;
-    end;
-  end;
 begin
   Result := Self;
-  if not Assigned(FQuery) then begin
-    FQuery            := TZQuery.Create(nil);
-    FQuery.Connection := FConnection;
-  end
-  else begin
-    FQuery.Close;
-  end;
-  FQuery.SQL.Text := FStatement.AsString;
-  LoadParams;
+  if not FQuery.Connection.Connected
+    then FQuery.Connection.Connect;
   FQuery.Open;
 end;
 
@@ -284,7 +206,7 @@ end;
 function TDBZDatabase.Run(const SQLStatement: ISQLStatement): IDatabase;
 begin
   Result := Self;
-  FConnection.ExecuteDirect(SQLStatement.AsString);
+  FConnection.ExecuteDirect(SQLStatement.Statement);
 end;
 
 function TDBZDatabase.StartTransaction: IDatabase;
