@@ -48,7 +48,6 @@ type
   IBoolean    = IValue<Boolean>;
   IChar       = IValue<Char>;
   IString     = IValue<string>;
-  IAnsiString = IValue<AnsiString>;
   IByte       = IValue<Byte>;
   IWord       = IValue<Word>;
   ILongWord   = IValue<LongWord>;
@@ -57,6 +56,10 @@ type
   IReal       = IValue<Real>;
   ISingle     = IValue<Single>;
   IDouble     = IValue<Double>;
+
+  {$IFDEF MSWINDOWS}
+    IAnsiString = IValue<AnsiString>;
+  {$ENDIF}
 
 implementation
 

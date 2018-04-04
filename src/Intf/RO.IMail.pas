@@ -39,13 +39,10 @@ interface
 uses
     RO.IValue
   , idMessage
+  , SysUtils
   ;
 
 type
-  TAfterConnect    = Reference to procedure (const Connected: Boolean);
-  TAfterDisconnect = TAfterConnect;
-  TAfterSend       = Reference to procedure (const Subject: string);
-
   IMailServer  = interface;
   IMailMessage = interface;
 
@@ -53,11 +50,12 @@ type
   ['{DCA8E8BA-5765-4591-816A-FD442F4E6384}']
     function UseAuthentication(const UserName, Password: string): IMailServer; overload;
     function UseAuthentication(const UserName, Password: IString): IMailServer; overload;
-    function UseSSL: IMailServer;
+    function UseSSL: IMailServer; overload;
+    function UseSSL(const SSL: Boolean): IMailServer; overload;
     function Connect: IMailServer;
-    function OnAfterConnect(const Action: TAfterConnect): IMailServer;
-    function OnAfterDisconnect(const Action: TAfterDisconnect): IMailServer;
-    function OnAfterSend(const Action: TAfterSend): IMailServer;
+    function OnAfterConnect(const Action: TProc<Boolean>): IMailServer;
+    function OnAfterDisconnect(const Action: TProc<Boolean>): IMailServer;
+    function OnAfterSend(const Action: TProc<Boolean, string>): IMailServer;
     function Send(const MailMessage: IMailMessage): IMailServer;
   end;
 

@@ -50,9 +50,9 @@ uses
 type
   TMailServer = class(TInterfacedObject, IMailServer)
   private
-    FAfterConnect    : TAfterConnect;
-    FAfterDisconnect : TAfterDisconnect;
-    FAfterSend       : TAfterSend;
+    FAfterConnect    : TProc<Boolean>;
+    FAfterDisconnect : TProc<Boolean>;
+    FAfterSend       : TProc<Boolean, string>;
     mail             : TIdSMTP;
     mailSSL          : TIdSSLIOHandlerSocketOpenSSL;
   public
@@ -62,11 +62,12 @@ type
     class function New(const HostName: IString; const HostPort: IWord): IMailServer; overload;
     function UseAuthentication(const UserName, Password: string): IMailServer; overload;
     function UseAuthentication(const UserName, Password: IString): IMailServer; overload;
-    function UseSSL: IMailServer;
+    function UseSSL: IMailServer; overload;
+    function UseSSL(const SSL: Boolean): IMailServer; overload;
     function Connect: IMailServer;
-    function OnAfterConnect(const Action: TAfterConnect): IMailServer;
-    function OnAfterDisconnect(const Action: TAfterDisconnect): IMailServer;
-    function OnAfterSend(const Action: TAfterSend): IMailServer;
+    function OnAfterConnect(const Action: TProc<Boolean>): IMailServer;
+    function OnAfterDisconnect(const Action: TProc<Boolean>): IMailServer;
+    function OnAfterSend(const Action: TProc<Boolean, string>): IMailServer;
     function Send(const MailMessage: IMailMessage): IMailServer;
   end;
 
@@ -74,9 +75,10 @@ type
   private
     FMsg: TIdMessage;
   public
-    constructor Create(const FromName: IString; const FromAddr, ToAddr: IEmailAddress); overload;
+    constructor Create(const FromName: string; const FromAddr, ToAddr: IEmailAddress);
     destructor Destroy; override;
-    class function New(const FromName: IString; const FromAddr, ToAddr: IEmailAddress): IMailMessage;
+    class function New(const FromName: string; const FromAddr, ToAddr: IEmailAddress): IMailMessage; overload;
+    class function New(const FromName: IString; const FromAddr, ToAddr: IEmailAddress): IMailMessage; overload;
     function Subject(const MsgSubject: string): IMailMessage; overload;
     function Subject(const MsgSubject: IString): IMailMessage; overload;
     function Attach(const FileName: string): IMailMessage; overload;
@@ -95,6 +97,7 @@ uses
     IdExplicitTLSClientServerBase
   , IdAttachmentFile
   , RO.TValue
+  , RO.TIf
   ;
 
 { TMailServer }
@@ -145,36 +148,56 @@ begin
   Result := New(Hostname.Value, HostPort.Value);
 end;
 
-function TMailServer.OnAfterConnect(const Action: TAfterConnect): IMailServer;
+function TMailServer.OnAfterConnect(const Action: TProc<Boolean>): IMailServer;
 begin
   Result        := Self;
   FAfterConnect := Action;
 end;
 
-function TMailServer.OnAfterDisconnect(const Action: TAfterDisconnect): IMailServer;
+function TMailServer.OnAfterDisconnect(const Action: TProc<Boolean>): IMailServer;
 begin
   Result           := Self;
   FAfterDisconnect := Action;
 end;
 
-function TMailServer.OnAfterSend(const Action: TAfterSend): IMailServer;
+function TMailServer.OnAfterSend(const Action: TProc<Boolean, string>): IMailServer;
 begin
   Result     := Self;
   FAfterSend := Action;
 end;
 
 function TMailServer.Send(const MailMessage: IMailMessage): IMailServer;
+var
+  Success: Boolean;
 begin
   Result := Self;
-  mail.Send(MailMessage.Msg);
+  try
+    Success := True;
+    mail.Send(MailMessage.Msg);
+  except
+    Success := False;
+  end;
   if Assigned(FAfterSend)
-    then FAfterSend(MailMessage.Msg.Subject);
+    then
+      FAfterSend(
+        Success,
+        MailMessage.Msg.Subject
+      );
 end;
 
 function TMailServer.UseAuthentication(const UserName,
   Password: IString): IMailServer;
 begin
   Result := UseAuthentication(Username.Value, Password.Value);
+end;
+
+function TMailServer.UseSSL(const SSL: Boolean): IMailServer;
+begin
+  Result := TIf<IMailServer>.New(
+    SSL,
+    UseSSL,
+    Self
+  ).Eval;
 end;
 
 function TMailServer.UseSSL: IMailServer;
@@ -239,12 +262,12 @@ begin
   FMsg.Body.Text := MsgBody;
 end;
 
-constructor TMailMessage.Create(const FromName: IString; const FromAddr, ToAddr: IEmailAddress);
+constructor TMailMessage.Create(const FromName: string; const FromAddr, ToAddr: IEmailAddress);
 begin
   inherited Create;
   FMsg                           := TidMessage.Create(nil);
   FMsg.MessageParts.Clear;
-  FMsg.From.Name                 := FromName.Value;
+  FMsg.From.Name                 := FromName;
   FMsg.From.Address              := FromAddr.Value;
   FMsg.Recipients.EMailAddresses := ToAddr.Value;
 end;
@@ -260,9 +283,15 @@ begin
   Result := FMsg;
 end;
 
-class function TMailMessage.New(const FromName: IString; const FromAddr, ToAddr: IEmailAddress): IMailMessage;
+class function TMailMessage.New(const FromName: string; const FromAddr,
+  ToAddr: IEmailAddress): IMailMessage;
 begin
   Result := Create(FromName, FromAddr, ToAddr);
+end;
+
+class function TMailMessage.New(const FromName: IString; const FromAddr, ToAddr: IEmailAddress): IMailMessage;
+begin
+  Result := Create(FromName.Value, FromAddr, ToAddr);
 end;
 
 function TMailMessage.Subject(const MsgSubject: IString): IMailMessage;

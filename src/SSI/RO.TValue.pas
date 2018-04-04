@@ -62,7 +62,6 @@ type
   TBoolean    = TValue<Boolean>;
   TChar       = TValue<Char>;
   TString     = TValue<string>;
-  TAnsiString = TValue<AnsiString>;
   TByte       = TValue<Byte>;
   TWord       = TValue<Word>;
   TLongWord   = TValue<LongWord>;
@@ -71,6 +70,11 @@ type
   TReal       = TValue<Real>;
   TSingle     = TValue<Single>;
   TDouble     = TValue<Double>;
+
+  {$IFDEF MSWINDOWS}
+    TAnsiString = TValue<AnsiString>;
+  {$ENDIF}
+
 
 implementation
 
