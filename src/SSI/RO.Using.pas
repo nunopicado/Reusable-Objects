@@ -44,6 +44,8 @@ type
   public
     class procedure New<T: class, constructor>(Obj: T; Action: TProc<T>); overload; static;
     class procedure New<T: class, constructor>(Action: TProc<T>); overload; static;
+    class function New<T: class, constructor;TResult>(Obj: T; Action: TFunc<T, TResult>): TResult; overload; static;
+    class function New<T: class, constructor;TResult>(Action: TFunc<T, TResult>): TResult; overload; static;
   end;
 
 implementation
@@ -57,6 +59,20 @@ begin
   finally
     Obj.Free;
   end;
+end;
+
+class function Using.New<T, TResult>(Obj: T; Action: TFunc<T, TResult>): TResult;
+begin
+  try
+    Result := Action(Obj);
+  finally
+    Obj.Free;
+  end;
+end;
+
+class function Using.New<T, TResult>(Action: TFunc<T, TResult>): TResult;
+begin
+  Result := New<T, TResult>(T.Create, Action);
 end;
 
 class procedure Using.New<T>(Action: TProc<T>);
