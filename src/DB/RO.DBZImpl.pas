@@ -50,32 +50,33 @@ type
   strict private
     FConnection: TZConnection;
   public
-    constructor Create(Server: IServer; Database: string; ClientCodePage, LibraryLocation: string);
+    constructor Create(const ServerInfo: IServerInfo; const ClientCodePage, LibraryLocation: string);
     destructor Destroy; Override;
-    class function New(Server: IServer; Database: string; ClientCodePage, LibraryLocation: string): IDatabase;
+    class function New(const ServerInfo: IServerInfo; const ClientCodePage, LibraryLocation: string): IDatabase;
     function Connect: IDatabase;
     function Disconnect: IDatabase;
+    function IsConnected: Boolean;
     function StartTransaction: IDatabase;
     function StopTransaction(const SaveChanges: Boolean = True): IDatabase;
-    function IsConnected: Boolean;
-    function Database: string;
-    function NewQuery(const Statement: ISQLStatement): IDBQuery; overload;
-    function NewQuery(const Statement: ISQLStatement; out Destination: IDBQuery): IDatabase; overload;
-    function Run(const SQLStatement: ISQLStatement): IDatabase;
+    function Query(const Statement: ISQLStatement): IQuery;
+    function Execute(const SQLStatement: ISQLStatement): IDatabase;
   end;
 
   TDatabase = TDBZDatabase;
 
-  TZeosServer = class(TInterfacedObject, IServer)
+  TZeosServerInfo = class(TInterfacedObject, IServerInfo)
   private
-    FOrigin: IServer;
+    FOrigin: IServerInfo;
   public
-    constructor Create(Origin: IServer);
-    class function New(Origin: IServer): IServer;
+    constructor Create(const Origin: IServerInfo);
+    class function New(const Origin: IServerInfo): IServerInfo;
     function Hostname: string;
     function Port: Word;
     function Username: string;
     function Password: string;
+    function Database: string;
+    function BinPath: string;
+    function UpdatePath: string;
     function ServerType: TServerType;
     function TypeAsString: string;
   end;
@@ -83,26 +84,46 @@ type
 implementation
 
 type
-  TDBZQuery = class(TInterfacedObject, IDBQuery)
+  TDBZQuery = class(TInterfacedObject, IQuery)
   private
     FQuery: TZQuery;
-    procedure AssignParams(SQLStatement: ISQLStatement);
+    procedure AssignParams(const SQLStatement: ISQLStatement);
+    function AddField(const List, NewField: string): string;
   public
     constructor Create(const Connection: TZConnection; const SQLStatement: ISQLStatement);
-    class function New(const Connection: TZConnection; const SQLStatement: ISQLStatement): IDBQuery;
+    class function New(const Connection: TZConnection; const SQLStatement: ISQLStatement): IQuery;
     destructor Destroy; override;
-    function Run: IDBQuery;
+    function Run: IQuery;
+    function SetMasterSource(const MasterSource: TDataSource): IQuery;
+    function AddMasterDetailLink(const Master, Detail: string): IQuery;
+    function ForEach(const RowAction: TProc<TDataset>): IQuery;
     function AsDataset: TDataset;
   end;
 
 { TDBZQuery }
+
+function TDBZQuery.AddField(const List, NewField: string): string;
+begin
+  Result := List;
+  if not Result.IsEmpty
+    then Result := Result + ';';
+  Result := Result + NewField;
+end;
+
+function TDBZQuery.AddMasterDetailLink(const Master, Detail: string): IQuery;
+begin
+  Result := Self;
+  raise Exception.Create('Not yet implemented');
+//  FQuery.MasterFields := AddField(FQuery.MasterFields, Master);
+//  FQuery.DetailFields := AddField(FQuery.DetailFields, Detail);
+end;
 
 function TDBZQuery.AsDataset: TDataset;
 begin
   Result := FQuery;
 end;
 
-procedure TDBZQuery.AssignParams(SQLStatement: ISQLStatement);
+procedure TDBZQuery.AssignParams(const SQLStatement: ISQLStatement);
 var
   Idx: Integer;
 begin
@@ -128,17 +149,35 @@ begin
   inherited;
 end;
 
-class function TDBZQuery.New(const Connection: TZConnection; const SQLStatement: ISQLStatement): IDBQuery;
+function TDBZQuery.ForEach(const RowAction: TProc<TDataset>): IQuery;
+var
+  i: Integer;
+begin
+  Result := Self;
+  for i := 1 to FQuery.RecordCount do
+    begin
+      FQuery.RecNo := i;
+      RowAction(FQuery);
+    end;
+end;
+
+class function TDBZQuery.New(const Connection: TZConnection; const SQLStatement: ISQLStatement): IQuery;
 begin
   Result := Create(Connection, SQLStatement);
 end;
 
-function TDBZQuery.Run: IDBQuery;
+function TDBZQuery.Run: IQuery;
 begin
   Result := Self;
   if not FQuery.Connection.Connected
     then FQuery.Connection.Connect;
   FQuery.Open;
+end;
+
+function TDBZQuery.SetMasterSource(const MasterSource: TDataSource): IQuery;
+begin
+  Result := Self;
+  FQuery.MasterSource := MasterSource;
 end;
 
 { TDatabase }
@@ -149,24 +188,19 @@ begin
   FConnection.Connect;
 end;
 
-constructor TDBZDatabase.Create(Server: IServer; Database: string; ClientCodePage, LibraryLocation: string);
+constructor TDBZDatabase.Create(const ServerInfo: IServerInfo; const ClientCodePage, LibraryLocation: string);
 begin
   FConnection                        := TZConnection.Create(nil);
-  FConnection.HostName               := Server.Hostname;
-  FConnection.Port                   := Server.Port;
-  FConnection.User                   := Server.Username;
-  FConnection.Password               := Server.Password;
-  FConnection.Database               := Database;
-  FConnection.Catalog                := Database;
+  FConnection.HostName               := ServerInfo.Hostname;
+  FConnection.Port                   := ServerInfo.Port;
+  FConnection.User                   := ServerInfo.Username;
+  FConnection.Password               := ServerInfo.Password;
+  FConnection.Database               := ServerInfo.Database;
+  FConnection.Catalog                := ServerInfo.Database;
   FConnection.ClientCodePage         := ClientCodePage;
   FConnection.LibraryLocation        := LibraryLocation;
-  FConnection.Protocol               := Server.TypeAsString;
+  FConnection.Protocol               := ServerInfo.TypeAsString;
   FConnection.TransactIsolationLevel := tiReadUncommitted;
-end;
-
-function TDBZDatabase.Database: string;
-begin
-  Result := FConnection.Database;
 end;
 
 destructor TDBZDatabase.Destroy;
@@ -186,24 +220,17 @@ begin
   Result := FConnection.Connected;
 end;
 
-class function TDBZDatabase.New(Server: IServer; Database: string; ClientCodePage, LibraryLocation: string): IDatabase;
+class function TDBZDatabase.New(const ServerInfo: IServerInfo; const ClientCodePage, LibraryLocation: string): IDatabase;
 begin
-  Result := Create(Server, Database, ClientCodePage, LibraryLocation);
+  Result := Create(ServerInfo, ClientCodePage, LibraryLocation);
 end;
 
-function TDBZDatabase.NewQuery(const Statement: ISQLStatement;
- out Destination: IDBQuery): IDatabase;
-begin
-  Result := Self;
-  Destination := NewQuery(Statement);
-end;
-
-function TDBZDatabase.NewQuery(const Statement: ISQLStatement): IDBQuery;
+function TDBZDatabase.Query(const Statement: ISQLStatement): IQuery;
 begin
   Result := TDBZQuery.Create(FConnection, Statement);
 end;
 
-function TDBZDatabase.Run(const SQLStatement: ISQLStatement): IDatabase;
+function TDBZDatabase.Execute(const SQLStatement: ISQLStatement): IDatabase;
 begin
   Result := Self;
   FConnection.ExecuteDirect(SQLStatement.Statement);
@@ -226,37 +253,47 @@ end;
 
 { TZeosServer }
 
-constructor TZeosServer.Create(Origin: IServer);
+function TZeosServerInfo.BinPath: string;
+begin
+  Result := FOrigin.BinPath;
+end;
+
+constructor TZeosServerInfo.Create(const Origin: IServerInfo);
 begin
   FOrigin := Origin;
 end;
 
-function TZeosServer.Hostname: string;
+function TZeosServerInfo.Database: string;
+begin
+  Result := FOrigin.Database;
+end;
+
+function TZeosServerInfo.Hostname: string;
 begin
   Result := FOrigin.Hostname;
 end;
 
-class function TZeosServer.New(Origin: IServer): IServer;
+class function TZeosServerInfo.New(const Origin: IServerInfo): IServerInfo;
 begin
   Result := Create(Origin);
 end;
 
-function TZeosServer.Password: string;
+function TZeosServerInfo.Password: string;
 begin
   Result := FOrigin.Password;
 end;
 
-function TZeosServer.Port: Word;
+function TZeosServerInfo.Port: Word;
 begin
   Result := FOrigin.Port;
 end;
 
-function TZeosServer.ServerType: TServerType;
+function TZeosServerInfo.ServerType: TServerType;
 begin
   Result := FOrigin.ServerType;
 end;
 
-function TZeosServer.TypeAsString: string;
+function TZeosServerInfo.TypeAsString: string;
 begin
   case FOrigin.ServerType of
     stMySQL      : Result := 'mysql-5';
@@ -267,7 +304,12 @@ begin
   end;
 end;
 
-function TZeosServer.Username: string;
+function TZeosServerInfo.UpdatePath: string;
+begin
+  Result := FOrigin.UpdatePath;
+end;
+
+function TZeosServerInfo.Username: string;
 begin
   Result := FOrigin.Username;
 end;

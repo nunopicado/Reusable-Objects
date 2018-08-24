@@ -19,7 +19,7 @@
 (******************************************************************************)
 (** Extensions    :                                                          **)
 (******************************************************************************)
-(** Other types   : TRowAction, TVariantArray                                **)
+(** Other types   : TVariantArray                                            **)
 (******************************************************************************)
 (** Dependencies  : VCL                                                      **)
 (******************************************************************************)
@@ -46,8 +46,6 @@ uses
   ;
 
 type
-  IDBQuery      = interface;
-  TRowAction    = Reference to procedure (This: IDBQuery);
   TServerType   = (stMySQL, stMSSQL, stSQLite, stPostgreSQL);
   TVariantArray = array of Variant;
 
@@ -58,19 +56,31 @@ type
     function ParamCount: Integer;
   end;
 
-  IServer = interface(IInvokable)
+  IServerInfo = interface(IInvokable)
   ['{5C49AC74-D4C1-4C73-AF4A-140FCE379F63}']
     function Hostname: string;
     function Port: Word;
     function Username: string;
     function Password: string;
+    function Database: string;
+    function BinPath: string;
+    function UpdatePath: string;
     function ServerType: TServerType;
     function TypeAsString: string;
   end;
 
-  IDBQuery = interface(IInvokable)
+  IServerInfoUpdate = interface(IInvokable)
+  ['{7B023BE2-B7DA-4519-9FD5-ED7F93F7EE33}']
+    function Update(const HostName: string; const Port: Word; const Username, Password, Database: string; ServerType: TServerType;
+      const BinPath, UpdatePath: string): IServerInfoUpdate;
+  end;
+
+  IQuery = interface(IInvokable)
   ['{9E4D3D8E-BE29-43CE-8A5E-2F1C9C5E58D0}']
-    function Run: IDBQuery;
+    function Run: IQuery;
+    function SetMasterSource(const MasterSource: TDataSource): IQuery;
+    function AddMasterDetailLink(const Master, Detail: string): IQuery;
+    function ForEach(const Row: TProc<TDataset>): IQuery;
     function AsDataset: TDataset;
   end;
 
@@ -81,10 +91,8 @@ type
     function IsConnected: Boolean;
     function StartTransaction: IDatabase;
     function StopTransaction(const SaveChanges: Boolean = True): IDatabase;
-    function Database: string;
-    function NewQuery(const Statement: ISQLStatement): IDBQuery; overload;
-    function NewQuery(const Statement: ISQLStatement; out Destination: IDBQuery): IDatabase; overload;
-    function Run(const SQLStatement: ISQLStatement): IDatabase;
+    function Query(const Statement: ISQLStatement): IQuery;
+    function Execute(const SQLStatement: ISQLStatement): IDatabase;
   end;
 
 implementation

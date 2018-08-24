@@ -9,7 +9,7 @@ uses
 type
   IDatabaseFactory = interface(IInvokable)
   ['{E3813801-C68F-4F80-8081-ACC658A26A3B}']
-    function New(Server: IServer; Database: string): IDatabase;
+    function New(const ServerInfo: IServerInfo): IDatabase;
   end;
 
 implementation
@@ -21,11 +21,15 @@ uses
 
 initialization
   GlobalContainer
-    .RegisterType<TDBUniDatabase>('TDBUniDatabase')
+    .RegisterType<TDatabase>('TDatabase')
     .Implements<IDatabase>
     .AsSingleton;
   GlobalContainer
     .RegisterType<IDatabaseFactory>
     .AsFactory;
+
+finalization
+  GlobalContainer
+    .Resolve<IDatabase>.Disconnect;
 
 end.

@@ -44,21 +44,30 @@ uses
   , System.Generics.Collections
   ;
 
+resourcestring
+  cIncorrectParameterList = 'Incorrect parameter list';
+
 type
-  TServer = class(TInterfacedObject, IServer)
+  TServerInfo = class(TInterfacedObject, IServerInfo)
   private
-    FHostname: string;
-    FPort: Word;
-    FUsername: string;
-    FPassword: string;
-    FServerType: TServerType;
+    FHostname   : string;
+    FPort       : Word;
+    FUsername   : string;
+    FPassword   : string;
+    FServerType : TServerType;
+    FDatabase   : string;
+    FBinPath    : string;
+    FUpdatePath : string;
   public
-    constructor Create(const HostName: string; const Port: Word; const Username, Password: string; const ServerType: TServerType);
-    class function New(const HostName: string; const Port: Word; const Username, Password: string; const ServerType: TServerType): IServer;
-    function Hostname: string;
+    constructor Create(const HostName: string; const Port: Word; const Username, Password: string; const ServerType: TServerType; const Database, BinPath, UpdatePath: string);
+    class function New(const HostName: string; const Port: Word; const Username, Password: string; const ServerType: TServerType; const Database, BinPath, UpdatePath: string): IServerInfo;
+    function HostName: string;
     function Port: Word;
     function Username: string;
     function Password: string;
+    function Database: string;
+    function BinPath: string;
+    function UpdatePath: string;
     function ServerType: TServerType;
     function TypeAsString: string;
   end;
@@ -68,9 +77,10 @@ type
     FStatement: string;
     FParams: TVariantArray;
   public
-    constructor Create(Statement: string; Params: TVariantArray); overload;
-    constructor Create(Statement: string); overload;
-    class function New(Statement: string; Params: TVariantArray): ISQLStatement;
+    constructor Create(const Statement: string; const Params: TVariantArray); overload;
+    constructor Create(const Statement: string); overload;
+    class function New(const Statement: string; const Params: TVariantArray): ISQLStatement; overload;
+    class function New(const Statement: string): ISQLStatement; overload;
     destructor Destroy; override;
     function Statement: string;
     function Params: TVariantArray;
@@ -83,45 +93,58 @@ uses
     SysUtils
   ;
 
-{ TServer }
+{ TServerInfo }
+{$REGION TServerInfo}
+function TServerInfo.BinPath: string;
+begin
+  Result := FBinPath;
+end;
 
-constructor TServer.Create(const HostName: string; const Port: Word; const Username, Password: string;
-  const ServerType: TServerType);
+constructor TServerInfo.Create(const HostName: string; const Port: Word; const Username, Password: string; const ServerType: TServerType;
+  const Database, BinPath, UpdatePath: string);
 begin
   FHostname   := HostName;
   FPort       := Port;
   FUsername   := Username;
   FPassword   := Password;
   FServerType := ServerType;
+  FDatabase   := Database;
+  FBinPath    := BinPath;
+  FUpdatePath := UpdatePath;
 end;
 
-function TServer.Hostname: string;
+function TServerInfo.Database: string;
+begin
+  Result := FDatabase;
+end;
+
+function TServerInfo.Hostname: string;
 begin
   Result := FHostname;
 end;
 
-class function TServer.New(const HostName: string; const Port: Word; const Username, Password: string;
-  const ServerType: TServerType): IServer;
+class function TServerInfo.New(const HostName: string; const Port: Word; const Username, Password: string; const ServerType: TServerType;
+  const Database, BinPath, UpdatePath: string): IServerInfo;
 begin
-  Result := Create(HostName, Port, Username, Password, ServerType);
+  Result := Create(HostName, Port, Username, Password, ServerType, Database, BinPath, UpdatePath);
 end;
 
-function TServer.Password: string;
+function TServerInfo.Password: string;
 begin
   Result := FPassword;
 end;
 
-function TServer.Port: Word;
+function TServerInfo.Port: Word;
 begin
   Result := FPort;
 end;
 
-function TServer.ServerType: TServerType;
+function TServerInfo.ServerType: TServerType;
 begin
   Result := FServerType;
 end;
 
-function TServer.TypeAsString: string;
+function TServerInfo.TypeAsString: string;
 begin
   case FServerType of
     stMySQL      : Result := 'MySQL';
@@ -132,13 +155,19 @@ begin
   end;
 end;
 
-function TServer.Username: string;
+function TServerInfo.UpdatePath: string;
+begin
+  Result := FUpdatePath;
+end;
+
+function TServerInfo.Username: string;
 begin
   Result := FUsername;
 end;
+{$ENDREGION}
 
 { TSQLStatement }
-
+{$REGION TSQLStatement}
 function TSQLStatement.Statement: string;
 begin
   Result := FStatement;
@@ -154,13 +183,15 @@ begin
   Result := FParams;
 end;
 
-constructor TSQLStatement.Create(Statement: string; Params: TVariantArray);
+constructor TSQLStatement.Create(const Statement: string; const Params: TVariantArray);
 begin
+  if Length(Params) mod 2 <> 0
+    then raise Exception.Create(cIncorrectParameterList);
   FStatement := Statement;
   FParams    := Params;
 end;
 
-constructor TSQLStatement.Create(Statement: string);
+constructor TSQLStatement.Create(const Statement: string);
 begin
   Create(Statement, []);
 end;
@@ -171,10 +202,15 @@ begin
   inherited;
 end;
 
-class function TSQLStatement.New(Statement: string;
-  Params: TVariantArray): ISQLStatement;
+class function TSQLStatement.New(const Statement: string): ISQLStatement;
+begin
+  Result := New(Statement, []);
+end;
+
+class function TSQLStatement.New(const Statement: string; const Params: TVariantArray): ISQLStatement;
 begin
   Result := Create(Statement, Params);
 end;
+{$ENDREGION}
 
 end.

@@ -40,32 +40,31 @@ uses
     RO.DBConnectionIntf
   , Uni
   , UniProvider
-  , DB
-  , SysUtils
   ;
 
+resourcestring
+  cUnknownServerType = 'Unknown Server Type';
+
 type
-  TDBUniDatabase = class(TInterfacedObject, IDatabase)
+  TROUniDatabase = class(TInterfacedObject, IDatabase)
   strict private
     FConnection: TUniConnection;
     FProvider: TUniProvider;
+    procedure DoExecute(const SQLStatement: ISQLStatement);
   public
-    constructor Create(const Server: IServer; const Database: string);
+    constructor Create(const ServerInfo: IServerInfo);
     destructor Destroy; override;
-    class function New(const Server: IServer; const Database: string): IDatabase;
+    class function New(const ServerInfo: IServerInfo): IDatabase;
     function Connect: IDatabase;
     function Disconnect: IDatabase;
+    function IsConnected: Boolean;
     function StartTransaction: IDatabase;
     function StopTransaction(const SaveChanges: Boolean = True): IDatabase;
-    function IsConnected: Boolean;
-    function Database: string;
-    function NewQuery(const Statement: ISQLStatement): IDBQuery; overload;
-    function NewQuery(const Statement: ISQLStatement; out Destination: IDBQuery): IDatabase; overload;
-    function Run(const SQLStatement: ISQLStatement): IDatabase;
-    function Connection: TUniConnection;
+    function Query(const Statement: ISQLStatement): IQuery;
+    function Execute(const SQLStatement: ISQLStatement): IDatabase;
   end;
 
-  TDatabase = TDBUniDatabase;
+  TDatabase = TROUniDatabase;
 
 implementation
 
@@ -77,29 +76,50 @@ uses
   , RO.IValue
   , RO.TValue
   , RO.TIf
+  , DB
+  , SysUtils
   ;
 
 type
-  TDBUniQuery = class(TInterfacedObject, IDBQuery)
+  TROUniQuery = class(TInterfacedObject, IQuery)
   private
     FQuery: TUniQuery;
     procedure AssignParams(SQLStatement: ISQLStatement);
+    function AddField(const List, NewField: string): string;
+    function ForEach(const RowAction: TProc<TDataset>): IQuery;
   public
     constructor Create(const Connection: TUniConnection; const SQLStatement: ISQLStatement);
-    class function New(const Connection: TUniConnection; const SQLStatement: ISQLStatement): IDBQuery;
+    class function New(const Connection: TUniConnection; const SQLStatement: ISQLStatement): IQuery;
     destructor Destroy; override;
-    function Run: IDBQuery;
+    function Run: IQuery;
+    function SetMasterSource(const MasterSource: TDataSource): IQuery;
+    function AddMasterDetailLink(const Master, Detail: string): IQuery;
     function AsDataset: TDataset;
   end;
 
-{ TDBUniQuery }
+{ TROUniQuery }
+{$REGION TROUniQuery}
+function TROUniQuery.AddField(const List, NewField: string): string;
+begin
+  Result := List;
+  if not Result.IsEmpty
+    then Result := Result + ';';
+  Result := Result + NewField;
+end;
 
-function TDBUniQuery.AsDataset: TDataset;
+function TROUniQuery.AddMasterDetailLink(const Master, Detail: string): IQuery;
+begin
+  Result := Self;
+  FQuery.MasterFields := AddField(FQuery.MasterFields, Master);
+  FQuery.DetailFields := AddField(FQuery.DetailFields, Detail);
+end;
+
+function TROUniQuery.AsDataset: TDataset;
 begin
   Result := FQuery;
 end;
 
-procedure TDBUniQuery.AssignParams(SQLStatement: ISQLStatement);
+procedure TROUniQuery.AssignParams(SQLStatement: ISQLStatement);
 var
   Idx: Integer;
 begin
@@ -111,26 +131,40 @@ begin
     end;
 end;
 
-constructor TDBUniQuery.Create(const Connection: TUniConnection; const SQLStatement: ISQLStatement);
+constructor TROUniQuery.Create(const Connection: TUniConnection; const SQLStatement: ISQLStatement);
 begin
-  FQuery              := Uni.TUniQuery.Create(nil);
-  FQuery.Connection   := Connection;
-  FQuery.SQL.Text     := SQLStatement.Statement;
+  FQuery                        := Uni.TUniQuery.Create(nil);
+  FQuery.Connection             := Connection;
+  FQuery.Options.RequiredFields := False;
+  FQuery.SQL.Text               := SQLStatement.Statement;
   AssignParams(SQLStatement);
 end;
 
-destructor TDBUniQuery.Destroy;
+destructor TROUniQuery.Destroy;
 begin
   FQuery.Free;
   inherited;
 end;
 
-class function TDBUniQuery.New(const Connection: TUniConnection; const SQLStatement: ISQLStatement): IDBQuery;
+function TROUniQuery.ForEach(const RowAction: TProc<TDataset>): IQuery;
+var
+  i: Integer;
+begin
+  Result := Self;
+  for i := 1 to FQuery.RecordCount do
+    begin
+      FQuery.RecNo := i;
+      RowAction(FQuery);
+    end;
+end;
+
+
+class function TROUniQuery.New(const Connection: TUniConnection; const SQLStatement: ISQLStatement): IQuery;
 begin
   Result := Create(Connection, SQLStatement);
 end;
 
-function TDBUniQuery.Run: IDBQuery;
+function TROUniQuery.Run: IQuery;
 begin
   Result := Self;
   if not FQuery.Connection.Connected
@@ -138,97 +172,92 @@ begin
   FQuery.Open;
 end;
 
-{ TDatabase }
-
-function TDBUniDatabase.Connect: IDatabase;
+function TROUniQuery.SetMasterSource(const MasterSource: TDataSource): IQuery;
 begin
   Result := Self;
-  FConnection.Connect;
+  FQuery.MasterSource := MasterSource;
+end;
+{$ENDREGION}
+
+{ TROUniDatabase }
+{$REGION TROUniDatabase}
+function TROUniDatabase.Connect: IDatabase;
+begin
+  Result := Self;
+  if not IsConnected
+    then FConnection.Connect;
 end;
 
-function TDBUniDatabase.Connection: TUniConnection;
+constructor TROUniDatabase.Create(const ServerInfo: IServerInfo);
 begin
-  Result := FConnection;
-end;
-
-constructor TDBUniDatabase.Create(const Server: IServer; const Database: string);
-begin
-  FConnection              := TUniConnection.Create(nil);
-  FConnection.Server       := Server.Hostname;
-  FConnection.Port         := Server.Port;
-  FConnection.Username     := Server.Username;
-  FConnection.Password     := Server.Password;
-  FConnection.Database     := Database;
-  FConnection.ProviderName := Server.TypeAsString;
-  case Server.ServerType of
-    stMySQL      : FProvider := TMySQLUniProvider.Create(nil);
-    stMSSQL      : FProvider := TSQLServerUniProvider.Create(nil);
-    stSQLite     : FProvider := TSQLiteUniProvider.Create(nil);
-    stPostgreSQL : FProvider := TPostgreSQLUniProvider.Create(nil);
-  else raise Exception.Create('Unknown Server Type');
+  FConnection                 := TUniConnection.Create(nil);
+  FConnection.Server          := ServerInfo.Hostname;
+  FConnection.Port            := ServerInfo.Port;
+  FConnection.Username        := ServerInfo.Username;
+  FConnection.Password        := ServerInfo.Password;
+  FConnection.Database        := ServerInfo.Database;
+  FConnection.ProviderName    := ServerInfo.TypeAsString;
+  case ServerInfo.ServerType of
+    stMySQL      : FProvider  := TMySQLUniProvider.Create(nil);
+    stMSSQL      : FProvider  := TSQLServerUniProvider.Create(nil);
+    stSQLite     : FProvider  := TSQLiteUniProvider.Create(nil);
+    stPostgreSQL : FProvider  := TPostgreSQLUniProvider.Create(nil);
+  else raise Exception.Create(cUnknownServerType);
   end;
 end;
 
-function TDBUniDatabase.Database: string;
-begin
-  Result := FConnection.Database;
-end;
-
-destructor TDBUniDatabase.Destroy;
+destructor TROUniDatabase.Destroy;
 begin
   FProvider.Free;
   FConnection.Free;
   inherited;
 end;
 
-function TDBUniDatabase.Disconnect: IDatabase;
+function TROUniDatabase.Disconnect: IDatabase;
 begin
   Result := Self;
-  FConnection.Disconnect;
+  if IsConnected
+    then FConnection.Disconnect;
 end;
 
-function TDBUniDatabase.IsConnected: Boolean;
+procedure TROUniDatabase.DoExecute(const SQLStatement: ISQLStatement);
+begin
+  FConnection.ExecSQLEx(SQLStatement.Statement, SQLStatement.Params);
+end;
+
+function TROUniDatabase.IsConnected: Boolean;
 begin
   Result := FConnection.Connected;
 end;
 
-class function TDBUniDatabase.New(const Server: IServer; const Database: string): IDatabase;
+class function TROUniDatabase.New(const ServerInfo: IServerInfo): IDatabase;
 begin
-  Result := Create(Server, Database);
+  Result := Create(ServerInfo);
 end;
 
-function TDBUniDatabase.NewQuery(const Statement: ISQLStatement;
- out Destination: IDBQuery): IDatabase;
+function TROUniDatabase.Query(const Statement: ISQLStatement): IQuery;
 begin
-  Result := Self;
-  Destination := NewQuery(Statement);
+  Result := TROUniQuery.Create(FConnection, Statement);
 end;
 
-function TDBUniDatabase.NewQuery(const Statement: ISQLStatement): IDBQuery;
-begin
-  Result := TDBUniQuery.Create(FConnection, Statement);
-end;
-
-function TDBUniDatabase.Run(const SQLStatement: ISQLStatement): IDatabase;
+function TROUniDatabase.Execute(const SQLStatement: ISQLStatement): IDatabase;
 begin
   Result := Self;
   Self.Connect;
-  FConnection.ExecSQLEx(SQLStatement.Statement, SQLStatement.Params);
+  DoExecute(SQLStatement);
 end;
 
-function TDBUniDatabase.StartTransaction: IDatabase;
+function TROUniDatabase.StartTransaction: IDatabase;
 begin
   FConnection.StartTransaction;
 end;
 
-function TDBUniDatabase.StopTransaction(const SaveChanges: Boolean = True): IDatabase;
+function TROUniDatabase.StopTransaction(const SaveChanges: Boolean = True): IDatabase;
 begin
-  if SaveChanges then begin
-    FConnection.Commit;
-  end
-  else begin
-    FConnection.Rollback;
-  end;
+  if SaveChanges
+    then FConnection.Commit
+    else FConnection.Rollback;
 end;
+{$ENDREGION}
 
 end.
