@@ -72,7 +72,7 @@ begin
   Result := Self;
   if FCases.ContainsKey(Value)
     then raise Exception.Create('Can not add a duplicate case for testing.');
-  FCases.AddOrSetValue(Value, Action);
+  FCases.Add(Value, Action);
 end;
 
 function TCase<T>.AddCase(const Values: array of T; const Action: TProc<T>): ICase<T>;
