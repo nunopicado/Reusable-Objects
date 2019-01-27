@@ -32,7 +32,9 @@ requires
   vcl,
   vclimg,
   CPortLibDXE,
-  Spring.Base;
+  Spring.Base,
+  dbrtl,
+  vcldb;
 
 contains
   RO.VCL.TCOMPort in '..\src\VCL\RO.VCL.TCOMPort.pas',
@@ -54,6 +56,7 @@ contains
   RO.VCL.TIconFromBitmap in '..\src\VCL\RO.VCL.TIconFromBitmap.pas',
   RO.VCL.Ext.TPanel in '..\src\VCL\RO.VCL.Ext.TPanel.pas',
   RO.VCL.TActionClipboard in '..\src\VCL\RO.VCL.TActionClipboard.pas',
-  RO.VCL.TMsgClipboard in '..\src\VCL\RO.VCL.TMsgClipboard.pas';
+  RO.VCL.TMsgClipboard in '..\src\VCL\RO.VCL.TMsgClipboard.pas',
+  RO.VCL.TRichEditText in '..\src\VCL\RO.VCL.TRichEditText.pas';
 
 end.
