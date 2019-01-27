@@ -50,6 +50,7 @@ contains
   RO.VCL.IIcon in '..\src\Intf\RO.VCL.IIcon.pas',
   RO.VCL.TBitmapFromFile in '..\src\VCL\RO.VCL.TBitmapFromFile.pas',
   RO.VCL.TIconFromBitmap in '..\src\VCL\RO.VCL.TIconFromBitmap.pas',
-  RO.VCL.Ext.TPanel in '..\src\VCL\RO.VCL.Ext.TPanel.pas';
+  RO.VCL.Ext.TPanel in '..\src\VCL\RO.VCL.Ext.TPanel.pas',
+  RO.VCL.TActionClipboard in '..\src\VCL\RO.VCL.TActionClipboard.pas';
 
 end.
