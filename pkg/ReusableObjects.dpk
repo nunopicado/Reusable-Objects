@@ -36,7 +36,9 @@ requires
   IndyCore,
   xmlrtl,
   inet,
-  soaprtl;
+  soaprtl,
+  vcl,
+  Spring.Base;
 
 contains
   RO.ICertificate in '..\src\Intf\RO.ICertificate.pas',
@@ -138,6 +140,8 @@ contains
   RO.TCheckedValue in '..\src\SSI\RO.TCheckedValue.pas',
   RO.TNextAlphaNumber in '..\src\SSI\RO.TNextAlphaNumber.pas',
   RO.ICase in '..\src\Intf\RO.ICase.pas',
-  RO.TCase in '..\src\SSI\RO.TCase.pas';
+  RO.TCase in '..\src\SSI\RO.TCase.pas',
+  RO.IResource in '..\src\Intf\RO.IResource.pas',
+  RO.TResource in '..\src\SSI\RO.TResource.pas';
 
 end.
