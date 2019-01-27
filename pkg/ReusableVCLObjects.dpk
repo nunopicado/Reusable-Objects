@@ -30,7 +30,9 @@ package ReusableVCLObjects;
 requires
   rtl,
   vcl,
-  vclimg;
+  vclimg,
+  CPortLibDXE,
+  Spring.Base;
 
 contains
   RO.VCL.TCOMPort in '..\src\VCL\RO.VCL.TCOMPort.pas',
@@ -51,6 +53,7 @@ contains
   RO.VCL.TBitmapFromFile in '..\src\VCL\RO.VCL.TBitmapFromFile.pas',
   RO.VCL.TIconFromBitmap in '..\src\VCL\RO.VCL.TIconFromBitmap.pas',
   RO.VCL.Ext.TPanel in '..\src\VCL\RO.VCL.Ext.TPanel.pas',
-  RO.VCL.TActionClipboard in '..\src\VCL\RO.VCL.TActionClipboard.pas';
+  RO.VCL.TActionClipboard in '..\src\VCL\RO.VCL.TActionClipboard.pas',
+  RO.VCL.TMsgClipboard in '..\src\VCL\RO.VCL.TMsgClipboard.pas';
 
 end.
