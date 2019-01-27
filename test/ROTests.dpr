@@ -74,7 +74,8 @@ uses
   uTCheckedValueTest in 'uTCheckedValueTest.pas',
   uTNextAlphaNumberTest in 'uTNextAlphaNumberTest.pas',
   RO.TCase in '..\src\SSI\RO.TCase.pas',
-  uTCaseTest in 'uTCaseTest.pas';
+  uTCaseTest in 'uTCaseTest.pas',
+  u2DCaseTest in 'u2DCaseTest.pas';
 
 var
   runner : ITestRunner;
