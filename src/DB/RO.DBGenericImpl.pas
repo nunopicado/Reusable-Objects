@@ -42,6 +42,7 @@ interface
 uses
     RO.DBConnectionIntf
   , System.Generics.Collections
+  , SysUtils
   ;
 
 resourcestring
@@ -87,11 +88,22 @@ type
     function ParamCount: Integer;
   end;
 
-implementation
+  TDummyDatabase = class(TInterfacedObject, IDatabase)
+  strict private
+    FConnectAction: TProc;
+  public
+    constructor Create(const ConnectAction: TProc = nil);
+    class function New(const ConnectAction: TProc = nil): IDatabase;
+    function Connect: IDatabase;
+    function Disconnect: IDatabase;
+    function IsConnected: Boolean;
+    function StartTransaction: IDatabase; virtual; abstract;
+    function StopTransaction(const SaveChanges: Boolean = True): IDatabase; virtual; abstract;
+    function Query(const Statement: ISQLStatement): IQuery; virtual; abstract;
+    function Execute(const SQLStatement: ISQLStatement): IDatabase; virtual; abstract;
+  end;
 
-uses
-    SysUtils
-  ;
+implementation
 
 { TServerInfo }
 {$REGION TServerInfo}
@@ -212,5 +224,34 @@ begin
   Result := Create(Statement, Params);
 end;
 {$ENDREGION}
+
+{ TDummyDatabase }
+
+function TDummyDatabase.Connect: IDatabase;
+begin
+  Result := Self;
+  if Assigned(FConnectAction)
+    then FConnectAction;
+end;
+
+constructor TDummyDatabase.Create(const ConnectAction: TProc);
+begin
+  FConnectAction := ConnectAction;
+end;
+
+function TDummyDatabase.Disconnect: IDatabase;
+begin
+  Result := Self;
+end;
+
+function TDummyDatabase.IsConnected: Boolean;
+begin
+  Result := False;
+end;
+
+class function TDummyDatabase.New(const ConnectAction: TProc = nil): IDatabase;
+begin
+  Result := Create(ConnectAction);
+end;
 
 end.
