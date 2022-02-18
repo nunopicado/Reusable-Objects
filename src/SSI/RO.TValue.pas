@@ -70,6 +70,7 @@ type
   TReal       = TValue<Real>;
   TSingle     = TValue<Single>;
   TDouble     = TValue<Double>;
+  TCurrency   = TValue<Currency>;
 
   {$IFDEF MSWINDOWS}
     TAnsiString = TValue<AnsiString>;
