@@ -80,7 +80,7 @@ end;
 function TZDate.GetZDate: string;
 var
   XSDate : TXSDatetime;
-  TZ     : TTimeZone;
+  TZ     : TBundledTimeZone;
 begin
   TZ := TBundledTimeZone.GetTimeZone(FTZInfo);
   XSDate := TXSDatetime.Create;
