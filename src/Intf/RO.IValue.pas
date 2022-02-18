@@ -56,6 +56,7 @@ type
   IReal       = IValue<Real>;
   ISingle     = IValue<Single>;
   IDouble     = IValue<Double>;
+  ICurrency   = IValue<Currency>;
 
   {$IFDEF MSWINDOWS}
     IAnsiString = IValue<AnsiString>;
