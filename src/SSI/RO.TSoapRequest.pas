@@ -55,7 +55,7 @@ uses
     Classes
   ;
 
-{ TDTRequest }
+{ TSoapRequest }
 
 constructor TSoapRequest.Create(const aURL, aAction: string;
   BeforePostEvent: TBeforePostEvent; const TimeOut: Word = 12000);
