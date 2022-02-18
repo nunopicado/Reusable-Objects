@@ -56,8 +56,9 @@ type
 implementation
 
 uses
-    XMLDoc
-  , XMLDom
+    Xml.XMLDoc
+  , Xml.XMLDom
+  , Xml.omnixmldom
   , SysUtils
   , RO.TIf
   ;
