@@ -48,6 +48,7 @@ resourcestring
 type
   TROUniDatabase = class(TInterfacedObject, IDatabase)
   strict private
+    FServerInfo: IServerInfo;
     FConnection: TUniConnection;
     FProvider: TUniProvider;
     procedure DoExecute(const SQLStatement: ISQLStatement);
@@ -62,6 +63,7 @@ type
     function StopTransaction(const SaveChanges: Boolean = True): IDatabase;
     function Query(const Statement: ISQLStatement): IQuery;
     function Execute(const SQLStatement: ISQLStatement): IDatabase;
+    function ServerInfo: IServerInfo;
   end;
 
   TDatabase = TROUniDatabase;
@@ -76,8 +78,9 @@ uses
   , RO.IValue
   , RO.TValue
   , RO.TIf
+  , RO.DBGenericImpl
   , DB
-  , SysUtils
+  , SysUtils                        , dialogs
   ;
 
 type
@@ -93,8 +96,14 @@ type
     destructor Destroy; override;
     function Run: IQuery;
     function SetMasterSource(const MasterSource: TDataSource): IQuery;
-    function AddMasterDetailLink(const Master, Detail: string): IQuery;
+    function AddMasterDetailLink(const Master, Detail: string; const Index: string = ''): IQuery;
     function AsDataset: TDataset;
+    function AsJSON: string;
+    function UpdateSQL(const Statement: ISQLStatement): IQuery;
+    function DeleteSQL(const Statement: ISQLStatement): IQuery;
+    function InsertSQL(const Statement: ISQLStatement): IQuery;
+    function RefreshSQL(const Statement: ISQLStatement): IQuery;
+    function LockSQL(const Statement: ISQLStatement): IQuery;
   end;
 
 { TROUniQuery }
@@ -107,16 +116,26 @@ begin
   Result := Result + NewField;
 end;
 
-function TROUniQuery.AddMasterDetailLink(const Master, Detail: string): IQuery;
+function TROUniQuery.AddMasterDetailLink(const Master, Detail: string; const Index: string = ''): IQuery;
 begin
   Result := Self;
   FQuery.MasterFields := AddField(FQuery.MasterFields, Master);
   FQuery.DetailFields := AddField(FQuery.DetailFields, Detail);
+  if not Index.IsEmpty
+    then FQuery.IndexFieldNames := Index;
 end;
 
 function TROUniQuery.AsDataset: TDataset;
 begin
   Result := FQuery;
+end;
+
+function TROUniQuery.AsJSON: string;
+begin
+  Result := TDatasetAsJSON
+    .New(AsDataset)
+      .Refresh
+        .Value
 end;
 
 procedure TROUniQuery.AssignParams(SQLStatement: ISQLStatement);
@@ -140,6 +159,12 @@ begin
   AssignParams(SQLStatement);
 end;
 
+function TROUniQuery.DeleteSQL(const Statement: ISQLStatement): IQuery;
+begin
+  Result                := Self;
+  FQuery.SQLDelete.Text := Statement.Statement;
+end;
+
 destructor TROUniQuery.Destroy;
 begin
   FQuery.Free;
@@ -158,10 +183,27 @@ begin
     end;
 end;
 
+function TROUniQuery.InsertSQL(const Statement: ISQLStatement): IQuery;
+begin
+  Result                := Self;
+  FQuery.SQLInsert.Text := Statement.Statement;
+end;
+
+function TROUniQuery.LockSQL(const Statement: ISQLStatement): IQuery;
+begin
+  Result              := Self;
+  FQuery.SQLLock.Text := Statement.Statement;
+end;
 
 class function TROUniQuery.New(const Connection: TUniConnection; const SQLStatement: ISQLStatement): IQuery;
 begin
   Result := Create(Connection, SQLStatement);
+end;
+
+function TROUniQuery.RefreshSQL(const Statement: ISQLStatement): IQuery;
+begin
+  Result                  := Self;
+  FQuery.SQLRefresh.Text  := Statement.Statement;
 end;
 
 function TROUniQuery.Run: IQuery;
@@ -177,6 +219,12 @@ begin
   Result := Self;
   FQuery.MasterSource := MasterSource;
 end;
+function TROUniQuery.UpdateSQL(const Statement: ISQLStatement): IQuery;
+begin
+  Result                := Self;
+  FQuery.SQLUpdate.Text := Statement.Statement;
+end;
+
 {$ENDREGION}
 
 { TROUniDatabase }
@@ -190,6 +238,7 @@ end;
 
 constructor TROUniDatabase.Create(const ServerInfo: IServerInfo);
 begin
+  FServerInfo                 := ServerInfo;
   FConnection                 := TUniConnection.Create(nil);
   FConnection.Server          := ServerInfo.Hostname;
   FConnection.Port            := ServerInfo.Port;
@@ -204,6 +253,11 @@ begin
     stPostgreSQL : FProvider  := TPostgreSQLUniProvider.Create(nil);
   else raise Exception.Create(cUnknownServerType);
   end;
+end;
+
+function TROUniDatabase.ServerInfo: IServerInfo;
+begin
+  Result := FServerInfo;
 end;
 
 destructor TROUniDatabase.Destroy;

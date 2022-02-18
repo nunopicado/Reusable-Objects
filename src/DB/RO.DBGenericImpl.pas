@@ -41,8 +41,10 @@ interface
 
 uses
     RO.DBConnectionIntf
+  , RO.IValue
   , System.Generics.Collections
   , SysUtils
+  , DB
   ;
 
 resourcestring
@@ -101,9 +103,25 @@ type
     function StopTransaction(const SaveChanges: Boolean = True): IDatabase; virtual; abstract;
     function Query(const Statement: ISQLStatement): IQuery; virtual; abstract;
     function Execute(const SQLStatement: ISQLStatement): IDatabase; virtual; abstract;
+    function ServerInfo: IServerInfo; virtual; abstract;
+  end;
+
+  TDatasetAsJSON = class(TInterfacedObject, IString)
+  private
+    FJSON: IString;
+  public
+    constructor Create(const Dataset: TDataset);
+    class function New(const Dataset: TDataset): IString;
+    function Value: string;
+    function Refresh: IValue<string>;
   end;
 
 implementation
+
+uses
+    RO.TValue
+  , System.JSON
+  ;
 
 { TServerInfo }
 {$REGION TServerInfo}
@@ -252,6 +270,60 @@ end;
 class function TDummyDatabase.New(const ConnectAction: TProc = nil): IDatabase;
 begin
   Result := Create(ConnectAction);
+end;
+
+{ TDatasetAsJSON }
+
+constructor TDatasetAsJSON.Create(const Dataset: TDataset);
+begin
+  FJSON := TString.New(
+    function : string
+    var
+      JSONArray   : TJSONArray;
+      JSONObject  : TJSONObject;
+      Field       : TField;
+    begin
+      JSONArray := TJSONArray.Create;
+      try
+        DataSet.First;
+        while not DataSet.Eof do
+          begin
+            JSONObject := TJSONObject.Create;
+            for Field in DataSet.Fields do
+              case Field.DataType of
+                ftString  : JSONObject.AddPair(Field.FieldName, TJSONString.Create(Field.AsString));
+                ftInteger : JSONObject.AddPair(Field.FieldName, TJSONNumber.Create(Field.AsInteger));
+                ftBoolean :
+                  if Field.AsBoolean
+                    then JSONObject.AddPair(Field.FieldName, TJSONFalse.Create)
+                    else JSONObject.AddPair(Field.FieldName, TJSONTrue.Create);
+                else JSONObject.AddPair(Field.FieldName, TJSONString.Create(Field.AsString));
+              end;
+            JSONArray.AddElement(JSONObject);
+            DataSet.Next;
+          end;
+        Result := JSONArray.ToString;
+      finally
+        JSONArray.Free;
+      end;
+    end
+  );
+end;
+
+class function TDatasetAsJSON.New(const Dataset: TDataset): IString;
+begin
+  Result := Create(Dataset);
+end;
+
+function TDatasetAsJSON.Refresh: IValue<string>;
+begin
+  Result := Self;
+  FJSON.Refresh;
+end;
+
+function TDatasetAsJSON.Value: string;
+begin
+  Result := FJSON.Value;
 end;
 
 end.

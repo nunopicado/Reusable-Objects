@@ -79,9 +79,15 @@ type
   ['{9E4D3D8E-BE29-43CE-8A5E-2F1C9C5E58D0}']
     function Run: IQuery;
     function SetMasterSource(const MasterSource: TDataSource): IQuery;
-    function AddMasterDetailLink(const Master, Detail: string): IQuery;
+    function AddMasterDetailLink(const Master, Detail: string; const Index: string = ''): IQuery;
+    function UpdateSQL(const Statement: ISQLStatement): IQuery;
+    function DeleteSQL(const Statement: ISQLStatement): IQuery;
+    function InsertSQL(const Statement: ISQLStatement): IQuery;
+    function RefreshSQL(const Statement: ISQLStatement): IQuery;
+    function LockSQL(const Statement: ISQLStatement): IQuery;
     function ForEach(const Row: TProc<TDataset>): IQuery;
     function AsDataset: TDataset;
+    function AsJSON: string;
   end;
 
   IDatabase = interface(IInvokable)
@@ -93,8 +99,10 @@ type
     function StopTransaction(const SaveChanges: Boolean = True): IDatabase;
     function Query(const Statement: ISQLStatement): IQuery;
     function Execute(const SQLStatement: ISQLStatement): IDatabase;
+    function ServerInfo: IServerInfo;
   end;
 
 implementation
 
 end.
+

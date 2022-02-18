@@ -49,6 +49,7 @@ type
   TDBZDatabase = class(TInterfacedObject, IDatabase)
   strict private
     FConnection: TZConnection;
+    FServerInfo: IServerInfo;
   public
     constructor Create(const ServerInfo: IServerInfo; const ClientCodePage, LibraryLocation: string);
     destructor Destroy; Override;
@@ -60,6 +61,7 @@ type
     function StopTransaction(const SaveChanges: Boolean = True): IDatabase;
     function Query(const Statement: ISQLStatement): IQuery;
     function Execute(const SQLStatement: ISQLStatement): IDatabase;
+    function ServerInfo: IServerInfo;
   end;
 
   TDatabase = TDBZDatabase;
@@ -95,9 +97,15 @@ type
     destructor Destroy; override;
     function Run: IQuery;
     function SetMasterSource(const MasterSource: TDataSource): IQuery;
-    function AddMasterDetailLink(const Master, Detail: string): IQuery;
+    function AddMasterDetailLink(const Master, Detail: string; const Index: string = ''): IQuery;
     function ForEach(const RowAction: TProc<TDataset>): IQuery;
     function AsDataset: TDataset;
+    function AsJSON: string;
+    function UpdateSQL(const Statement: ISQLStatement): IQuery; virtual; abstract;
+    function DeleteSQL(const Statement: ISQLStatement): IQuery; virtual; abstract;
+    function InsertSQL(const Statement: ISQLStatement): IQuery; virtual; abstract;
+    function RefreshSQL(const Statement: ISQLStatement): IQuery; virtual; abstract;
+    function LockSQL(const Statement: ISQLStatement): IQuery; virtual; abstract;
   end;
 
 { TDBZQuery }
@@ -110,7 +118,7 @@ begin
   Result := Result + NewField;
 end;
 
-function TDBZQuery.AddMasterDetailLink(const Master, Detail: string): IQuery;
+function TDBZQuery.AddMasterDetailLink(const Master, Detail: string; const Index: string = ''): IQuery;
 begin
   Result := Self;
   raise Exception.Create('Not yet implemented');
@@ -121,6 +129,11 @@ end;
 function TDBZQuery.AsDataset: TDataset;
 begin
   Result := FQuery;
+end;
+
+function TDBZQuery.AsJSON: string;
+begin
+  raise Exception.Create('Not implemented');
 end;
 
 procedure TDBZQuery.AssignParams(const SQLStatement: ISQLStatement);
@@ -191,6 +204,7 @@ end;
 constructor TDBZDatabase.Create(const ServerInfo: IServerInfo; const ClientCodePage, LibraryLocation: string);
 begin
   FConnection                        := TZConnection.Create(nil);
+  FServerInfo                        := ServerInfo;
   FConnection.HostName               := ServerInfo.Hostname;
   FConnection.Port                   := ServerInfo.Port;
   FConnection.User                   := ServerInfo.Username;
@@ -234,6 +248,11 @@ function TDBZDatabase.Execute(const SQLStatement: ISQLStatement): IDatabase;
 begin
   Result := Self;
   FConnection.ExecuteDirect(SQLStatement.Statement);
+end;
+
+function TDBZDatabase.ServerInfo: IServerInfo;
+begin
+  Result := FServerInfo;
 end;
 
 function TDBZDatabase.StartTransaction: IDatabase;
@@ -296,7 +315,7 @@ end;
 function TZeosServerInfo.TypeAsString: string;
 begin
   case FOrigin.ServerType of
-    stMySQL      : Result := 'mysql-5';
+    stMySQL      : Result := 'mysql';
     stMSSQL      : Result := 'mssql';
     stSQLite     : Result := 'sqlite-3';
     stPostgreSQL : Result := 'postgresql-9';
