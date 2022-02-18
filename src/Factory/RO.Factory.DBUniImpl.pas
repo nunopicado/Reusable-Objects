@@ -23,7 +23,7 @@ initialization
   GlobalContainer
     .RegisterType<TDatabase>('TDatabase')
     .Implements<IDatabase>
-    .AsSingleton;
+    .AsSingletonPerThread;
   GlobalContainer
     .RegisterType<IDatabaseFactory>
     .AsFactory;
