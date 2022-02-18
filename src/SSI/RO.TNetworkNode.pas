@@ -42,15 +42,19 @@ uses
 
 type
   TNetworkNode = class(TInterfacedObject, INetworkNode)
+  private const
+    cLocalIP = '127.0.0.1';
   private
     FNode: AnsiString;
     function HostToIP(const Hostname: AnsiString; var IP: AnsiString): Boolean;
     function IPToHost(const IP: AnsiString; var Hostname: AnsiString): Boolean;
+    function DecodeLocalIP: AnsiString;
   public
     constructor Create(Node: AnsiString);
     class function New(Node: AnsiString): INetworkNode; overload;
     class function New(Node: IValue<AnsiString>): INetworkNode; overload;
     class function New(Node: IString): INetworkNode; overload;
+    class function New: INetworkNode; overload;
     function IsIPv4Address: Boolean;
     function AsIPv4Address: AnsiString;
     function AsHostname: AnsiString;
@@ -80,27 +84,28 @@ begin
     AnsiStrings.StrPCopy(aHostName, Hostname);
     HostEnt := GetHostByName(aHostName);
     if Assigned(HostEnt)
-      then if Assigned(HostEnt^.H_Addr_List)
-             then begin
-                    pcAddr := HostEnt^.H_Addr_List^;
-                    if Assigned(pcAddr)
-                      then begin
-                             IP := AnsiString(
-                               Format(
-                                 '%d.%d.%d.%d',
-                                 [
-                                   Byte(pcAddr[0]),
-                                   Byte(pcAddr[1]),
-                                   Byte(pcAddr[2]),
-                                   Byte(pcAddr[3])
-                                 ]
-                               )
-                             );
-                             Result := True;
-                           end
-                      else Result := False;
-                  end
-             else Result := False
+      then
+        if Assigned(HostEnt^.H_Addr_List)
+          then begin
+            pcAddr := HostEnt^.H_Addr_List^;
+            if Assigned(pcAddr)
+              then begin
+                IP := AnsiString(
+                  Format(
+                    '%d.%d.%d.%d',
+                    [
+                      Byte(pcAddr[0]),
+                      Byte(pcAddr[1]),
+                      Byte(pcAddr[2]),
+                      Byte(pcAddr[3])
+                    ]
+                  )
+                );
+                Result := True;
+              end
+              else Result := False;
+          end
+          else Result := False
       else Result := False;
   finally
     WSACleanup;
@@ -111,21 +116,41 @@ function TNetworkNode.AsHostname: AnsiString;
 begin
   if not IsIPv4Address
     then Result := FNode
-    else if not IPToHost(FNode, Result)
-           then raise Exception.Create('Failed to obtain node''s hostname.');
+    else
+      if not IPToHost(FNode, Result)
+        then raise Exception.Create('Failed to obtain node''s hostname.');
 end;
 
 function TNetworkNode.AsIPv4Address: AnsiString;
 begin
   if IsIPv4Address
-    then Result := FNode
-    else if not HostToIP(FNode, Result)
-           then raise Exception.Create('Failed to obtain node''s IP address.');
+    then
+      if FNode <> cLocalIP
+        then Result := FNode
+        else Result := DecodeLocalIP
+    else
+      if not HostToIP(FNode, Result)
+        then raise Exception.Create('Failed to obtain node''s IP address.');
 end;
 
 constructor TNetworkNode.Create(Node: AnsiString);
 begin
-  FNode := Node;
+  if Node = ''
+    then FNode := cLocalIP
+    else FNode := Node;
+end;
+
+function TNetworkNode.DecodeLocalIP: AnsiString;
+var
+  Host: AnsiString;
+begin
+  if
+      not (
+        IPToHost(cLocalIP, Host) and
+        HostToIP(Host, Result)
+      )
+    then
+      raise Exception.Create('Failed to obtain node''s IP address.');
 end;
 
 function TNetworkNode.IPToHost(const IP: AnsiString; var Hostname: AnsiString): Boolean;
@@ -140,10 +165,10 @@ begin
     SockAddrIn.sin_addr.s_addr := inet_addr(PAnsiChar(IP));
     HostEnt:= GetHostByAddr(@SockAddrIn.sin_addr.S_addr, 4, AF_INET);
     if HostEnt <> nil
-       then begin
-              Hostname := AnsiStrings.StrPas(Hostent^.h_name);
-              Result   := True;
-            end;
+      then begin
+        Hostname := AnsiStrings.StrPas(Hostent^.h_name);
+        Result   := True;
+      end;
   finally
     WSACleanup;
   end;
@@ -162,26 +187,33 @@ begin
   GroupLength := 0;
   for i := 1 to Length(FNode) do
     case FNode[i] of
-      '0'..'9': begin
-                  Inc(GroupLength);
-                  if (GroupLength > 3)
-                    then Exit;
-                end;
-      '.'     : begin
-                  Inc(GroupCount);
-                  Val(
-                    Copy(
-                      string(FNode),
-                      i - GroupLength,
-                      GroupLength
-                    ),
-                    GroupValue,
-                    ErrCode
-                  );
-                  if ((GroupCount > 3) or (GroupLength = 0)) or (GroupValue > 255)
-                    then Exit;
-                  GroupLength := 0;
-                end;
+      '0'..'9':
+        begin
+          Inc(GroupLength);
+          if (GroupLength > 3)
+            then Exit;
+        end;
+      '.':
+        begin
+          Inc(GroupCount);
+          Val(
+            Copy(
+              string(FNode),
+              i - GroupLength,
+              GroupLength
+            ),
+            GroupValue,
+            ErrCode
+          );
+          if
+              (
+                (GroupCount > 3) or
+                (GroupLength = 0)
+              ) or
+              (GroupValue > 255)
+            then Exit;
+          GroupLength := 0;
+        end;
     else Exit;
     end;
   Val(
@@ -193,7 +225,10 @@ begin
     GroupValue,
     ErrCode
   );
-  Result := (GroupCount = 3) and (GroupLength > 0) and (GroupValue < 256);
+  Result :=
+    (GroupCount = 3) and
+    (GroupLength > 0) and
+    (GroupValue < 256);
 end;
 
 function TNetworkNode.IsPortOpen(const Port: Word): Boolean;
@@ -212,6 +247,11 @@ begin
   finally
     WSACleanup;
   end;
+end;
+
+class function TNetworkNode.New: INetworkNode;
+begin
+  Result := Create('');
 end;
 
 class function TNetworkNode.New(Node: IString): INetworkNode;
