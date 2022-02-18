@@ -42,6 +42,7 @@ uses
   , Classes
   , idSSLOpenSSL
   , idMessage
+  , IdMessageBuilder
   , RO.IEmailAddress
   , RO.IValue
   , RO.IMail
@@ -73,16 +74,24 @@ type
 
   TMailMessage = class(TInterfacedObject, IMailmessage)
   private
-    FMsg: TIdMessage;
+    FMsg  : TIdMessage;
+    FMB   : TIdMessageBuilderHtml;
+    FHTML : Boolean;
   public
-    constructor Create(const FromName: string; const FromAddr, ToAddr: IEmailAddress);
+    constructor Create(const idMessage: TidMessage; const FromName: string; const FromAddr, ToAddr: IEmailAddress); overload;
+    constructor Create(const FromName: string; const FromAddr, ToAddr: IEmailAddress); overload;
     destructor Destroy; override;
     class function New(const FromName: string; const FromAddr, ToAddr: IEmailAddress): IMailMessage; overload;
     class function New(const FromName: IString; const FromAddr, ToAddr: IEmailAddress): IMailMessage; overload;
+    class function New(const idMessage: TidMessage; const FromName: string; const FromAddr, ToAddr: IEmailAddress): IMailMessage; overload;
+    class function New(const idMessage: TidMessage; const FromName: IString; const FromAddr, ToAddr: IEmailAddress): IMailMessage; overload;
     function Subject(const MsgSubject: string): IMailMessage; overload;
     function Subject(const MsgSubject: IString): IMailMessage; overload;
     function Attach(const FileName: string): IMailMessage; overload;
     function Attach(const FileName: IString): IMailMessage; overload;
+    function AsHTML: IMailMessage;
+    function ASPlainText: IMailMessage;
+    function Mime: IMailMessage;
     function Body(const MsgBody: string): IMailMessage; overload;
     function Body(const MsgBody: IString): IMailMessage; overload;
     function AddToAddr(const ToAddr: IEmailAddress): IMailMessage;
@@ -96,6 +105,7 @@ implementation
 uses
     IdExplicitTLSClientServerBase
   , IdAttachmentFile
+  , IdText
   , RO.TValue
   , RO.TIf
   ;
@@ -105,7 +115,8 @@ uses
 function TMailServer.Connect: IMailServer;
 begin
   Result := Self;
-  mail.Connect;
+  if not Mail.Connected
+    then mail.Connect;
   if not Mail.Connected
     then raise Exception.Create(Format('Could not connect to SMTP server (%s:%d)', [mail.Host, mail.Port]));
   if Assigned(FAfterConnect)
@@ -225,6 +236,7 @@ end;
 
 function TMailMessage.AddBccAddr(const BccAddr: IEmailAddress): IMailMessage;
 begin
+  Result := Self;
   if FMsg.BCCList.EMailAddresses <> ''
     then FMsg.BCCList.EMailAddresses := FMsg.BCCList.EMailAddresses + ';';
   FMsg.BCCList.EMailAddresses := FMsg.BCCList.EMailAddresses + BccAddr.Value;
@@ -232,6 +244,7 @@ end;
 
 function TMailMessage.AddCcAddr(const CcAddr: IEmailAddress): IMailMessage;
 begin
+  Result := Self;
   if FMsg.CCList.EMailAddresses <> ''
     then FMsg.CCList.EMailAddresses := FMsg.CCList.EMailAddresses + ';';
   FMsg.CCList.EMailAddresses := FMsg.CCList.EMailAddresses + CcAddr.Value;
@@ -239,9 +252,26 @@ end;
 
 function TMailMessage.AddToAddr(const ToAddr: IEmailAddress): IMailMessage;
 begin
+  Result := Self;
   if FMsg.Recipients.EMailAddresses <> ''
     then FMsg.Recipients.EMailAddresses := FMsg.Recipients.EMailAddresses + ';';
   FMsg.Recipients.EMailAddresses := FMsg.Recipients.EMailAddresses + ToAddr.Value;
+end;
+
+function TMailMessage.AsHTML: IMailMessage;
+begin
+  Result            := Self;
+  FHTML             := True;
+  FMsg.ContentType  := 'text/html';
+  if Assigned(FMB)
+    then FMB.Free;
+  FMB               := TIdMessageBuilderHTML.Create;
+end;
+
+function TMailMessage.ASPlainText: IMailMessage;
+begin
+  Result            := Self;
+  FMsg.ContentType  := 'text/plain';
 end;
 
 function TMailMessage.Attach(const FileName: IString): IMailMessage;
@@ -253,29 +283,49 @@ function TMailMessage.Attach(const FileName: string): IMailMessage;
 begin
   Result := Self;
   if FileExists(FileName)
-    then TIdAttachmentFile.Create(FMsg.MessageParts, FileName);
+    then
+      if not FHTML
+        then TIdAttachmentFile.Create(FMsg.MessageParts, FileName)
+        else begin
+          FMB.HtmlFiles.Add(FileName);
+          FMB.FillMessage(FMsg);
+        end;
 end;
 
 function TMailMessage.Body(const MsgBody: string): IMailMessage;
 begin
-  Result         := Self;
-  FMsg.Body.Text := MsgBody;
+  Result := Self;
+  if not FHTML
+    then FMsg.Body.Text := MsgBody
+    else begin
+      FMB.Html.Text := MsgBody;
+      FMB.HtmlCharSet := 'utf-8';
+      FMB.FillMessage(FMsg);
+    end;
 end;
 
 constructor TMailMessage.Create(const FromName: string; const FromAddr, ToAddr: IEmailAddress);
 begin
-  inherited Create;
-  FMsg                           := TidMessage.Create(nil);
-  FMsg.MessageParts.Clear;
-  FMsg.From.Name                 := FromName;
-  FMsg.From.Address              := FromAddr.Value;
-  FMsg.Recipients.EMailAddresses := ToAddr.Value;
+  Create(
+    TidMessage.Create(nil),
+    FromName,
+    FromAddr,
+    ToAddr
+  );
 end;
 
 destructor TMailMessage.Destroy;
 begin
   FMsg.Free;
+  if Assigned(FMB)
+    then FMB.Free;
   inherited;
+end;
+
+function TMailMessage.Mime: IMailMessage;
+begin
+  Result        := Self;
+  FMsg.Encoding := meMime;
 end;
 
 function TMailMessage.Msg: TidMessage;
@@ -308,6 +358,30 @@ end;
 function TMailMessage.Body(const MsgBody: IString): IMailMessage;
 begin
   Result := Body(MsgBody.Value);
+end;
+
+constructor TMailMessage.Create(const idMessage: TidMessage;
+  const FromName: string; const FromAddr, ToAddr: IEmailAddress);
+begin
+  FMsg              := idMessage;
+  FMsg.MessageParts.Clear;
+  FMsg.From.Name    := FromName;
+  FMsg.From.Address := FromAddr.Value;
+  FHTML             := False;
+  if Assigned(ToAddr)
+    then FMsg.Recipients.EMailAddresses := ToAddr.Value;
+end;
+
+class function TMailMessage.New(const idMessage: TidMessage;
+  const FromName: string; const FromAddr, ToAddr: IEmailAddress): IMailMessage;
+begin
+  Result := Create(idMessage, FromName, FromAddr, ToAddr);
+end;
+
+class function TMailMessage.New(const idMessage: TidMessage;
+  const FromName: IString; const FromAddr, ToAddr: IEmailAddress): IMailMessage;
+begin
+  Result := Create(idMessage, FromName.Value, FromAddr, ToAddr);
 end;
 
 end.

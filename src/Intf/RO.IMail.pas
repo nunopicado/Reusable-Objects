@@ -38,6 +38,7 @@ interface
 
 uses
     RO.IValue
+  , RO.IEmailAddress
   , idMessage
   , SysUtils
   ;
@@ -65,8 +66,14 @@ type
     function Subject(const MsgSubject: IString): IMailMessage; overload;
     function Attach(const FileName: string): IMailMessage; overload;
     function Attach(const FileName: IString): IMailMessage; overload;
+    function AsHTML: IMailMessage;
+    function ASPlainText: IMailMessage;
+    function Mime: IMailMessage;
     function Body(const MsgBody: string): IMailMessage; overload;
     function Body(const MsgBody: IString): IMailMessage; overload;
+    function AddToAddr(const ToAddr: IEmailAddress): IMailMessage;
+    function AddCcAddr(const CcAddr: IEmailAddress): IMailMessage;
+    function AddBccAddr(const BccAddr: IEmailAddress): IMailMessage;
     function Msg: TidMessage;
   end;
 
