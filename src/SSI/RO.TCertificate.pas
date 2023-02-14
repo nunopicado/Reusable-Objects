@@ -223,7 +223,7 @@ function CryptReleaseContext; external Advapi32 name 'CryptReleaseContext';
 
 { TCertificate }
 
-function TCertificate.SerialNumber: String;
+function TCertificate.SerialNumber: string;
 var
   i           : Integer;
   ByteArr     : array of Byte;
