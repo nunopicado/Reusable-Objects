@@ -80,7 +80,7 @@ uses
   , RO.TIf
   , RO.DBGenericImpl
   , DB
-  , SysUtils                        , dialogs
+  , SysUtils
   ;
 
 type
