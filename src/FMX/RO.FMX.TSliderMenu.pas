@@ -87,6 +87,8 @@ type
     procedure PrepareAnimation;
     procedure PrepareListBox(const ImageList: TImageList);
     procedure PrepareRectangle(const aParent: TFmxObject; const ColorStart, ColorEnd: TAlphaColor);
+    procedure SetVisible(const Value: Boolean);
+    property Visible: Boolean read FVisible write SetVisible;
   public
     constructor Create(const aParent: TFMXObject; const aWidth: Single; const ColorStart, ColorEnd: TAlphaColor;
       const ImageList: TImageList = nil);
@@ -252,7 +254,7 @@ end;
 function TSliderMenu.Resize(const aWidth: Single): ISliderMenu;
 begin
   Result            := Self;
-  FVisible          := False;
+  Visible           := False;
   FHiddenX          := -aWidth - 10;
   FRect.Size.Width  := aWidth;
   FRect.Position.X  := FHiddenX;
@@ -260,16 +262,22 @@ end;
 
 procedure TSliderMenu.SetupHide;
 begin
-  FVisible              := False;
+  Visible               := False;
   FAnimation.StartValue := 0;
   FAnimation.StopValue  := FHiddenX;
 end;
 
 procedure TSliderMenu.SetupShow;
 begin
-  FVisible              := True;
+  Visible               := True;
   FAnimation.StartValue := FHiddenX;
   FAnimation.StopValue  := 0;
+end;
+
+procedure TSliderMenu.SetVisible(const Value: Boolean);
+begin
+  FVisible      := Value;
+  FRect.Visible := Value;
 end;
 
 function TSliderMenu.Show: ISliderMenu;
