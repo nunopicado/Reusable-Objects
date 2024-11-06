@@ -64,7 +64,7 @@ type
   ['{440D5058-F8CA-4E6E-9146-056BEB305FFF}']
     function Subject(const MsgSubject: string): IMailMessage; overload;
     function Subject(const MsgSubject: IString): IMailMessage; overload;
-    function Attach(const FileName: string): IMailMessage; overload;
+    function Attach(const FileName: string; const CID: string = ''): IMailMessage; overload;
     function Attach(const FileName: IString): IMailMessage; overload;
     function AsHTML: IMailMessage;
     function ASPlainText: IMailMessage;

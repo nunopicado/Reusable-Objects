@@ -87,7 +87,7 @@ type
     class function New(const idMessage: TidMessage; const FromName: IString; const FromAddr, ToAddr: IEmailAddress): IMailMessage; overload;
     function Subject(const MsgSubject: string): IMailMessage; overload;
     function Subject(const MsgSubject: IString): IMailMessage; overload;
-    function Attach(const FileName: string): IMailMessage; overload;
+    function Attach(const FileName: string; const CID: string = ''): IMailMessage; overload;
     function Attach(const FileName: IString): IMailMessage; overload;
     function AsHTML: IMailMessage;
     function ASPlainText: IMailMessage;
@@ -279,7 +279,7 @@ begin
   Result := Attach(Filename.Value);
 end;
 
-function TMailMessage.Attach(const FileName: string): IMailMessage;
+function TMailMessage.Attach(const FileName: string; const CID: string = ''): IMailMessage;
 begin
   Result := Self;
   if FileExists(FileName)
@@ -287,7 +287,7 @@ begin
       if not FHTML
         then TIdAttachmentFile.Create(FMsg.MessageParts, FileName)
         else begin
-          FMB.HtmlFiles.Add(FileName);
+          FMB.HtmlFiles.Add(FileName, CID);
           FMB.FillMessage(FMsg);
         end;
 end;
