@@ -15,7 +15,8 @@ type
 
   IServerInfoFactory = interface(IInvokable)
   ['{1068C1DE-80BE-4D8E-A690-0B78B0E4EC90}']
-    function New(const HostName: string; const Port: Word; const Username, Password: string; const ServerType: TServerType): IServerInfo;
+    function New(const HostName: string; const Port: Word; const Username, Password: string; const ServerType: TServerType): IServerInfo; overload;
+    function New(const HostName: string; const Port: Word; const Username, Password: string; const ServerType: TServerType; const Database, BinPath, UpdatePath: string): IServerInfo; overload;
   end;
 
 implementation

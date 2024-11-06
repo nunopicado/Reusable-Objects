@@ -99,6 +99,8 @@ type
     function Connect: IDatabase;
     function Disconnect: IDatabase;
     function IsConnected: Boolean;
+    function OnReconnect(Action: TProc): IDatabase; virtual; abstract;
+    function OnDisconnect(Action: TProc): IDatabase; virtual; abstract;
     function StartTransaction: IDatabase; virtual; abstract;
     function StopTransaction(const SaveChanges: Boolean = True): IDatabase; virtual; abstract;
     function Query(const Statement: ISQLStatement): IQuery; virtual; abstract;
@@ -110,8 +112,8 @@ type
   private
     FJSON: IString;
   public
-    constructor Create(const Dataset: TDataset);
-    class function New(const Dataset: TDataset): IString;
+    constructor Create(const Dataset: TDataset; const ForceArray: Boolean = True);
+    class function New(const Dataset: TDataset; const ForceArray: Boolean = True): IString;
     function Value: string;
     function Refresh: IValue<string>;
   end;
@@ -274,45 +276,60 @@ end;
 
 { TDatasetAsJSON }
 
-constructor TDatasetAsJSON.Create(const Dataset: TDataset);
+constructor TDatasetAsJSON.Create(const Dataset: TDataset; const ForceArray: Boolean = True);
 begin
   FJSON := TString.New(
     function : string
-    var
-      JSONArray   : TJSONArray;
-      JSONObject  : TJSONObject;
-      Field       : TField;
-    begin
-      JSONArray := TJSONArray.Create;
-      try
-        DataSet.First;
-        while not DataSet.Eof do
-          begin
-            JSONObject := TJSONObject.Create;
-            for Field in DataSet.Fields do
-              case Field.DataType of
-                ftString  : JSONObject.AddPair(Field.FieldName, TJSONString.Create(Field.AsString));
-                ftInteger : JSONObject.AddPair(Field.FieldName, TJSONNumber.Create(Field.AsInteger));
-                ftBoolean :
-                  if Field.AsBoolean
-                    then JSONObject.AddPair(Field.FieldName, TJSONFalse.Create)
-                    else JSONObject.AddPair(Field.FieldName, TJSONTrue.Create);
-                else JSONObject.AddPair(Field.FieldName, TJSONString.Create(Field.AsString));
-              end;
-            JSONArray.AddElement(JSONObject);
-            DataSet.Next;
+      function RowToJSONObject: TJSONObject;
+      var
+        Field: TField;
+      begin
+        Result := TJSONObject.Create;
+        for Field in DataSet.Fields do
+          case Field.DataType of
+            ftString  : Result.AddPair(Field.FieldName, TJSONString.Create(Field.AsString));
+            ftInteger : Result.AddPair(Field.FieldName, TJSONNumber.Create(Field.AsInteger));
+            ftBoolean :
+              if Field.AsBoolean
+                then Result.AddPair(Field.FieldName, TJSONFalse.Create)
+                else Result.AddPair(Field.FieldName, TJSONTrue.Create);
+            else Result.AddPair(Field.FieldName, TJSONString.Create(Field.AsString));
           end;
-        Result := JSONArray.ToString;
-      finally
-        JSONArray.Free;
       end;
+    var
+      JSONArray : TJSONArray;
+    begin
+      DataSet.First;
+      if
+         (Dataset.RecordCount > 1) or
+          ForceArray
+        then begin
+          JSONArray := TJSONArray.Create;
+          try
+            while not DataSet.Eof do
+              begin
+                JSONArray.AddElement(RowToJSONObject);
+                DataSet.Next;
+              end;
+            Result := JSONArray.ToJSON;
+          finally
+            JSONArray.Free;
+          end;
+        end
+        else begin
+          with RowToJSONObject do
+            begin
+              Result := ToJSON;
+              Free;
+            end;
+        end;
     end
   );
 end;
 
-class function TDatasetAsJSON.New(const Dataset: TDataset): IString;
+class function TDatasetAsJSON.New(const Dataset: TDataset; const ForceArray: Boolean = True): IString;
 begin
-  Result := Create(Dataset);
+  Result := Create(Dataset, ForceArray);
 end;
 
 function TDatasetAsJSON.Refresh: IValue<string>;

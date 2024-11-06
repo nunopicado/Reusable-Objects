@@ -40,6 +40,10 @@ uses
     RO.DBConnectionIntf
   , Uni
   , UniProvider
+  , Classes
+  , MemData
+  , DBAccess
+  , SysUtils
   ;
 
 resourcestring
@@ -48,10 +52,15 @@ resourcestring
 type
   TROUniDatabase = class(TInterfacedObject, IDatabase)
   strict private
-    FServerInfo: IServerInfo;
-    FConnection: TUniConnection;
-    FProvider: TUniProvider;
+    FServerInfo       : IServerInfo;
+    FConnection       : TUniConnection;
+    FProvider         : TUniProvider;
+    FReconnectAction  : TProc;
+    FDisconnectAction : TProc;
     procedure DoExecute(const SQLStatement: ISQLStatement);
+    procedure ConnectionLost(Sender: TObject; Component: TComponent; ConnLostCause: TConnLostCause; var RetryMode: TRetryMode);
+    procedure AfterConnect(Sender: TObject);
+    procedure AfterDisconnect(Sender: TObject);
   public
     constructor Create(const ServerInfo: IServerInfo);
     destructor Destroy; override;
@@ -59,6 +68,8 @@ type
     function Connect: IDatabase;
     function Disconnect: IDatabase;
     function IsConnected: Boolean;
+    function OnReconnect(Action: TProc): IDatabase;
+    function OnDisconnect(Action: TProc): IDatabase;
     function StartTransaction: IDatabase;
     function StopTransaction(const SaveChanges: Boolean = True): IDatabase;
     function Query(const Statement: ISQLStatement): IQuery;
@@ -78,14 +89,15 @@ uses
   , RO.IValue
   , RO.TValue
   , RO.TIf
+  , RO.TEnum
   , RO.DBGenericImpl
   , DB
-  , SysUtils
   ;
 
 type
   TROUniQuery = class(TInterfacedObject, IQuery)
   private
+    FConnection: TUniConnection;
     FQuery: TUniQuery;
     procedure AssignParams(SQLStatement: ISQLStatement);
     function AddField(const List, NewField: string): string;
@@ -94,11 +106,14 @@ type
     constructor Create(const Connection: TUniConnection; const SQLStatement: ISQLStatement);
     class function New(const Connection: TUniConnection; const SQLStatement: ISQLStatement): IQuery;
     destructor Destroy; override;
+    function Open: IQuery;
+    function Close: IQuery;
     function Run: IQuery;
+    function ReadOnly(const Value: Boolean): IQuery;
     function SetMasterSource(const MasterSource: TDataSource): IQuery;
     function AddMasterDetailLink(const Master, Detail: string; const Index: string = ''): IQuery;
     function AsDataset: TDataset;
-    function AsJSON: string;
+    function AsJSON(const ForceArray: Boolean = true): string;
     function UpdateSQL(const Statement: ISQLStatement): IQuery;
     function DeleteSQL(const Statement: ISQLStatement): IQuery;
     function InsertSQL(const Statement: ISQLStatement): IQuery;
@@ -130,10 +145,10 @@ begin
   Result := FQuery;
 end;
 
-function TROUniQuery.AsJSON: string;
+function TROUniQuery.AsJSON(const ForceArray: Boolean = true): string;
 begin
   Result := TDatasetAsJSON
-    .New(AsDataset)
+    .New(AsDataset, ForceArray)
       .Refresh
         .Value
 end;
@@ -150,8 +165,15 @@ begin
     end;
 end;
 
+function TROUniQuery.Close: IQuery;
+begin
+  Result := Self;
+  FQuery.Close;
+end;
+
 constructor TROUniQuery.Create(const Connection: TUniConnection; const SQLStatement: ISQLStatement);
 begin
+  FConnection                   := Connection;
   FQuery                        := Uni.TUniQuery.Create(nil);
   FQuery.Connection             := Connection;
   FQuery.Options.RequiredFields := False;
@@ -200,6 +222,20 @@ begin
   Result := Create(Connection, SQLStatement);
 end;
 
+function TROUniQuery.Open: IQuery;
+begin
+  Result := Self;
+  if not Assigned(FQuery.Connection)
+    then FQuery.Connection := FConnection;
+  FQuery.Open;
+end;
+
+function TROUniQuery.ReadOnly(const Value: Boolean): IQuery;
+begin
+  Result          := Self;
+  FQuery.ReadOnly := Value;
+end;
+
 function TROUniQuery.RefreshSQL(const Statement: ISQLStatement): IQuery;
 begin
   Result                  := Self;
@@ -229,6 +265,23 @@ end;
 
 { TROUniDatabase }
 {$REGION TROUniDatabase}
+procedure TROUniDatabase.ConnectionLost(Sender: TObject; Component: TComponent; ConnLostCause: TConnLostCause; var RetryMode: TRetryMode);
+begin
+  RetryMode := TRetryMode.rmReconnectExecute;
+end;
+
+procedure TROUniDatabase.AfterConnect(Sender: TObject);
+begin
+  if Assigned(FReconnectAction)
+    then FReconnectAction();
+end;
+
+procedure TROUniDatabase.AfterDisconnect(Sender: TObject);
+begin
+  if Assigned(FDisconnectAction)
+    then FDisconnectAction();
+end;
+
 function TROUniDatabase.Connect: IDatabase;
 begin
   Result := Self;
@@ -238,14 +291,15 @@ end;
 
 constructor TROUniDatabase.Create(const ServerInfo: IServerInfo);
 begin
-  FServerInfo                 := ServerInfo;
-  FConnection                 := TUniConnection.Create(nil);
-  FConnection.Server          := ServerInfo.Hostname;
-  FConnection.Port            := ServerInfo.Port;
-  FConnection.Username        := ServerInfo.Username;
-  FConnection.Password        := ServerInfo.Password;
-  FConnection.Database        := ServerInfo.Database;
-  FConnection.ProviderName    := ServerInfo.TypeAsString;
+  FServerInfo                   := ServerInfo;
+  FConnection                   := TUniConnection.Create(nil);
+  FConnection.Server            := ServerInfo.Hostname;
+  FConnection.Port              := ServerInfo.Port;
+  FConnection.Username          := ServerInfo.Username;
+  FConnection.Password          := ServerInfo.Password;
+  FConnection.Database          := ServerInfo.Database;
+  FConnection.ProviderName      := ServerInfo.TypeAsString;
+  FConnection.OnConnectionLost  := ConnectionLost;
   case ServerInfo.ServerType of
     stMySQL      : FProvider  := TMySQLUniProvider.Create(nil);
     stMSSQL      : FProvider  := TSQLServerUniProvider.Create(nil);
@@ -287,6 +341,18 @@ end;
 class function TROUniDatabase.New(const ServerInfo: IServerInfo): IDatabase;
 begin
   Result := Create(ServerInfo);
+end;
+
+function TROUniDatabase.OnDisconnect(Action: TProc): IDatabase;
+begin
+  Result := Self;
+  FDisconnectAction := Action;
+end;
+
+function TROUniDatabase.OnReconnect(Action: TProc): IDatabase;
+begin
+  Result := Self;
+  FReconnectAction := Action;
 end;
 
 function TROUniDatabase.Query(const Statement: ISQLStatement): IQuery;

@@ -78,6 +78,9 @@ type
   IQuery = interface(IInvokable)
   ['{9E4D3D8E-BE29-43CE-8A5E-2F1C9C5E58D0}']
     function Run: IQuery;
+    function Open: IQuery;
+    function Close: IQuery;
+    function ReadOnly(const Value: Boolean): IQuery;
     function SetMasterSource(const MasterSource: TDataSource): IQuery;
     function AddMasterDetailLink(const Master, Detail: string; const Index: string = ''): IQuery;
     function UpdateSQL(const Statement: ISQLStatement): IQuery;
@@ -87,7 +90,7 @@ type
     function LockSQL(const Statement: ISQLStatement): IQuery;
     function ForEach(const Row: TProc<TDataset>): IQuery;
     function AsDataset: TDataset;
-    function AsJSON: string;
+    function AsJSON(const ForceArray: Boolean = true): string;
   end;
 
   IDatabase = interface(IInvokable)
@@ -95,6 +98,8 @@ type
     function Connect: IDatabase;
     function Disconnect: IDatabase;
     function IsConnected: Boolean;
+    function OnReconnect(Action: TProc): IDatabase;
+    function OnDisconnect(Action: TProc): IDatabase;
     function StartTransaction: IDatabase;
     function StopTransaction(const SaveChanges: Boolean = True): IDatabase;
     function Query(const Statement: ISQLStatement): IQuery;
