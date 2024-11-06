@@ -150,12 +150,13 @@ begin
   repeat
     Result := TSNTPTime.New(FServerList[i]).Now;
     Inc(i);
-  until (i > FServerList.Count) or ValidDate(Result);
+  until (i >= FServerList.Count) or ValidDate(Result);
   if not ValidDate(Result)
-    then case FIfFail of
-           spReturnCurrentDate : Result := SysUtils.Now;
-           spThrowException    : raise Exception.Create('Could not retrieve current date from any server in the list.');
-         end;
+    then
+      case FIfFail of
+        spReturnCurrentDate : Result := SysUtils.Now;
+        spThrowException    : raise Exception.Create('Could not retrieve current date from any server in the list.');
+      end;
 end;
 
 end.
