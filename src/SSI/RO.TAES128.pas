@@ -130,7 +130,9 @@ begin
       )
     ).Value
   );
-  EVP_CIPHER_CTX_free(@FCipherContext);
+  {$IF CompilerVersion < 33}
+    EVP_CIPHER_CTX_free(@FCipherContext);
+  {$ENDIF}
 end;
 
 end.
