@@ -90,8 +90,6 @@ resourcestring
   cInvalidPrinter = 'Failed to find %s printer.';
 begin
   Result := Self;
-  if not Exists(Name)
-    then raise Exception.Create(Format(cInvalidPrinter, [QuotedStr(Name)]));
   FSelected := Name;
 end;
 
@@ -102,7 +100,7 @@ var
 begin
   Result := Self;
   if not OpenPrinter(PChar(FSelected), Handle, nil)
-    then raise exception.Create(Format('Failed opening printer: %d', [GetLastError]))
+    then raise exception.Create(Format('Failed opening printer: %d (%s)', [GetLastError, FSelected]))
     else begin
       StartDocPrinter(Handle, 1, @FDocInfo1);
       WritePrinter(
